@@ -38,20 +38,6 @@ Template profissional para Nuxt 4 com shadcn-vue, Tailwind CSS v4 e arquitetura 
 
 ## Início Rápido
 
-### GitHub Template (recomendado)
-
-1. Clique em **"Use this template"** no GitHub
-2. Clone seu novo repositório
-3. Instale e configure:
-
-```bash
-npm install
-npm run setup    # Configura git hooks (Husky)
-npm run dev
-```
-
-### Degit
-
 ```bash
 npx degit DevJanderson/nuxt4-layers-template meu-projeto
 cd meu-projeto
@@ -60,7 +46,24 @@ npm run setup    # Configura git hooks (Husky)
 npm run dev
 ```
 
-### Clone Manual
+### Alternativas
+
+<details>
+<summary>GitHub Template</summary>
+
+1. Clique em **"Use this template"** no GitHub
+2. Clone seu novo repositório
+3. Instale e configure:
+
+```bash
+npm install
+npm run setup
+npm run dev
+```
+</details>
+
+<details>
+<summary>Clone Manual</summary>
 
 ```bash
 git clone https://github.com/DevJanderson/nuxt4-layers-template.git meu-projeto
@@ -68,11 +71,12 @@ cd meu-projeto
 rm -rf .git
 git init
 npm install
-npm run setup    # Configura git hooks (Husky)
+npm run setup
 git add .
 git commit -m "Initial commit"
 npm run dev
 ```
+</details>
 
 ## Comandos
 
