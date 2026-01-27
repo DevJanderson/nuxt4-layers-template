@@ -32,6 +32,7 @@ export default defineNuxtConfig({
   // Ordem de prioridade: 4-landing > 2-example > 1-base
 
   modules: [
+    '@nuxt/eslint',
     'shadcn-nuxt',
     '@pinia/nuxt',
     '@vee-validate/nuxt',

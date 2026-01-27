@@ -19,6 +19,8 @@ Template profissional para Nuxt 4 com shadcn-vue, Tailwind CSS v4 e arquitetura 
 - **Pinia** - State management
 - **Zod + VeeValidate** - Validação de formulários
 - **Dark Mode** - Tema claro/escuro
+- **ESLint + Prettier** - Qualidade de código
+- **Husky + Commitlint** - Git hooks e commits padronizados
 
 ## Stack
 
@@ -30,6 +32,7 @@ Template profissional para Nuxt 4 com shadcn-vue, Tailwind CSS v4 e arquitetura 
 | Validação | Zod, VeeValidate |
 | Imagens | @nuxt/image |
 | Tema | @nuxtjs/color-mode |
+| Qualidade | ESLint, Prettier, Husky, Commitlint |
 
 ## Início Rápido
 
@@ -71,10 +74,47 @@ npm run dev
 ## Comandos
 
 ```bash
-npm run dev      # Desenvolvimento (http://localhost:3000)
-npm run build    # Build produção
-npm run preview  # Preview build
+# Desenvolvimento
+npm run dev          # Servidor dev (http://localhost:3000)
+npm run build        # Build produção
+npm run preview      # Preview build
+
+# Qualidade de código
+npm run lint         # Verificar ESLint
+npm run lint:fix     # Corrigir ESLint
+npm run format       # Formatar com Prettier
+npm run typecheck    # Verificar tipos TypeScript
+npm run quality      # Rodar todas as verificações
+npm run quality:fix  # Corrigir lint + formatar
 ```
+
+## Qualidade de Código
+
+O template inclui ferramentas de qualidade pré-configuradas.
+
+### Configurar Git Hooks (após clonar)
+
+```bash
+npm install
+npx husky init
+echo "npx lint-staged" > .husky/pre-commit
+echo 'npx --no -- commitlint --edit "$1"' > .husky/commit-msg
+```
+
+### Commits Padronizados (Conventional Commits)
+
+```bash
+feat: adiciona nova funcionalidade
+fix: corrige bug
+docs: atualiza documentação
+style: formatação de código
+refactor: refatoração
+perf: melhoria de performance
+test: adiciona testes
+chore: tarefas de manutenção
+```
+
+> Veja mais em [docs/CODE_QUALITY.md](docs/CODE_QUALITY.md)
 
 ## Estrutura
 

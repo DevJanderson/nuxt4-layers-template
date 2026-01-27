@@ -1,0 +1,19 @@
+# Dependências
+node_modules/
+
+# Build
+.nuxt/
+.output/
+dist/
+
+# Cobertura de testes
+coverage/
+
+# Locks
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Gerados
+*.min.js
+*.min.css
