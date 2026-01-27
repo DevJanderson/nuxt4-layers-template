@@ -5,7 +5,7 @@ Instruções para criar e usar composables reutilizáveis.
 ## Estrutura
 
 ```
-app/composables/
+layers/1-base/app/composables/
 ├── useLoading.ts           # Estado de loading global
 ├── useNotification.ts      # Sistema de notificações
 ├── usePagination.ts        # Lógica de paginação
@@ -16,8 +16,8 @@ app/composables/
 
 | Tipo | Pasta | Quando usar |
 |------|-------|-------------|
-| **Utils** | `app/lib/` | Funções puras, sem estado, sem Vue |
-| **Composables** | `app/composables/` | Lógica com estado reativo (ref, computed) |
+| **Utils** | `layers/1-base/app/utils/` | Funções puras, sem estado, sem Vue |
+| **Composables** | `layers/1-base/app/composables/` | Lógica com estado reativo (ref, computed) |
 
 ```typescript
 // ❌ ERRADO - Isso é um util, não composable
@@ -25,7 +25,7 @@ export function useFormatDate(date: string) {
   return new Date(date).toLocaleDateString('pt-BR')
 }
 
-// ✅ CORRETO - Util em app/lib/
+// ✅ CORRETO - Util em layers/1-base/app/utils/
 export function formatDate(date: string) {
   return new Date(date).toLocaleDateString('pt-BR')
 }
@@ -49,7 +49,7 @@ export function useDateFormatter() {
 ### 1. Loading State
 
 ```typescript
-// app/composables/useLoading.ts
+// layers/1-base/app/composables/useLoading.ts
 export function useLoading() {
   const isLoading = ref(false)
   const error = ref<string | null>(null)
@@ -87,7 +87,7 @@ async function fetchData() {
 ### 2. Pagination
 
 ```typescript
-// app/composables/usePagination.ts
+// layers/1-base/app/composables/usePagination.ts
 interface PaginationOptions {
   initialPage?: number
   initialPerPage?: number
@@ -154,7 +154,7 @@ watch(data, (newData) => {
 ### 3. Debounce
 
 ```typescript
-// app/composables/useDebounce.ts
+// layers/1-base/app/composables/useDebounce.ts
 export function useDebounce<T>(value: Ref<T>, delay = 300): Ref<T> {
   const debouncedValue = ref(value.value) as Ref<T>
   let timeout: NodeJS.Timeout
@@ -184,7 +184,7 @@ watch(debouncedSearch, (term) => {
 ### 4. Toggle
 
 ```typescript
-// app/composables/useToggle.ts
+// layers/1-base/app/composables/useToggle.ts
 export function useToggle(initialValue = false) {
   const state = ref(initialValue)
 
@@ -212,7 +212,7 @@ const { state: isOpen, toggle, setFalse: close } = useToggle()
 ### 5. Form Field
 
 ```typescript
-// app/composables/useField.ts
+// layers/1-base/app/composables/useField.ts
 interface FieldOptions<T> {
   initialValue: T
   validate?: (value: T) => string | null
@@ -275,7 +275,7 @@ const email = useField({
 Quando precisar de estado compartilhado entre componentes **sem Pinia**:
 
 ```typescript
-// app/composables/useGlobalLoading.ts
+// layers/1-base/app/composables/useGlobalLoading.ts
 
 // Estado FORA da função = compartilhado (singleton)
 const isLoading = ref(false)
@@ -318,7 +318,7 @@ export function useGlobalCounter() {
 ## Composables com Lifecycle
 
 ```typescript
-// app/composables/useWindowSize.ts
+// layers/1-base/app/composables/useWindowSize.ts
 export function useWindowSize() {
   const width = ref(0)
   const height = ref(0)
@@ -347,7 +347,7 @@ export function useWindowSize() {
 ## Composables com Async
 
 ```typescript
-// app/composables/useAsyncState.ts
+// layers/1-base/app/composables/useAsyncState.ts
 interface UseAsyncStateOptions<T> {
   immediate?: boolean
   initialValue?: T

@@ -332,7 +332,7 @@ return abortNavigation(createError({ statusCode: 403 }))
 ### Criar wrapper com interceptors
 
 ```typescript
-// app/composables/useApi.ts
+// layers/1-base/app/composables/useApi.ts
 import type { UseFetchOptions } from 'nuxt/app'
 
 export function useApi<T>(
@@ -379,7 +379,7 @@ const { data } = await useApi<User>('/users/1', {
 ### Service com useApi (DDD Lite)
 
 ```typescript
-// layers/02-users/app/composables/useUserApi.ts
+// layers/2-users/app/composables/useUserApi.ts
 export function useUserApi() {
   async function getAll() {
     return useApi<User[]>('/users')
@@ -411,11 +411,11 @@ export function useUserApi() {
 
 | Tipo de código | Onde colocar | Exemplo |
 |----------------|--------------|---------|
-| Funções puras (sem estado) | `app/lib/` | `formatDate()`, `slugify()` |
-| Lógica com estado reativo | `app/composables/` | `useLoading()`, `usePagination()` |
-| Lógica específica do módulo | `layers/*/app/composables/` | `useUserForm()` |
-| Estado global | `app/stores/` ou Pinia | `useAuthStore()` |
-| Tipos reutilizáveis | `app/types/` | `ApiResponse<T>` |
+| Funções puras (sem estado) | `layers/1-base/app/utils/` | `formatDate()`, `slugify()` |
+| Lógica com estado reativo | `layers/1-base/app/composables/` | `useLoading()`, `usePagination()` |
+| Lógica específica da feature | `layers/*/app/composables/` | `useUserForm()` |
+| Estado global | Pinia stores | `useAuthStore()` |
+| Tipos reutilizáveis | `layers/1-base/shared/types/` | `ApiResponse<T>` |
 
 ### Sinais de código duplicado
 
@@ -444,7 +444,7 @@ if (!value) error = 'Campo obrigatório'
 ### Utils vs Composables
 
 ```typescript
-// UTIL (app/lib/) - Função pura, sem Vue
+// UTIL (layers/1-base/app/utils/) - Função pura, sem Vue
 export function formatCurrency(value: number): string {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -452,7 +452,7 @@ export function formatCurrency(value: number): string {
   }).format(value)
 }
 
-// COMPOSABLE (app/composables/) - Com estado reativo
+// COMPOSABLE (layers/1-base/app/composables/) - Com estado reativo
 export function useCurrency() {
   const locale = ref('pt-BR')
   const currency = ref('BRL')
@@ -478,7 +478,7 @@ export function useCurrency() {
 | `useToggle()` | Boolean com toggle |
 | `useField()` | Campo de formulário com validação |
 
-> Veja exemplos completos em [app/composables/CLAUDE.md](app/composables/CLAUDE.md)
+> Veja exemplos completos em [layers/1-base/app/composables/CLAUDE.md](layers/1-base/app/composables/CLAUDE.md)
 
 ---
 

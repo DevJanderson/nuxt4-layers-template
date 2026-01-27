@@ -5,21 +5,22 @@ Instruções específicas para componentes Vue.
 ## Estrutura
 
 ```
-app/components/
+layers/1-base/app/components/
 ├── ui/                     # shadcn-vue (auto-import)
 │   └── button/
 │       ├── Button.vue
 │       └── index.ts
 └── common/                 # Componentes compartilhados (auto-import)
+    └── AppLoading.vue
 ```
 
 ## Tipos de Componentes
 
 | Pasta | Uso | Auto-import |
 |-------|-----|-------------|
-| `ui/` | shadcn-vue (primitivos) | ✅ Sim |
-| `common/` | Componentes do projeto | ✅ Sim |
-| `modules/*/presentation/components/` | Específicos do módulo | ✅ Sim |
+| `layers/1-base/app/components/ui/` | shadcn-vue (primitivos) | ✅ Sim |
+| `layers/1-base/app/components/common/` | Componentes globais | ✅ Sim |
+| `layers/*/app/components/` | Específicos da feature layer | ✅ Sim |
 
 ## Adicionar Componente shadcn-vue
 
@@ -34,7 +35,7 @@ npx shadcn-vue@latest add dialog
 npx shadcn-vue@latest add --help
 ```
 
-Componentes são instalados em `app/components/ui/`.
+Componentes são instalados em `layers/1-base/app/components/ui/` (configurado via `components.json`).
 
 ## Usar Componentes
 
@@ -79,7 +80,7 @@ Componentes são instalados em `app/components/ui/`.
 ### Componente simples
 
 ```vue
-<!-- app/components/common/AppLogo.vue -->
+<!-- layers/1-base/app/components/common/AppLogo.vue -->
 <script setup lang="ts">
 interface Props {
   size?: 'sm' | 'md' | 'lg'
@@ -114,7 +115,7 @@ const sizeClasses = {
 ## Componente com Slots
 
 ```vue
-<!-- app/components/common/AppCard.vue -->
+<!-- layers/1-base/app/components/common/AppCard.vue -->
 <script setup lang="ts">
 interface Props {
   title?: string
@@ -151,7 +152,7 @@ defineProps<Props>()
 ## Componente com v-model
 
 ```vue
-<!-- app/components/common/AppInput.vue -->
+<!-- layers/1-base/app/components/common/AppInput.vue -->
 <script setup lang="ts">
 interface Props {
   modelValue: string

@@ -4,12 +4,20 @@ Instruções específicas para o servidor Nitro (API routes).
 
 ## Estrutura
 
+API global fica em `server/`. API específica de feature fica em `layers/*/server/`.
+
 ```
-server/
-├── api/                    # Endpoints da API
-│   └── health.get.ts       # GET /api/health
-├── middleware/             # Middleware do servidor (não criado)
-└── utils/                  # Utilitários do servidor (não criado)
+server/                         # API global
+├── api/
+│   └── health.get.ts           # GET /api/health
+├── middleware/                 # Middleware do servidor
+└── utils/                      # Utilitários do servidor
+
+layers/2-example/server/        # API da feature layer
+└── api/
+    └── examples/
+        ├── index.get.ts        # GET /api/examples
+        └── [id].get.ts         # GET /api/examples/:id
 ```
 
 ## Convenção de Nomenclatura
