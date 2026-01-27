@@ -134,5 +134,5 @@ export default defineNuxtConfig({
     }
   },
 
-  css: ['~/assets/css/main.css']
+  // CSS global está em layers/0-core/
 })

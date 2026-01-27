@@ -10,7 +10,7 @@
  *   middleware: 'example-guard'
  * })
  */
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineNuxtRouteMiddleware((_to, _from) => {
   // Exemplo: verificar se usuário tem permissão
   // const { user } = useUserSession()
 

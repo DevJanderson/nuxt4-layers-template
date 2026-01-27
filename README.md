@@ -167,40 +167,29 @@ npm run test:e2e           # Executa testes
 
 ## Estrutura
 
+**Arquitetura layers-only** - não existe pasta `app/` na raiz. Tudo fica em layers.
+
 ```
 projeto/
-├── app/                            # Arquivos globais
-│   ├── app.vue                     # Root component
-│   ├── error.vue                   # Página de erro global
-│   ├── assets/css/                 # CSS global (Tailwind)
-│   └── layouts/default.vue         # Layout padrão
-│
-├── layers/                         # Features modulares
-│   ├── 1-base/                     # Shared Layer (fundação)
+├── layers/                         # TUDO fica aqui
+│   ├── 0-core/                     # Fundação: app.vue, error.vue, CSS
+│   ├── 1-base/                     # UI: shadcn-vue, utils, tipos
 │   │   ├── app/components/ui/      # shadcn-vue
 │   │   ├── app/components/common/  # Componentes compartilhados
-│   │   ├── app/utils/              # Funções utilitárias (cn)
-│   │   └── shared/types/           # Tipos globais
+│   │   └── app/utils/              # Funções utilitárias
 │   ├── 2-example/                  # Feature: Módulo de exemplo
 │   └── 4-landing/                  # Feature: Landing page
 │
-└── server/                         # API routes (Nitro)
+├── server/                         # API routes (Nitro)
+└── tests/                          # Testes (unit, e2e)
 ```
 
 > **Nota:** Use hífen (`-`) no nome das layers (ex: `1-base`), não ponto.
 
-### Arquivos Especiais
-
-| Arquivo | Função |
-|---------|--------|
-| `app/app.vue` | Root component da aplicação |
-| `app/error.vue` | Página de erro global (404, 500) |
-| `app/layouts/default.vue` | Layout padrão (fallback) |
-
 ### Ordem de Prioridade (Layers)
 
 ```
-app/ > 4-landing > 2-example > 1-base
+4-landing > 2-example > 1-base > 0-core
 ```
 
 Número maior = maior prioridade = sobrescreve layers anteriores.
@@ -222,6 +211,8 @@ layers/5-minha-feature/
 ```
 
 > Layers em `~/layers` são auto-registradas (Nuxt v3.12+). Não precisa declarar em `extends`.
+
+> **Caminhos em layers:** Use `~/layers/...` para referenciar arquivos no `nuxt.config.ts` de layers. Caminhos relativos não funcionam.
 
 ## Adicionando Componentes shadcn-vue
 

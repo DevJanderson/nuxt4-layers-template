@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 
 /* Incluir layers no scan do Tailwind v4 */
-@source "../../../layers";
+@source "../../../../";
 
 @custom-variant dark (&:is(.dark *));
 

@@ -128,6 +128,22 @@ Em cada arquivo, substitua:
 - `example` → `{sua-feature}` (kebab-case)
 - `EXAMPLE` → `{SUA_FEATURE}` (UPPER_CASE)
 
+### 4. Caminhos no nuxt.config.ts
+
+Se precisar referenciar arquivos (CSS, assets) no `nuxt.config.ts` da layer, use o alias `~`:
+
+```ts
+// ✅ Correto
+export default defineNuxtConfig({
+  css: ['~/layers/3-minha-feature/app/assets/custom.css']
+})
+
+// ❌ Incorreto - caminhos relativos não funcionam em layers
+export default defineNuxtConfig({
+  css: ['./app/assets/custom.css']
+})
+```
+
 ---
 
 ## Diretórios: Quando Usar Cada Um

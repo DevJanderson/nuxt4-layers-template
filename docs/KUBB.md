@@ -13,7 +13,7 @@ Este documento define o padrão oficial para integração com APIs externas no p
 5. [Estrutura de Pastas](#estrutura-de-pastas)
 6. [Implementação do BFF](#implementação-do-bff)
 7. [Autenticação Segura](#autenticação-segura)
-8. [Módulo Frontend](#módulo-frontend)
+8. [Layer Frontend](#layer-frontend)
 9. [Comandos](#comandos)
 10. [Checklist de Implementação](#checklist-de-implementação)
 11. [Exemplos Completos](#exemplos-completos)
@@ -97,29 +97,29 @@ Browser  →  server/api/*  →  API Externa
 ┌─────────────────────────────────────────────────────────────────┐
 │                         CLIENTE (Browser)                        │
 ├─────────────────────────────────────────────────────────────────┤
-│  app/modules/<modulo>/                                          │
+│  layers/{N}-{feature}/app/                                      │
 │  ├── pages/           → UI (Vue components)                     │
-│  └── presentation/                                              │
-│      ├── stores/      → Pinia stores (chamam /api/*)            │
-│      └── composables/ → Lógica reutilizável                     │
+│  └── composables/                                               │
+│      ├── use{Feature}Store.ts  → Pinia stores (chamam /api/*)   │
+│      └── use{Feature}Api.ts    → Service interno                │
 └───────────────────────────┬─────────────────────────────────────┘
-                            │ $fetch('/api/<modulo>/*')
+                            │ $fetch('/api/<feature>/*')
                             ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                      SERVIDOR (Nitro BFF)                        │
 ├─────────────────────────────────────────────────────────────────┤
-│  server/                                                        │
-│  ├── api/<modulo>/    → Rotas BFF                               │
-│  │   ├── auth/        → Login, logout, refresh                  │
-│  │   └── <recurso>/   → CRUD via API externa                    │
-│  └── utils/           → Helpers (token httpOnly)                │
+│  layers/{N}-{feature}/server/                                   │
+│  ├── api/{feature}/    → Rotas BFF                              │
+│  │   ├── auth/         → Login, logout, refresh                 │
+│  │   └── <recurso>/    → CRUD via API externa                   │
+│  └── utils/            → Helpers (token httpOnly)               │
 └───────────────────────────┬─────────────────────────────────────┘
                             │ fetch() com Bearer token
                             ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                    CÓDIGO GERADO (Kubb)                          │
 ├─────────────────────────────────────────────────────────────────┤
-│  app/generated/<api>/                                           │
+│  generated/<api>/                                                │
 │  ├── types/           → Interfaces TypeScript                   │
 │  ├── zod/             → Schemas de validação                    │
 │  └── client/          → Funções HTTP (usadas no server/)        │
@@ -135,10 +135,10 @@ Browser  →  server/api/*  →  API Externa
 
 | Camada | Localização | Responsabilidade |
 |--------|-------------|------------------|
-| **UI** | `app/modules/*/pages/` | Interface do usuário |
-| **Estado** | `app/modules/*/presentation/stores/` | Gerencia estado, chama BFF |
-| **BFF** | `server/api/*/` | Intermedia chamadas, gerencia tokens |
-| **Gerado** | `app/generated/*/` | Tipos e cliente HTTP (usado pelo BFF) |
+| **UI** | `layers/{N}-{feature}/app/pages/` | Interface do usuário |
+| **Estado** | `layers/{N}-{feature}/app/composables/` | Gerencia estado, chama BFF |
+| **BFF** | `layers/{N}-{feature}/server/api/` | Intermedia chamadas, gerencia tokens |
+| **Gerado** | `generated/<api>/` | Tipos e cliente HTTP (usado pelo BFF) |
 | **Externo** | API terceiros | Fonte de dados real |
 
 ---
@@ -218,7 +218,7 @@ export default defineConfig({
     path: './openapi/minha-api.json'
   },
   output: {
-    path: './app/generated/minha-api',
+    path: './generated/minha-api',
     clean: true,
     extension: {}
   },
@@ -253,44 +253,45 @@ export default defineConfig({
 ```
 projeto/
 ├── openapi/
-│   └── minha-api.json           # Spec OpenAPI da API externa
+│   └── minha-api.json              # Spec OpenAPI da API externa
 │
-├── app/
-│   ├── generated/
-│   │   └── minha-api/           # Código gerado pelo Kubb
-│   │       ├── types/           # Interfaces TypeScript
-│   │       ├── zod/             # Schemas Zod
-│   │       └── client/          # Cliente HTTP
+├── generated/
+│   └── minha-api/                  # Código gerado pelo Kubb
+│       ├── types/                  # Interfaces TypeScript
+│       ├── zod/                    # Schemas Zod
+│       └── client/                 # Cliente HTTP
+│
+├── layers/
+│   ├── 0-core/                     # Fundação (app.vue, CSS)
+│   ├── 1-base/                     # UI compartilhada (shadcn-vue)
 │   │
-│   └── modules/
-│       └── meu-modulo/          # Módulo DDD Lite
-│           ├── nuxt.config.ts
-│           ├── domain/
-│           │   ├── types.ts     # Re-exporta tipos do Kubb
-│           │   └── index.ts
-│           ├── pages/
-│           │   └── meu-modulo/
-│           │       └── index.vue
-│           └── presentation/
-│               ├── stores/
-│               │   └── auth.store.ts
-│               └── composables/
+│   └── {N}-{feature}/              # Feature layer com integração API
+│       ├── nuxt.config.ts
+│       ├── app/
+│       │   ├── components/
+│       │   │   └── {Feature}Card.vue
+│       │   ├── composables/
+│       │   │   ├── types.ts        # Re-exporta tipos do Kubb
+│       │   │   ├── use{Feature}Api.ts
+│       │   │   └── use{Feature}Store.ts
+│       │   └── pages/{feature}/
+│       │       ├── index.vue
+│       │       └── login.vue
+│       │
+│       └── server/
+│           ├── api/{feature}/      # Rotas BFF
+│           │   ├── auth/
+│           │   │   ├── login.post.ts
+│           │   │   ├── logout.post.ts
+│           │   │   ├── me.get.ts
+│           │   │   └── refresh.post.ts
+│           │   └── recursos/
+│           │       ├── index.get.ts
+│           │       └── [id].get.ts
+│           └── utils/
+│               └── {feature}-api.ts  # Helper para chamadas autenticadas
 │
-├── server/
-│   ├── api/
-│   │   └── meu-modulo/          # Rotas BFF
-│   │       ├── auth/
-│   │       │   ├── login.post.ts
-│   │       │   ├── logout.post.ts
-│   │       │   ├── me.get.ts
-│   │       │   └── refresh.post.ts
-│   │       └── recursos/
-│   │           ├── index.get.ts
-│   │           └── [id].get.ts
-│   └── utils/
-│       └── minha-api.ts         # Helper para chamadas autenticadas
-│
-└── kubb.config.ts               # Configuração do Kubb
+└── kubb.config.ts                  # Configuração do Kubb
 ```
 
 ---
@@ -300,7 +301,7 @@ projeto/
 ### 1. Criar utilitário de API (`server/utils/`)
 
 ```typescript
-// server/utils/minha-api.ts
+// layers/{N}-{feature}/server/utils/{feature}-api.ts
 
 import type { H3Event } from 'h3'
 
@@ -386,7 +387,7 @@ export function getApiRefreshToken(event: H3Event): string | undefined {
 
 ### 2. Criar rotas de autenticação
 
-#### Login (`server/api/<modulo>/auth/login.post.ts`)
+#### Login (`server/api/{feature}/auth/login.post.ts`)
 
 ```typescript
 export default defineEventHandler(async (event) => {
@@ -438,7 +439,7 @@ export default defineEventHandler(async (event) => {
 })
 ```
 
-#### Me (`server/api/<modulo>/auth/me.get.ts`)
+#### Me (`server/api/{feature}/auth/me.get.ts`)
 
 ```typescript
 export default defineEventHandler(async (event) => {
@@ -461,7 +462,7 @@ export default defineEventHandler(async (event) => {
 })
 ```
 
-#### Logout (`server/api/<modulo>/auth/logout.post.ts`)
+#### Logout (`server/api/{feature}/auth/logout.post.ts`)
 
 ```typescript
 export default defineEventHandler(async (event) => {
@@ -470,7 +471,7 @@ export default defineEventHandler(async (event) => {
 })
 ```
 
-#### Refresh (`server/api/<modulo>/auth/refresh.post.ts`)
+#### Refresh (`server/api/{feature}/auth/refresh.post.ts`)
 
 ```typescript
 export default defineEventHandler(async (event) => {
@@ -505,7 +506,7 @@ export default defineEventHandler(async (event) => {
 ### 3. Criar rotas de recursos
 
 ```typescript
-// server/api/<modulo>/clientes/index.get.ts
+// layers/{N}-{feature}/server/api/{feature}/clientes/index.get.ts
 export default defineEventHandler(async (event) => {
   const token = getApiToken(event)
 
@@ -537,32 +538,51 @@ export default defineEventHandler(async (event) => {
 
 ```
 1. Usuário envia credenciais
-   Browser  →  POST /api/auth/login  →  { email, password }
+   Browser  →  POST /api/{feature}/auth/login  →  { email, password }
 
 2. Servidor valida e salva token
    server/  →  API Externa  →  { access_token }
    server/  →  setCookie(httpOnly)  →  Cookie salvo no browser
 
 3. Próximas requisições
-   Browser  →  GET /api/clientes  →  Cookie enviado automaticamente
+   Browser  →  GET /api/{feature}/clientes  →  Cookie enviado automaticamente
    server/  →  getCookie()  →  Token recuperado
    server/  →  API Externa  →  Bearer token
 
 4. Logout
-   Browser  →  POST /api/auth/logout
+   Browser  →  POST /api/{feature}/auth/logout
    server/  →  deleteCookie()  →  Cookie removido
 ```
 
 ---
 
-## Módulo Frontend
+## Layer Frontend
+
+### Re-exportar tipos do Kubb
+
+```typescript
+// layers/{N}-{feature}/app/composables/types.ts
+
+// Re-exporta tipos gerados pelo Kubb para uso na layer
+export type {
+  User,
+  Cliente,
+  Produto
+} from '~/generated/minha-api/types'
+
+// Re-exporta schemas Zod para validação
+export {
+  userSchema,
+  clienteSchema
+} from '~/generated/minha-api/zod'
+```
 
 ### Store de Autenticação
 
 ```typescript
-// app/modules/<modulo>/presentation/stores/auth.store.ts
+// layers/{N}-{feature}/app/composables/use{Feature}AuthStore.ts
 
-export const useAuthStore = defineStore('auth', () => {
+export const useFeatureAuthStore = defineStore('feature-auth', () => {
   const user = ref<any>(null)
   const isLoading = ref(false)
   const error = ref<string | null>(null)
@@ -574,7 +594,7 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
 
     try {
-      const response = await $fetch<{ user: any }>('/api/<modulo>/auth/login', {
+      const response = await $fetch<{ user: any }>('/api/{feature}/auth/login', {
         method: 'POST',
         body: { email, password }
       })
@@ -590,7 +610,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function logout() {
     try {
-      await $fetch('/api/<modulo>/auth/logout', { method: 'POST' })
+      await $fetch('/api/{feature}/auth/logout', { method: 'POST' })
     } finally {
       user.value = null
     }
@@ -598,7 +618,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function checkAuth() {
     try {
-      const response = await $fetch<{ user: any }>('/api/<modulo>/auth/me')
+      const response = await $fetch<{ user: any }>('/api/{feature}/auth/me')
       user.value = response.user
       return true
     } catch {
@@ -614,28 +634,58 @@ export const useAuthStore = defineStore('auth', () => {
 ### Página de Login
 
 ```vue
+<!-- layers/{N}-{feature}/app/pages/{feature}/login.vue -->
 <script setup lang="ts">
+definePageMeta({
+  layout: 'default'
+})
+
 const email = ref('')
 const password = ref('')
-const auth = useAuthStore()
+const auth = useFeatureAuthStore()
 
 async function handleLogin() {
   const success = await auth.login(email.value, password.value)
   if (success) {
-    navigateTo('/dashboard')
+    navigateTo('/{feature}')
   }
 }
 </script>
 
 <template>
-  <form @submit.prevent="handleLogin">
-    <input v-model="email" type="email" placeholder="Email" />
-    <input v-model="password" type="password" placeholder="Senha" />
-    <p v-if="auth.error" class="text-red-500">{{ auth.error }}</p>
-    <button type="submit" :disabled="auth.isLoading">
-      {{ auth.isLoading ? 'Entrando...' : 'Entrar' }}
-    </button>
-  </form>
+  <div class="flex min-h-screen items-center justify-center">
+    <form @submit.prevent="handleLogin" class="w-full max-w-sm space-y-4">
+      <h1 class="text-2xl font-bold">Login</h1>
+
+      <div class="space-y-2">
+        <label class="text-sm font-medium">Email</label>
+        <input
+          v-model="email"
+          type="email"
+          class="w-full rounded-md border px-3 py-2"
+          placeholder="seu@email.com"
+        />
+      </div>
+
+      <div class="space-y-2">
+        <label class="text-sm font-medium">Senha</label>
+        <input
+          v-model="password"
+          type="password"
+          class="w-full rounded-md border px-3 py-2"
+          placeholder="••••••••"
+        />
+      </div>
+
+      <p v-if="auth.error" class="text-sm text-destructive">
+        {{ auth.error }}
+      </p>
+
+      <Button type="submit" class="w-full" :disabled="auth.isLoading">
+        {{ auth.isLoading ? 'Entrando...' : 'Entrar' }}
+      </Button>
+    </form>
+  </div>
 </template>
 ```
 
@@ -654,7 +704,8 @@ npm run api:watch
 # 1. Baixe o spec OpenAPI para openapi/
 # 2. Configure em kubb.config.ts
 # 3. Execute npm run api:generate
-# 4. Crie as rotas BFF em server/api/
+# 4. Crie a layer em layers/{N}-{feature}/
+# 5. Crie as rotas BFF em layers/{N}-{feature}/server/api/
 ```
 
 ---
@@ -666,18 +717,18 @@ npm run api:watch
 - [ ] Baixar spec OpenAPI para `openapi/<nome>-api.json`
 - [ ] Configurar em `kubb.config.ts`
 - [ ] Executar `npm run api:generate`
-- [ ] Criar `server/utils/<nome>.ts` com helpers de token
-- [ ] Criar rotas BFF em `server/api/<nome>/`
-  - [ ] `auth/login.post.ts`
-  - [ ] `auth/logout.post.ts`
-  - [ ] `auth/me.get.ts`
-  - [ ] `auth/refresh.post.ts`
-- [ ] Criar módulo em `app/modules/<nome>/`
+- [ ] Criar layer `layers/{N}-{feature}/`
   - [ ] `nuxt.config.ts`
-  - [ ] `domain/types.ts` (re-exporta tipos do Kubb)
-  - [ ] `presentation/stores/auth.store.ts`
-  - [ ] `pages/<nome>/index.vue`
-- [ ] Adicionar módulo em `nuxt.config.ts` → `extends`
+  - [ ] `app/composables/types.ts` (re-exporta tipos do Kubb)
+  - [ ] `app/composables/use{Feature}AuthStore.ts`
+  - [ ] `app/pages/{feature}/index.vue`
+  - [ ] `app/pages/{feature}/login.vue`
+- [ ] Criar rotas BFF em `layers/{N}-{feature}/server/`
+  - [ ] `utils/{feature}-api.ts` (helpers de token)
+  - [ ] `api/{feature}/auth/login.post.ts`
+  - [ ] `api/{feature}/auth/logout.post.ts`
+  - [ ] `api/{feature}/auth/me.get.ts`
+  - [ ] `api/{feature}/auth/refresh.post.ts`
 - [ ] Testar fluxo completo de login/logout
 
 ### Segurança
@@ -685,45 +736,62 @@ npm run api:watch
 - [ ] Tokens em cookies httpOnly
 - [ ] `secure: true` em produção
 - [ ] `sameSite: 'strict'`
-- [ ] Validação de input no servidor
+- [ ] Validação de input no servidor (Zod)
 - [ ] Tratamento de erros sem expor detalhes internos
 
 ---
 
 ## Exemplos Completos
 
-### Estrutura de um módulo completo
+### Estrutura de uma Feature Layer com API Externa
 
 ```
-app/modules/meu-modulo/
+layers/3-clientes/
 ├── nuxt.config.ts
-├── domain/
-│   ├── types.ts          # Re-exporta tipos do Kubb
-│   └── index.ts
-├── pages/
-│   └── meu-modulo/
-│       ├── index.vue     # Página principal
-│       └── login.vue     # Página de login
-└── presentation/
-    ├── stores/
-    │   └── auth.store.ts
-    └── composables/
-        └── useAuth.ts
-
-server/api/meu-modulo/
-├── auth/
-│   ├── login.post.ts
-│   ├── logout.post.ts
-│   ├── me.get.ts
-│   └── refresh.post.ts
-└── recursos/
-    ├── index.get.ts
-    ├── index.post.ts
-    └── [id].get.ts
-
-server/utils/
-└── meu-modulo.ts
+├── CLAUDE.md                       # Documentação da feature
+│
+├── app/
+│   ├── components/
+│   │   └── ClienteCard.vue
+│   │
+│   ├── composables/
+│   │   ├── types.ts                # Re-exporta tipos do Kubb
+│   │   ├── useClienteApi.ts        # Chama /api/clientes/*
+│   │   └── useClienteStore.ts      # Estado + lógica
+│   │
+│   └── pages/clientes/
+│       ├── index.vue               # Lista de clientes
+│       ├── [id].vue                # Detalhe do cliente
+│       └── login.vue               # Login
+│
+└── server/
+    ├── api/clientes/
+    │   ├── auth/
+    │   │   ├── login.post.ts
+    │   │   ├── logout.post.ts
+    │   │   ├── me.get.ts
+    │   │   └── refresh.post.ts
+    │   │
+    │   ├── index.get.ts            # GET /api/clientes
+    │   ├── index.post.ts           # POST /api/clientes
+    │   ├── [id].get.ts             # GET /api/clientes/:id
+    │   ├── [id].put.ts             # PUT /api/clientes/:id
+    │   └── [id].delete.ts          # DELETE /api/clientes/:id
+    │
+    └── utils/
+        └── clientes-api.ts         # Helper autenticação
 ```
+
+### nuxt.config.ts da Feature Layer
+
+```typescript
+// layers/3-clientes/nuxt.config.ts
+export default defineNuxtConfig({
+  // Configurações específicas da layer (pode estar vazio)
+})
+```
+
+> **Nota sobre caminhos:** Use `~/layers/...` para referenciar arquivos no `nuxt.config.ts` de layers. Caminhos relativos não funcionam.
 
 ---
 
@@ -732,5 +800,6 @@ server/utils/
 - [Kubb Documentation](https://kubb.dev/)
 - [OpenAPI Specification](https://swagger.io/specification/)
 - [Nuxt Server Routes](https://nuxt.com/docs/guide/directory-structure/server)
+- [Nuxt Layers](https://nuxt.com/docs/getting-started/layers)
 - [H3 Event Handlers](https://h3.unjs.io/)
 - [OWASP Authentication Cheatsheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)

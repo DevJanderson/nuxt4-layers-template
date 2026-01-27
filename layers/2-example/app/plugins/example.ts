@@ -12,7 +12,7 @@
  * - .server.ts → executa apenas no servidor
  * - .ts → executa em ambos
  */
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin((_nuxtApp) => {
   // Exemplo: injetar helper global
   // nuxtApp.provide('exampleHelper', {
   //   format: (value: string) => value.toUpperCase()

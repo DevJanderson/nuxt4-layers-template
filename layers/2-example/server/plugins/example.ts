@@ -8,19 +8,19 @@
  */
 export default defineNitroPlugin((nitroApp) => {
   // Hook: quando o servidor inicia
-  nitroApp.hooks.hook('request', (event) => {
+  nitroApp.hooks.hook('request', (_event) => {
     // Executado em cada requisição
     // Útil para métricas globais
   })
 
   // Hook: antes de enviar resposta
-  nitroApp.hooks.hook('beforeResponse', (event, response) => {
+  nitroApp.hooks.hook('beforeResponse', (_event, _response) => {
     // Modificar resposta antes de enviar
     // Útil para adicionar headers globais
   })
 
   // Hook: quando ocorre erro
-  nitroApp.hooks.hook('error', (error, { event }) => {
+  nitroApp.hooks.hook('error', (error, { event: _event }) => {
     // Log de erros centralizado
     console.error('[Server Error]', error.message)
   })
