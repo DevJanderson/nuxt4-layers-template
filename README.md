@@ -36,38 +36,39 @@ Template profissional para Nuxt 4 com shadcn-vue, Tailwind CSS v4 e arquitetura 
 
 ## Início Rápido
 
-### GitHub Template
+### GitHub Template (recomendado)
 
-1. Clique em **"Use this template"**
+1. Clique em **"Use this template"** no GitHub
 2. Clone seu novo repositório
-3. Instale e execute:
+3. Instale e configure:
 
 ```bash
 npm install
+npm run setup    # Configura git hooks (Husky)
 npm run dev
 ```
 
-### Degit (recomendado)
+### Degit
 
 ```bash
 npx degit DevJanderson/nuxt4-layers-template meu-projeto
 cd meu-projeto
 npm install
+npm run setup    # Configura git hooks (Husky)
 npm run dev
 ```
 
 ### Clone Manual
-
-Se preferir clonar diretamente, reinicie o histórico do git:
 
 ```bash
 git clone https://github.com/DevJanderson/nuxt4-layers-template.git meu-projeto
 cd meu-projeto
 rm -rf .git
 git init
+npm install
+npm run setup    # Configura git hooks (Husky)
 git add .
 git commit -m "Initial commit"
-npm install
 npm run dev
 ```
 
@@ -90,15 +91,16 @@ npm run quality:fix  # Corrigir lint + formatar
 
 ## Qualidade de Código
 
-O template inclui ferramentas de qualidade pré-configuradas.
+O template inclui ferramentas de qualidade pré-configuradas:
+- **ESLint** - Linting (módulo oficial @nuxt/eslint)
+- **Prettier** - Formatação
+- **Husky** - Git hooks
+- **Commitlint** - Padronização de commits
 
-### Configurar Git Hooks (após clonar)
+### Configurar Git Hooks
 
 ```bash
-npm install
-npx husky init
-echo "npx lint-staged" > .husky/pre-commit
-echo 'npx --no -- commitlint --edit "$1"' > .husky/commit-msg
+npm run setup    # Configura Husky automaticamente
 ```
 
 ### Commits Padronizados (Conventional Commits)
@@ -109,8 +111,6 @@ fix: corrige bug
 docs: atualiza documentação
 style: formatação de código
 refactor: refatoração
-perf: melhoria de performance
-test: adiciona testes
 chore: tarefas de manutenção
 ```
 
