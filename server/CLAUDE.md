@@ -403,7 +403,85 @@ export default defineEventHandler((event) => {
 - [ ] Secrets apenas em `runtimeConfig` (não `public`)
 - [ ] Sanitização de HTML do usuário
 
+---
+
+## Testando API Routes
+
+### Teste de Integração
+
+```typescript
+// tests/integration/api/users.test.ts
+import { describe, it, expect } from 'vitest'
+import { $fetch, setup } from '@nuxt/test-utils/e2e'
+
+describe('API /api/users', async () => {
+  await setup({ server: true })
+
+  it('GET /api/users should return array', async () => {
+    const users = await $fetch('/api/users')
+    expect(Array.isArray(users)).toBe(true)
+  })
+
+  it('POST /api/users should create user', async () => {
+    const user = await $fetch('/api/users', {
+      method: 'POST',
+      body: { name: 'Test', email: 'test@example.com' }
+    })
+    expect(user).toHaveProperty('id')
+  })
+
+  it('POST /api/users should return 400 for invalid data', async () => {
+    try {
+      await $fetch('/api/users', {
+        method: 'POST',
+        body: { name: '' }
+      })
+    } catch (error: any) {
+      expect(error.statusCode).toBe(400)
+    }
+  })
+})
+```
+
+### Teste Unitário de Handler
+
+```typescript
+// tests/unit/api/health.test.ts
+import { describe, it, expect } from 'vitest'
+import handler from '~/server/api/health.get'
+
+describe('GET /api/health', () => {
+  it('should return ok status', async () => {
+    const mockEvent = {
+      context: {},
+      node: { req: {}, res: {} }
+    } as any
+
+    const result = await handler(mockEvent)
+    expect(result).toEqual({ status: 'ok' })
+  })
+})
+```
+
+### Teste E2E de API
+
+```typescript
+// tests/e2e/api.spec.ts
+import { test, expect } from '@playwright/test'
+
+test.describe('API E2E', () => {
+  test('should return health status', async ({ request }) => {
+    const response = await request.get('/api/health')
+    expect(response.ok()).toBeTruthy()
+
+    const data = await response.json()
+    expect(data.status).toBe('ok')
+  })
+})
+```
+
 ## Referências
 
 - [Server Routes - Nuxt](https://nuxt.com/docs/guide/directory-structure/server)
 - [Nitro Documentation](https://nitro.unjs.io/)
+- [Nuxt Testing](https://nuxt.com/docs/getting-started/testing)

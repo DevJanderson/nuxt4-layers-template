@@ -14,9 +14,25 @@ Sempre responda em Português Brasileiro (pt-BR).
 ## Comandos
 
 ```bash
-npm run dev      # Servidor dev http://localhost:3000
-npm run build    # Build produção
-npm run preview  # Preview build
+# Desenvolvimento
+npm run dev          # Servidor dev http://localhost:3000
+npm run build        # Build produção
+npm run preview      # Preview build
+
+# Qualidade de código
+npm run lint         # Verificar ESLint
+npm run lint:fix     # Corrigir ESLint
+npm run format       # Formatar com Prettier
+npm run typecheck    # Verificar tipos
+npm run quality      # Todas as verificações
+npm run quality:fix  # Corrigir lint + formatar
+
+# Testes
+npm run test         # Vitest (watch mode)
+npm run test:run     # Vitest (uma execução)
+npm run test:coverage # Com cobertura
+npm run test:e2e     # Playwright E2E
+npm run test:e2e:ui  # Playwright UI mode
 ```
 
 ## Componentes shadcn-vue
@@ -54,6 +70,12 @@ projeto/
 │       └── app/pages/              # Página home
 │
 ├── server/                         # API global (ou mover para layers)
+├── tests/                          # Testes
+│   ├── setup.ts                    # Setup global (mocks)
+│   ├── unit/                       # Testes unitários (Vitest)
+│   ├── integration/                # Testes de integração
+│   └── e2e/                        # Testes E2E (Playwright)
+│
 └── nuxt.config.ts
 ```
 
@@ -104,6 +126,7 @@ layers/2-example/
 | `layers/1-base/app/components/` | shadcn-vue, componentes compartilhados |
 | `layers/1-base/app/composables/` | Composables reutilizáveis |
 | `layers/1-base/shared/types/` | Tipos globais (ApiResponse, etc.) |
+| `tests/` | Testes unitários, integração e E2E |
 
 ### Arquivos Especiais do Nuxt
 
@@ -585,15 +608,92 @@ if (path.includes('..')) throw createError({ statusCode: 400 })
 
 ---
 
+## Testes
+
+### Estrutura de Testes
+
+```
+tests/
+├── setup.ts           # Setup global (mocks do Nuxt)
+├── unit/              # Testes unitários
+├── integration/       # Testes de integração
+└── e2e/               # Testes E2E (Playwright)
+```
+
+### Teste Unitário (Vitest)
+
+```typescript
+// tests/unit/example.test.ts
+import { describe, it, expect } from 'vitest'
+
+describe('Example', () => {
+  it('should work', () => {
+    expect(1 + 1).toBe(2)
+  })
+})
+```
+
+### Teste de Composable
+
+```typescript
+// tests/unit/composables/useCounter.test.ts
+import { describe, it, expect } from 'vitest'
+import { useCounter } from '~/composables/useCounter'
+
+describe('useCounter', () => {
+  it('should increment', () => {
+    const { count, increment } = useCounter()
+    increment()
+    expect(count.value).toBe(1)
+  })
+})
+```
+
+### Teste E2E (Playwright)
+
+```typescript
+// tests/e2e/home.spec.ts
+import { test, expect } from '@playwright/test'
+
+test('should display homepage', async ({ page }) => {
+  await page.goto('/')
+  await expect(page).toHaveTitle(/Nuxt/)
+})
+```
+
+### Primeiro Uso do Playwright
+
+```bash
+npm run test:e2e:install   # Instala browsers
+npm run test:e2e           # Executa testes
+```
+
+### Configuração
+
+| Arquivo | Descrição |
+|---------|-----------|
+| `vitest.config.ts` | Configuração do Vitest |
+| `playwright.config.ts` | Configuração do Playwright (multi-browser, mobile) |
+| `tests/setup.ts` | Mocks globais do Nuxt |
+
+### Browsers Configurados (Playwright)
+
+- Desktop: Chromium, Firefox, WebKit (Safari)
+- Mobile: Chrome (Pixel 5), Safari (iPhone 12)
+
+> **Documentação completa:** [tests/CLAUDE.md](tests/CLAUDE.md)
+
+---
+
 ## Documentação Adicional
 
 | Documento | Conteúdo |
 |-----------|----------|
 | [docs/SECURITY.md](docs/SECURITY.md) | 20 vulnerabilidades, headers, CSRF, XSS, CORS |
-| [docs/TESTING.md](docs/TESTING.md) | Vitest, Testing Library, testes de componentes/stores/API |
-| [docs/CODE_QUALITY.md](docs/CODE_QUALITY.md) | ESLint, Prettier, Husky, Commitlint |
-| [docs/PERFORMANCE.md](docs/PERFORMANCE.md) | Lazy loading, caching, Core Web Vitals |
+| [docs/NUXT_LAYERS.md](docs/NUXT_LAYERS.md) | Guia de Nuxt Layers |
 | [docs/DEPLOY.md](docs/DEPLOY.md) | Vercel, Netlify, Docker, AWS |
+| [docs/KUBB.md](docs/KUBB.md) | Padrão Kubb + BFF |
+| [tests/CLAUDE.md](tests/CLAUDE.md) | Guia completo de testes (Vitest, Playwright) |
 
 ---
 

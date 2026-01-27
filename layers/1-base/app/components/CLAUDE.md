@@ -205,8 +205,150 @@ import { Search, User, Settings } from 'lucide-vue-next'
 </template>
 ```
 
+---
+
+## Testando Componentes
+
+### Teste com Vue Test Utils
+
+```typescript
+// tests/unit/components/AppLogo.test.ts
+import { describe, it, expect } from 'vitest'
+import { mount } from '@vue/test-utils'
+import AppLogo from '~/layers/1-base/app/components/common/AppLogo.vue'
+
+describe('AppLogo', () => {
+  it('should render with default size', () => {
+    const wrapper = mount(AppLogo)
+    expect(wrapper.classes()).toContain('w-12')
+  })
+
+  it('should apply size class', () => {
+    const wrapper = mount(AppLogo, {
+      props: { size: 'lg' }
+    })
+    expect(wrapper.classes()).toContain('w-16')
+  })
+})
+```
+
+### Teste de Slots
+
+```typescript
+// tests/unit/components/AppCard.test.ts
+import { describe, it, expect } from 'vitest'
+import { mount } from '@vue/test-utils'
+import AppCard from '~/layers/1-base/app/components/common/AppCard.vue'
+
+describe('AppCard', () => {
+  it('should render default slot', () => {
+    const wrapper = mount(AppCard, {
+      slots: { default: 'Card content' }
+    })
+    expect(wrapper.text()).toContain('Card content')
+  })
+
+  it('should render title when provided', () => {
+    const wrapper = mount(AppCard, {
+      props: { title: 'My Title' }
+    })
+    expect(wrapper.text()).toContain('My Title')
+  })
+
+  it('should render footer slot', () => {
+    const wrapper = mount(AppCard, {
+      slots: {
+        default: 'Content',
+        footer: 'Footer content'
+      }
+    })
+    expect(wrapper.text()).toContain('Footer content')
+  })
+})
+```
+
+### Teste de v-model
+
+```typescript
+// tests/unit/components/AppInput.test.ts
+import { describe, it, expect } from 'vitest'
+import { mount } from '@vue/test-utils'
+import AppInput from '~/layers/1-base/app/components/common/AppInput.vue'
+
+describe('AppInput', () => {
+  it('should emit update:modelValue on input', async () => {
+    const wrapper = mount(AppInput, {
+      props: { modelValue: '' }
+    })
+
+    await wrapper.find('input').setValue('test')
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['test'])
+  })
+
+  it('should display error message', () => {
+    const wrapper = mount(AppInput, {
+      props: {
+        modelValue: '',
+        error: 'Campo obrigatório'
+      }
+    })
+    expect(wrapper.text()).toContain('Campo obrigatório')
+  })
+})
+```
+
+### Teste com Testing Library
+
+```typescript
+// tests/unit/components/Button.test.ts
+import { describe, it, expect, vi } from 'vitest'
+import { render, screen, fireEvent } from '@testing-library/vue'
+import Button from '~/layers/1-base/app/components/ui/button/Button.vue'
+
+describe('Button', () => {
+  it('should render slot content', () => {
+    render(Button, {
+      slots: { default: 'Click me' }
+    })
+    expect(screen.getByText('Click me')).toBeInTheDocument()
+  })
+
+  it('should handle click events', async () => {
+    const onClick = vi.fn()
+    render(Button, {
+      slots: { default: 'Click me' },
+      attrs: { onClick }
+    })
+
+    await fireEvent.click(screen.getByText('Click me'))
+    expect(onClick).toHaveBeenCalled()
+  })
+
+  it('should be disabled when prop is set', () => {
+    render(Button, {
+      props: { disabled: true },
+      slots: { default: 'Disabled' }
+    })
+    expect(screen.getByRole('button')).toBeDisabled()
+  })
+})
+```
+
+### Padrões de Teste
+
+| Componente | O que testar |
+|------------|--------------|
+| Props | Valores padrão, diferentes valores |
+| Slots | Default slot, named slots |
+| Events | Emits corretos, payloads |
+| v-model | Two-way binding |
+| Conditional rendering | v-if, v-show |
+| Classes dinâmicas | Baseadas em props |
+
 ## Referências
 
 - [shadcn-vue](https://www.shadcn-vue.com/)
 - [Lucide Icons](https://lucide.dev/icons/)
 - [Nuxt Components](https://nuxt.com/docs/guide/directory-structure/components)
+- [Vue Test Utils](https://test-utils.vuejs.org/)
+- [Testing Library Vue](https://testing-library.com/docs/vue-testing-library/intro)

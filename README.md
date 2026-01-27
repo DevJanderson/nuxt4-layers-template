@@ -21,6 +21,7 @@ Template profissional para Nuxt 4 com shadcn-vue, Tailwind CSS v4 e arquitetura 
 - **Dark Mode** - Tema claro/escuro
 - **ESLint + Prettier** - Qualidade de código
 - **Husky + Commitlint** - Git hooks e commits padronizados
+- **Vitest + Playwright** - Testes unitários e E2E
 
 ## Stack
 
@@ -33,6 +34,7 @@ Template profissional para Nuxt 4 com shadcn-vue, Tailwind CSS v4 e arquitetura 
 | Imagens | @nuxt/image |
 | Tema | @nuxtjs/color-mode |
 | Qualidade | ESLint, Prettier, Husky, Commitlint |
+| Testes | Vitest, Playwright, Testing Library |
 
 ## Início Rápido
 
@@ -87,6 +89,11 @@ npm run format       # Formatar com Prettier
 npm run typecheck    # Verificar tipos TypeScript
 npm run quality      # Rodar todas as verificações
 npm run quality:fix  # Corrigir lint + formatar
+
+# Testes
+npm run test         # Testes unitários (watch)
+npm run test:run     # Testes unitários (uma vez)
+npm run test:e2e     # Testes E2E (Playwright)
 ```
 
 ## Qualidade de Código
@@ -114,7 +121,49 @@ refactor: refatoração
 chore: tarefas de manutenção
 ```
 
-> Veja mais em [docs/CODE_QUALITY.md](docs/CODE_QUALITY.md)
+
+## Testes
+
+O template inclui configuração completa para testes:
+- **Vitest** - Testes unitários e de integração
+- **Playwright** - Testes E2E (end-to-end)
+- **Testing Library** - Testes de componentes
+
+### Comandos de Teste
+
+```bash
+# Testes unitários (Vitest)
+npm run test           # Watch mode
+npm run test:run       # Executa uma vez
+npm run test:coverage  # Com cobertura
+npm run test:ui        # Interface visual
+
+# Testes E2E (Playwright)
+npm run test:e2e           # Executa testes E2E
+npm run test:e2e:ui        # Interface visual do Playwright
+npm run test:e2e:headed    # Executa com browser visível
+npm run test:e2e:install   # Instala browsers do Playwright
+```
+
+### Estrutura de Testes
+
+```
+tests/
+├── setup.ts           # Setup global (mocks do Nuxt)
+├── unit/              # Testes unitários
+├── integration/       # Testes de integração
+└── e2e/               # Testes E2E (Playwright)
+    └── example.spec.ts
+```
+
+### Primeiro uso do Playwright
+
+```bash
+npm run test:e2e:install   # Instala browsers necessários
+npm run test:e2e           # Executa testes
+```
+
+> Veja mais em [tests/CLAUDE.md](tests/CLAUDE.md)
 
 ## Estrutura
 

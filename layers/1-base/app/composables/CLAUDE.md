@@ -449,8 +449,154 @@ try {
 | Estado local | `ref()` dentro da função |
 | Estado global | `ref()` fora da função |
 
+---
+
+## Testando Composables
+
+### Teste Básico
+
+```typescript
+// tests/unit/composables/useToggle.test.ts
+import { describe, it, expect } from 'vitest'
+import { useToggle } from '~/layers/1-base/app/composables/useToggle'
+
+describe('useToggle', () => {
+  it('should start with initial value', () => {
+    const { state } = useToggle(false)
+    expect(state.value).toBe(false)
+  })
+
+  it('should toggle state', () => {
+    const { state, toggle } = useToggle(false)
+    toggle()
+    expect(state.value).toBe(true)
+    toggle()
+    expect(state.value).toBe(false)
+  })
+
+  it('should set true/false explicitly', () => {
+    const { state, setTrue, setFalse } = useToggle(false)
+    setTrue()
+    expect(state.value).toBe(true)
+    setFalse()
+    expect(state.value).toBe(false)
+  })
+})
+```
+
+### Teste com Debounce
+
+```typescript
+// tests/unit/composables/useDebounce.test.ts
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { ref, nextTick } from 'vue'
+import { useDebounce } from '~/layers/1-base/app/composables/useDebounce'
+
+describe('useDebounce', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('should return initial value immediately', () => {
+    const source = ref('initial')
+    const debounced = useDebounce(source, 300)
+    expect(debounced.value).toBe('initial')
+  })
+
+  it('should debounce value changes', async () => {
+    const source = ref('initial')
+    const debounced = useDebounce(source, 300)
+
+    source.value = 'updated'
+    await nextTick()
+    expect(debounced.value).toBe('initial')
+
+    vi.advanceTimersByTime(300)
+    await nextTick()
+    expect(debounced.value).toBe('updated')
+  })
+})
+```
+
+### Teste de Composable com Loading
+
+```typescript
+// tests/unit/composables/useLoading.test.ts
+import { describe, it, expect } from 'vitest'
+import { useLoading } from '~/layers/1-base/app/composables/useLoading'
+
+describe('useLoading', () => {
+  it('should start not loading', () => {
+    const { isLoading } = useLoading()
+    expect(isLoading.value).toBe(false)
+  })
+
+  it('should set loading during async operation', async () => {
+    const { isLoading, withLoading } = useLoading()
+
+    const promise = withLoading(async () => {
+      await new Promise((r) => setTimeout(r, 10))
+      return 'result'
+    })
+
+    expect(isLoading.value).toBe(true)
+    const result = await promise
+    expect(isLoading.value).toBe(false)
+    expect(result).toBe('result')
+  })
+
+  it('should capture errors', async () => {
+    const { error, withLoading } = useLoading()
+
+    await withLoading(async () => {
+      throw new Error('Test error')
+    })
+
+    expect(error.value).toBe('Test error')
+  })
+})
+```
+
+### Teste de Composable com Pinia
+
+```typescript
+// tests/unit/composables/useExampleStore.test.ts
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { setActivePinia, createPinia } from 'pinia'
+import { useExampleStore } from '~/layers/2-example/app/composables/useExampleStore'
+
+// Mock do API
+vi.mock('~/layers/2-example/app/composables/useExampleApi', () => ({
+  useExampleApi: () => ({
+    getAll: vi.fn().mockResolvedValue([{ id: '1', name: 'Test' }])
+  })
+}))
+
+describe('useExampleStore', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+  })
+
+  it('should start empty', () => {
+    const store = useExampleStore()
+    expect(store.items).toEqual([])
+  })
+
+  it('should fetch items', async () => {
+    const store = useExampleStore()
+    await store.fetchAll()
+    expect(store.items).toHaveLength(1)
+  })
+})
+```
+
 ## Referências
 
 - [Composables - Vue.js](https://vuejs.org/guide/reusability/composables.html)
 - [Composables - Nuxt](https://nuxt.com/docs/4.x/directory-structure/app/composables)
 - [VueUse](https://vueuse.org/) - Coleção de composables prontos
+- [Vitest](https://vitest.dev/) - Framework de testes

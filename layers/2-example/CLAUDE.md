@@ -218,8 +218,109 @@ app/        → Maior prioridade (sobrescreve tudo)
 
 ---
 
+## Testando a Feature Layer
+
+### Estrutura de Testes
+
+Os testes ficam na pasta `tests/` na raiz do projeto, organizados por tipo:
+
+```
+tests/
+├── unit/
+│   └── {feature}/               # Testes unitários da feature
+│       ├── composables/
+│       │   ├── use{Feature}Api.test.ts
+│       │   └── use{Feature}Store.test.ts
+│       └── components/
+│           └── {Feature}Card.test.ts
+├── integration/
+│   └── api/
+│       └── {feature}.test.ts    # Testes de API
+└── e2e/
+    └── {feature}.spec.ts        # Testes E2E
+```
+
+### Teste de Composable
+
+```typescript
+// tests/unit/example/composables/useExampleStore.test.ts
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { setActivePinia, createPinia } from 'pinia'
+import { useExampleStore } from '~/layers/2-example/app/composables/useExampleStore'
+
+vi.mock('~/layers/2-example/app/composables/useExampleApi', () => ({
+  useExampleApi: () => ({
+    getAll: vi.fn().mockResolvedValue([{ id: '1', name: 'Test' }])
+  })
+}))
+
+describe('useExampleStore', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+  })
+
+  it('should fetch items', async () => {
+    const store = useExampleStore()
+    await store.fetchAll()
+    expect(store.items).toHaveLength(1)
+  })
+})
+```
+
+### Teste de Componente
+
+```typescript
+// tests/unit/example/components/ExampleCard.test.ts
+import { describe, it, expect } from 'vitest'
+import { mount } from '@vue/test-utils'
+import ExampleCard from '~/layers/2-example/app/components/ExampleCard.vue'
+
+describe('ExampleCard', () => {
+  it('should render title', () => {
+    const wrapper = mount(ExampleCard, {
+      props: { title: 'Test', description: 'Description' }
+    })
+    expect(wrapper.text()).toContain('Test')
+  })
+})
+```
+
+### Teste E2E
+
+```typescript
+// tests/e2e/example.spec.ts
+import { test, expect } from '@playwright/test'
+
+test.describe('Example Feature', () => {
+  test('should display example page', async ({ page }) => {
+    await page.goto('/example')
+    await expect(page.locator('h1')).toContainText('Example')
+  })
+
+  test('should create new item', async ({ page }) => {
+    await page.goto('/example')
+    await page.click('[data-testid="create-button"]')
+    await page.fill('[data-testid="name-input"]', 'New Item')
+    await page.click('[data-testid="submit"]')
+    await expect(page.locator('[data-testid="item-list"]')).toContainText('New Item')
+  })
+})
+```
+
+### Checklist de Testes
+
+- [ ] Testes unitários para cada composable
+- [ ] Testes unitários para componentes com lógica
+- [ ] Testes de integração para API routes
+- [ ] Testes E2E para fluxos principais
+
+---
+
 ## Referências
 
 - [Nuxt 4 Layers](https://nuxt.com/docs/4.x/getting-started/layers)
 - [Authoring Nuxt Layers](https://nuxt.com/docs/4.x/guide/going-further/layers)
 - [Nuxt 4 Directory Structure](https://nuxt.com/docs/4.x/directory-structure)
+- [Nuxt Testing](https://nuxt.com/docs/getting-started/testing)
+- [Vitest](https://vitest.dev/)
+- [Playwright](https://playwright.dev/)
