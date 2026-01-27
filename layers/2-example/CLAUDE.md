@@ -1,360 +1,225 @@
 # Feature Layer - CLAUDE.md
 
-Guia para criar e estruturar uma nova Feature Layer no Nuxt 4.
+Guia completo para criar e estruturar uma Feature Layer no Nuxt 4.
+
+> **Esta layer serve como exemplo/template.** Copie-a para criar novas features.
 
 ---
 
-## O que é uma Feature Layer?
+## Estrutura Completa de uma Feature Layer
 
-Uma Feature Layer é um módulo isolado que contém toda a lógica de uma funcionalidade específica: páginas, componentes, composables, tipos e API routes.
-
-**Exemplos de Feature Layers:**
-- `2-auth` - Autenticação (login, registro, recuperação de senha)
-- `3-products` - Catálogo de produtos
-- `4-checkout` - Carrinho e pagamento
-- `5-admin` - Painel administrativo
-
----
-
-## Estrutura de uma Feature Layer
+Baseada na [documentação oficial do Nuxt 4](https://nuxt.com/docs/4.x/guide/going-further/layers).
 
 ```
 layers/{N}-{nome-feature}/
-├── nuxt.config.ts              # Configuração da layer (obrigatório)
-├── CLAUDE.md                   # Documentação da feature (recomendado)
-├── app/
-│   ├── components/             # Componentes específicos da feature
-│   │   └── {Feature}Card.vue   # Prefixar com nome da feature
-│   ├── composables/
-│   │   ├── types.ts            # Tipos/interfaces da feature
-│   │   ├── use{Feature}Api.ts  # Service (chamadas API)
-│   │   ├── use{Feature}Store.ts # Store Pinia
+├── nuxt.config.ts                    # Configuração (OBRIGATÓRIO)
+├── CLAUDE.md                         # Documentação da feature
+│
+├── app/                              # Código da aplicação (cliente)
+│   ├── components/                   # Componentes Vue
+│   │   └── {Feature}Card.vue         # Prefixar com nome da feature
+│   │
+│   ├── composables/                  # Lógica reativa reutilizável
+│   │   ├── types.ts                  # Tipos/interfaces
+│   │   ├── use{Feature}Api.ts        # Service (chamadas API)
+│   │   ├── use{Feature}Store.ts      # Store Pinia
+│   │   ├── use{Feature}Form.ts       # Lógica de formulário
 │   │   └── use{Feature}Validators.ts # Validadores
-│   ├── layouts/                # Layouts específicos (opcional)
-│   │   └── {feature}.vue
-│   ├── middleware/             # Middleware específico (opcional)
-│   │   └── {feature}-guard.ts
-│   └── pages/
-│       └── {feature}/          # Páginas da feature
-│           ├── index.vue       # Rota: /{feature}
-│           └── [id].vue        # Rota: /{feature}/:id
-└── server/                     # API routes (na RAIZ da layer, não em app/)
-    └── api/
-        └── {feature}/
-            ├── index.get.ts    # GET /api/{feature}
-            ├── index.post.ts   # POST /api/{feature}
-            └── [id].get.ts     # GET /api/{feature}/:id
+│   │
+│   ├── layouts/                      # Layouts específicos
+│   │   └── {feature}.vue             # Layout da feature
+│   │
+│   ├── middleware/                   # Middleware de navegação
+│   │   └── {feature}-guard.ts        # Proteção de rotas
+│   │
+│   ├── pages/                        # Páginas/rotas
+│   │   └── {feature}/
+│   │       ├── index.vue             # /{feature}
+│   │       └── [id].vue              # /{feature}/:id
+│   │
+│   ├── plugins/                      # Plugins Vue
+│   │   └── {feature}.ts              # Inicialização da feature
+│   │
+│   └── utils/                        # Funções utilitárias (puras)
+│       └── {feature}.ts              # Helpers sem estado
+│
+└── server/                           # Código do servidor (API)
+    ├── api/                          # Endpoints da API
+    │   └── {feature}/
+    │       ├── index.get.ts          # GET /api/{feature}
+    │       ├── index.post.ts         # POST /api/{feature}
+    │       ├── [id].get.ts           # GET /api/{feature}/:id
+    │       ├── [id].put.ts           # PUT /api/{feature}/:id
+    │       └── [id].delete.ts        # DELETE /api/{feature}/:id
+    │
+    ├── middleware/                   # Middleware do servidor
+    │   └── {feature}-logger.ts       # Logging, auth, rate limit
+    │
+    ├── plugins/                      # Plugins Nitro
+    │   └── {feature}.ts              # Inicialização do servidor
+    │
+    └── utils/                        # Utilitários do servidor
+        └── {feature}.ts              # Helpers server-side
 ```
 
 ---
 
-## Passo a Passo: Criar Nova Feature Layer
+## Arquivos desta Layer de Exemplo
 
-### 1. Criar estrutura de diretórios
+| Arquivo | Descrição |
+|---------|-----------|
+| `nuxt.config.ts` | Configuração da layer |
+| **app/components/** | |
+| `ExampleCard.vue` | Componente de card com props tipadas |
+| **app/composables/** | |
+| `types.ts` | Interfaces e tipos TypeScript |
+| `useExampleApi.ts` | Service para chamadas à API |
+| `useExampleStore.ts` | Store Pinia com estado reativo |
+| `useExampleForm.ts` | Lógica de formulário com validação |
+| `useExampleValidators.ts` | Funções de validação |
+| **app/layouts/** | |
+| `example.vue` | Layout específico da feature |
+| **app/middleware/** | |
+| `example-guard.ts` | Middleware de proteção de rotas |
+| **app/pages/example/** | |
+| `index.vue` | Página principal (/example) |
+| **app/plugins/** | |
+| `example.ts` | Plugin de inicialização |
+| **app/utils/** | |
+| `example.ts` | Funções utilitárias puras |
+| **server/api/example/** | |
+| `index.get.ts` | GET /api/example |
+| `index.post.ts` | POST /api/example |
+| `[id].get.ts` | GET /api/example/:id |
+| `[id].put.ts` | PUT /api/example/:id |
+| `[id].delete.ts` | DELETE /api/example/:id |
+| **server/middleware/** | |
+| `example-logger.ts` | Logging de requisições |
+| **server/plugins/** | |
+| `example.ts` | Inicialização do servidor |
+| **server/utils/** | |
+| `example.ts` | Utilitários server-side |
+
+---
+
+## Criar Nova Feature Layer
+
+### 1. Copiar esta layer
 
 ```bash
-# Substitua {N} pelo número de prioridade e {feature} pelo nome
-mkdir -p layers/{N}-{feature}/{app/{components,composables,pages/{feature}},server/api/{feature}}
+cp -r layers/2-example layers/{N}-{sua-feature}
 ```
 
-### 2. Criar nuxt.config.ts
+### 2. Renomear arquivos
 
-```typescript
-// layers/{N}-{feature}/nuxt.config.ts
-export default defineNuxtConfig({
-  // Configurações específicas da feature (pode estar vazio)
-})
+Substitua `example` e `Example` pelo nome da sua feature:
+
+```bash
+# Exemplo: criar layer "products"
+mv app/components/ExampleCard.vue app/components/ProductCard.vue
+mv app/composables/useExampleApi.ts app/composables/useProductApi.ts
+# ... etc
 ```
 
-### 3. Criar tipos (types.ts)
+### 3. Atualizar conteúdo
 
-```typescript
-// layers/{N}-{feature}/app/composables/types.ts
+Em cada arquivo, substitua:
+- `Example` → `{SuaFeature}` (PascalCase)
+- `example` → `{sua-feature}` (kebab-case)
+- `EXAMPLE` → `{SUA_FEATURE}` (UPPER_CASE)
 
-export interface {Feature} {
-  id: string
-  name: string
-  createdAt: Date
-  // ... outros campos
-}
+---
 
-export interface Create{Feature}Data {
-  name: string
-  // ... campos para criação
-}
+## Diretórios: Quando Usar Cada Um
 
-export interface Update{Feature}Data {
-  name?: string
-  // ... campos para atualização
-}
-```
+### app/ (Cliente)
 
-### 4. Criar service (API calls)
+| Diretório | Quando usar | Auto-import |
+|-----------|-------------|-------------|
+| `components/` | UI reutilizável da feature | ✅ Sim |
+| `composables/` | Lógica reativa (stores, services) | ✅ Sim |
+| `layouts/` | Layout específico da feature | ✅ Sim |
+| `middleware/` | Proteção de rotas (auth, roles) | ✅ Sim |
+| `pages/` | Rotas/páginas da feature | ✅ Sim |
+| `plugins/` | Inicialização, bibliotecas | ✅ Sim |
+| `utils/` | Funções puras (formatters, helpers) | ✅ Sim |
 
-```typescript
-// layers/{N}-{feature}/app/composables/use{Feature}Api.ts
+### server/ (Servidor)
 
-export function use{Feature}Api() {
-  // Para dados iniciais (SSR)
-  function getAll() {
-    return useFetch<{Feature}[]>('/api/{feature}')
-  }
-
-  function getById(id: string) {
-    return useFetch<{Feature}>(`/api/{feature}/${id}`)
-  }
-
-  // Para ações do usuário (client-side)
-  async function create(data: Create{Feature}Data) {
-    return $fetch<{Feature}>('/api/{feature}', {
-      method: 'POST',
-      body: data
-    })
-  }
-
-  async function update(id: string, data: Update{Feature}Data) {
-    return $fetch<{Feature}>(`/api/{feature}/${id}`, {
-      method: 'PUT',
-      body: data
-    })
-  }
-
-  async function remove(id: string) {
-    return $fetch(`/api/{feature}/${id}`, {
-      method: 'DELETE'
-    })
-  }
-
-  return { getAll, getById, create, update, remove }
-}
-```
-
-### 5. Criar store (Pinia)
-
-```typescript
-// layers/{N}-{feature}/app/composables/use{Feature}Store.ts
-
-export const use{Feature}Store = defineStore('{feature}', () => {
-  // State
-  const items = ref<{Feature}[]>([])
-  const current = ref<{Feature} | null>(null)
-  const isLoading = ref(false)
-  const error = ref<string | null>(null)
-
-  // API (instanciada no setup para preservar contexto Nuxt)
-  const api = use{Feature}Api()
-
-  // Getters
-  const count = computed(() => items.value.length)
-  const isEmpty = computed(() => items.value.length === 0)
-
-  // Actions
-  async function fetchAll() {
-    isLoading.value = true
-    error.value = null
-    try {
-      const { data } = await api.getAll()
-      if (data.value) {
-        items.value = data.value
-      }
-    } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Erro ao carregar'
-    } finally {
-      isLoading.value = false
-    }
-  }
-
-  async function fetchById(id: string) {
-    isLoading.value = true
-    error.value = null
-    try {
-      const { data } = await api.getById(id)
-      if (data.value) {
-        current.value = data.value
-      }
-    } finally {
-      isLoading.value = false
-    }
-  }
-
-  function reset() {
-    items.value = []
-    current.value = null
-    error.value = null
-  }
-
-  return {
-    // State
-    items,
-    current,
-    isLoading,
-    error,
-    // Getters
-    count,
-    isEmpty,
-    // Actions
-    fetchAll,
-    fetchById,
-    reset
-  }
-})
-```
-
-### 6. Criar página principal
-
-```vue
-<!-- layers/{N}-{feature}/app/pages/{feature}/index.vue -->
-<script setup lang="ts">
-definePageMeta({
-  layout: 'default'
-  // middleware: '{feature}-guard' // Se precisar de proteção
-})
-
-const store = use{Feature}Store()
-
-// Carrega dados no servidor (SSR)
-await store.fetchAll()
-</script>
-
-<template>
-  <div class="container mx-auto p-6">
-    <h1 class="text-2xl font-bold mb-6">{Feature}</h1>
-
-    <!-- Loading -->
-    <div v-if="store.isLoading">
-      <AppLoading />
-    </div>
-
-    <!-- Error -->
-    <div v-else-if="store.error" class="text-destructive">
-      {{ store.error }}
-    </div>
-
-    <!-- Empty -->
-    <div v-else-if="store.isEmpty" class="text-muted-foreground">
-      Nenhum item encontrado.
-    </div>
-
-    <!-- List -->
-    <div v-else class="grid gap-4">
-      <div
-        v-for="item in store.items"
-        :key="item.id"
-        class="p-4 border rounded-lg"
-      >
-        {{ item.name }}
-      </div>
-    </div>
-  </div>
-</template>
-```
-
-### 7. Criar API route
-
-```typescript
-// layers/{N}-{feature}/server/api/{feature}/index.get.ts
-export default defineEventHandler(async (event) => {
-  // Buscar dados do banco/serviço externo
-  return [
-    { id: '1', name: 'Item 1', createdAt: new Date() },
-    { id: '2', name: 'Item 2', createdAt: new Date() }
-  ]
-})
-```
-
-```typescript
-// layers/{N}-{feature}/server/api/{feature}/index.post.ts
-import { z } from 'zod'
-
-const createSchema = z.object({
-  name: z.string().min(3).max(100)
-})
-
-export default defineEventHandler(async (event) => {
-  const body = await readBody(event)
-
-  // Validar
-  const result = createSchema.safeParse(body)
-  if (!result.success) {
-    throw createError({
-      statusCode: 400,
-      message: 'Dados inválidos',
-      data: result.error.flatten()
-    })
-  }
-
-  // Criar no banco/serviço externo
-  const created = {
-    id: crypto.randomUUID(),
-    ...result.data,
-    createdAt: new Date()
-  }
-
-  setResponseStatus(event, 201)
-  return created
-})
-```
+| Diretório | Quando usar | Auto-import |
+|-----------|-------------|-------------|
+| `api/` | Endpoints REST | ✅ Sim |
+| `middleware/` | Logging, auth, rate limit | ✅ Sim |
+| `plugins/` | Conexões DB, inicialização | ✅ Sim |
+| `utils/` | Helpers server-side | ✅ Sim |
 
 ---
 
 ## Convenções de Nomenclatura
 
-### Diretórios e Arquivos
+### Arquivos
 
-| Item | Convenção | Exemplo |
-|------|-----------|---------|
-| Pasta da layer | `{N}-{kebab-case}` | `3-user-profile` |
-| Componentes | `{PascalCase}{Feature}.vue` | `UserProfileCard.vue` |
-| Composables | `use{Feature}{Tipo}.ts` | `useUserProfileApi.ts` |
-| Páginas | `{kebab-case}/` | `user-profile/index.vue` |
-| API routes | `{kebab-case}/` | `user-profile/index.get.ts` |
+| Tipo | Padrão | Exemplo |
+|------|--------|---------|
+| Componente | `{Feature}{Nome}.vue` | `ProductCard.vue` |
+| Composable | `use{Feature}{Tipo}.ts` | `useProductApi.ts` |
+| Layout | `{feature}.vue` | `product.vue` |
+| Middleware | `{feature}-{ação}.ts` | `product-guard.ts` |
+| Página | `{feature}/index.vue` | `product/index.vue` |
+| API route | `{rota}.{método}.ts` | `index.get.ts` |
+| Utils | `{feature}.ts` | `product.ts` |
 
-### Prefixo em Componentes
+### Métodos HTTP em API Routes
 
-Sempre prefixe componentes com o nome da feature para evitar conflitos:
-
-```
-layers/3-products/app/components/
-├── ProductCard.vue        ✓ Prefixo "Product"
-├── ProductList.vue        ✓
-├── ProductFilter.vue      ✓
-└── Card.vue               ✗ Evitar - pode conflitar
-```
+| Arquivo | Método | Rota |
+|---------|--------|------|
+| `index.get.ts` | GET | /api/{feature} |
+| `index.post.ts` | POST | /api/{feature} |
+| `[id].get.ts` | GET | /api/{feature}/:id |
+| `[id].put.ts` | PUT | /api/{feature}/:id |
+| `[id].patch.ts` | PATCH | /api/{feature}/:id |
+| `[id].delete.ts` | DELETE | /api/{feature}/:id |
 
 ---
 
-## Ordem de Prioridade
-
-O número no nome da layer define a prioridade de carregamento:
+## Ordem de Prioridade das Layers
 
 ```
-1-base      → Menor prioridade (carrega primeiro, pode ser sobrescrito)
+1-base      → Menor prioridade (fundação)
 2-example   → Prioridade 2
-3-products  → Prioridade 3
-4-checkout  → Prioridade 4
-app/        → Maior prioridade (sempre sobrescreve)
+3-feature-a → Prioridade 3
+4-feature-b → Prioridade 4
+app/        → Maior prioridade (sobrescreve tudo)
 ```
 
-**Regra:** Use números menores para layers de infraestrutura e maiores para features de negócio.
+**Regra:** Número maior = maior prioridade = sobrescreve anteriores.
 
 ---
 
 ## Checklist: Nova Feature Layer
 
-- [ ] Pasta criada: `layers/{N}-{feature}/`
+### Estrutura Mínima
 - [ ] `nuxt.config.ts` criado
-- [ ] Tipos definidos em `app/composables/types.ts`
-- [ ] Service criado em `app/composables/use{Feature}Api.ts`
-- [ ] Store criado em `app/composables/use{Feature}Store.ts`
-- [ ] Página principal em `app/pages/{feature}/index.vue`
-- [ ] API routes em `server/api/{feature}/`
-- [ ] Componentes prefixados com nome da feature
-- [ ] Validação Zod nos endpoints POST/PUT
-- [ ] CLAUDE.md documentando a feature (opcional)
+- [ ] `app/composables/types.ts` com interfaces
+- [ ] `app/composables/use{Feature}Api.ts` com service
+- [ ] `app/pages/{feature}/index.vue` com página principal
+
+### Estrutura Completa
+- [ ] `app/components/` com componentes prefixados
+- [ ] `app/composables/use{Feature}Store.ts` com Pinia
+- [ ] `app/layouts/{feature}.vue` se precisar de layout próprio
+- [ ] `app/middleware/{feature}-guard.ts` se precisar de proteção
+- [ ] `app/plugins/{feature}.ts` se precisar de inicialização
+- [ ] `app/utils/{feature}.ts` com helpers
+- [ ] `server/api/{feature}/` com endpoints CRUD
+- [ ] `server/utils/{feature}.ts` com helpers server-side
+- [ ] Validação Zod em todos os POST/PUT
+- [ ] CLAUDE.md documentando a feature
 
 ---
 
 ## Referências
 
-- [Nuxt Layers](https://nuxt.com/docs/getting-started/layers)
-- [docs/NUXT_LAYERS.md](../../docs/NUXT_LAYERS.md) - Guia completo de Layers
+- [Nuxt 4 Layers](https://nuxt.com/docs/4.x/getting-started/layers)
+- [Authoring Nuxt Layers](https://nuxt.com/docs/4.x/guide/going-further/layers)
+- [Nuxt 4 Directory Structure](https://nuxt.com/docs/4.x/directory-structure)
