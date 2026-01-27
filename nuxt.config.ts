@@ -5,6 +5,16 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
+  // Performance - Experimental features
+  experimental: {
+    crossOriginPrefetch: true
+  },
+
+  // Performance - Nitro (servidor)
+  nitro: {
+    compressPublicAssets: true
+  },
+
   // SEO - Meta tags globais
   app: {
     head: {
@@ -77,7 +87,15 @@ export default defineNuxtConfig({
   },
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+
+    // Performance - Build optimizations
+    build: {
+      // Minificação rápida
+      minify: 'esbuild',
+      // Limite para inline de assets (4kb)
+      assetsInlineLimit: 4096
+    }
   },
 
   css: ['~/assets/css/main.css']
