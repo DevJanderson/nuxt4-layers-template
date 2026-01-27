@@ -408,7 +408,7 @@ O Tailwind CSS v4 usa detecção automática de classes, mas por padrão só esc
 Adicione a diretiva `@source` no arquivo CSS principal para incluir as layers no scan:
 
 ```css
-/* app/assets/css/tailwind.css */
+/* app/assets/css/main.css */
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -434,7 +434,7 @@ Para que o CLI do shadcn-vue instale componentes em `layers/1-base/`, configure 
   "typescript": true,
   "tailwind": {
     "config": "",
-    "css": "app/assets/css/tailwind.css",
+    "css": "app/assets/css/main.css",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
