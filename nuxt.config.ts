@@ -72,7 +72,7 @@ export default defineNuxtConfig({
       tokensPerInterval: 150,
       interval: 300000
     },
-    xssValidator: true,
+    xssValidator: {},
     requestSizeLimiter: {
       maxRequestSizeInBytes: 2000000,
       maxUploadFileRequestInBytes: 8000000
