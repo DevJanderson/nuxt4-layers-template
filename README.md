@@ -47,7 +47,7 @@ npm run dev
 ### Degit (recomendado)
 
 ```bash
-npx degit seu-usuario/nuxt4-layers meu-projeto
+npx degit DevJanderson/nuxt4-layers-template meu-projeto
 cd meu-projeto
 npm install
 npm run dev
@@ -58,7 +58,7 @@ npm run dev
 Se preferir clonar diretamente, reinicie o histórico do git:
 
 ```bash
-git clone https://github.com/seu-usuario/nuxt4-layers.git meu-projeto
+git clone https://github.com/DevJanderson/nuxt4-layers-template.git meu-projeto
 cd meu-projeto
 rm -rf .git
 git init
