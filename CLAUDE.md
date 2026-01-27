@@ -507,7 +507,6 @@ export function useCurrency() {
 
 ## Segurança
 
-> **Documentação completa:** [docs/SECURITY.md](docs/SECURITY.md) - Cobre 20 vulnerabilidades críticas.
 
 ### 20 Vulnerabilidades Cobertas
 
@@ -689,7 +688,6 @@ npm run test:e2e           # Executa testes
 
 | Documento | Conteúdo |
 |-----------|----------|
-| [docs/SECURITY.md](docs/SECURITY.md) | 20 vulnerabilidades, headers, CSRF, XSS, CORS |
 | [docs/NUXT_LAYERS.md](docs/NUXT_LAYERS.md) | Guia de Nuxt Layers |
 | [docs/DEPLOY.md](docs/DEPLOY.md) | Vercel, Netlify, Docker, AWS |
 | [docs/KUBB.md](docs/KUBB.md) | Padrão Kubb + BFF |

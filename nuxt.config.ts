@@ -47,8 +47,44 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@vee-validate/nuxt',
     '@nuxt/image',
-    '@nuxtjs/color-mode'
+    '@nuxtjs/color-mode',
+    'nuxt-security',
+    'nuxt-csurf'
   ],
+
+  // Security - Headers e proteções
+  security: {
+    headers: {
+      crossOriginEmbedderPolicy: process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp',
+      contentSecurityPolicy: {
+        'default-src': ["'self'"],
+        'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        'style-src': ["'self'", "'unsafe-inline'"],
+        'img-src': ["'self'", 'data:', 'https:'],
+        'font-src': ["'self'"],
+        'connect-src': ["'self'"],
+        'frame-ancestors': ["'none'"],
+        'base-uri': ["'self'"],
+        'form-action': ["'self'"]
+      }
+    },
+    rateLimiter: {
+      tokensPerInterval: 150,
+      interval: 300000
+    },
+    xssValidator: true,
+    requestSizeLimiter: {
+      maxRequestSizeInBytes: 2000000,
+      maxUploadFileRequestInBytes: 8000000
+    }
+  },
+
+  // CSRF Protection
+  csurf: {
+    https: process.env.NODE_ENV === 'production',
+    cookieKey: 'csrf',
+    methodsToProtect: ['POST', 'PUT', 'PATCH', 'DELETE']
+  },
 
   // VeeValidate - validação de formulários
   veeValidate: {

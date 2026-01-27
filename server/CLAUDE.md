@@ -184,7 +184,6 @@ export default defineEventHandler((event) => {
 
 ## Segurança Server-Side
 
-> **Documentação completa:** [docs/SECURITY.md](../docs/SECURITY.md)
 
 ### Regra de Ouro
 
