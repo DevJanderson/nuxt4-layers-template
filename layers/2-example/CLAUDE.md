@@ -201,14 +201,15 @@ export default defineNuxtConfig({
 ## Ordem de Prioridade das Layers
 
 ```
-1-base      → Menor prioridade (fundação)
+0-core      → Menor prioridade (fundação)
+1-base      → UI base
 2-example   → Prioridade 2
-3-feature-a → Prioridade 3
-4-feature-b → Prioridade 4
-app/        → Maior prioridade (sobrescreve tudo)
+3-feature-a → Prioridade 3 (exemplo)
 ```
 
 **Regra:** Número maior = maior prioridade = sobrescreve anteriores.
+
+> **Arquitetura layers-only:** Não existe pasta `app/` na raiz neste template.
 
 ---
 

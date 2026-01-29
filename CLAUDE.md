@@ -48,14 +48,14 @@ Nuxt 4 + shadcn-vue + Tailwind CSS v4 + **Nuxt Layers**.
 ### Estrutura Principal
 
 ```
-layers/                 # TUDO fica aqui
-  0-core/               # Fundação: app.vue, error.vue, CSS global
+layers/                 # TUDO fica aqui (layers-only)
+  0-core/               # Fundação: app.vue, error.vue, index.vue, CSS global, API base
   1-base/               # UI: shadcn-vue, utils, tipos globais
   2-example/            # Feature layer de exemplo (copiar para novas)
-  4-landing/            # Landing page
-server/                 # API routes (Nitro)
 tests/                  # unit/, integration/, e2e/
 ```
+
+> **Arquitetura layers-only:** Não existe pasta `server/` na raiz. API routes ficam dentro de cada layer em `layers/*/server/`.
 
 > Use hífen (`-`) no nome das layers, não ponto. Layers em `~/layers` são auto-registradas.
 
@@ -64,7 +64,7 @@ tests/                  # unit/, integration/, e2e/
 ### Ordem de Prioridade (Layers)
 
 ```
-4-landing > 2-example > 1-base > 0-core
+2-example > 1-base > 0-core
 ```
 
 Número maior = maior prioridade = sobrescreve layers anteriores.
@@ -149,7 +149,8 @@ Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específ
 
 | Documento | Conteúdo |
 |-----------|----------|
-| [layers/0-core/CLAUDE.md](layers/0-core/CLAUDE.md) | app.vue, error.vue, CSS global |
+| [layers/0-core/CLAUDE.md](layers/0-core/CLAUDE.md) | app.vue, error.vue, index.vue, CSS global, API base |
+| [layers/0-core/server/CLAUDE.md](layers/0-core/server/CLAUDE.md) | Nitro API routes, segurança server-side |
 | [layers/1-base/app/components/CLAUDE.md](layers/1-base/app/components/CLAUDE.md) | shadcn-vue, componentes |
 | [layers/1-base/app/composables/CLAUDE.md](layers/1-base/app/composables/CLAUDE.md) | Padrões de composables |
 | [layers/2-example/CLAUDE.md](layers/2-example/CLAUDE.md) | Template para criar features |

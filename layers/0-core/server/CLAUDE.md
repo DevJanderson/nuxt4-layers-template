@@ -2,23 +2,28 @@
 
 Instruções específicas para o servidor Nitro (API routes).
 
+## Arquitetura Layers-Only
+
+Em uma arquitetura Nuxt 4 layers-only, **não existe pasta `server/` na raiz**. Cada layer pode ter sua própria pasta `server/` que é auto-escaneada pelo Nuxt.
+
 ## Estrutura
 
-API global fica em `server/`. API específica de feature fica em `layers/*/server/`.
-
 ```
-server/                         # API global
+layers/0-core/server/           # API base (health, status)
 ├── api/
 │   └── health.get.ts           # GET /api/health
-├── middleware/                 # Middleware do servidor
-└── utils/                      # Utilitários do servidor
+├── middleware/                 # Middleware global
+└── utils/                      # Utilitários compartilhados
 
 layers/2-example/server/        # API da feature layer
 └── api/
-    └── examples/
-        ├── index.get.ts        # GET /api/examples
-        └── [id].get.ts         # GET /api/examples/:id
+    └── example/
+        ├── index.get.ts        # GET /api/example
+        ├── index.post.ts       # POST /api/example
+        └── [id].get.ts         # GET /api/example/:id
 ```
+
+> **Regra:** API routes ficam dentro de `layers/*/server/`, nunca na raiz do projeto.
 
 ## Convenção de Nomenclatura
 
@@ -37,7 +42,7 @@ O Nitro usa o nome do arquivo para definir o método HTTP:
 ### GET simples
 
 ```typescript
-// server/api/users.get.ts
+// layers/{N}-{feature}/server/api/users.get.ts
 export default defineEventHandler(async (event) => {
   return [
     { id: '1', name: 'João' },
@@ -49,7 +54,7 @@ export default defineEventHandler(async (event) => {
 ### GET com parâmetro
 
 ```typescript
-// server/api/users/[id].get.ts
+// layers/{N}-{feature}/server/api/users/[id].get.ts
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
 
@@ -61,7 +66,7 @@ export default defineEventHandler(async (event) => {
 ### POST com body
 
 ```typescript
-// server/api/users.post.ts
+// layers/{N}-{feature}/server/api/users.post.ts
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
@@ -73,7 +78,7 @@ export default defineEventHandler(async (event) => {
 ### Com query params
 
 ```typescript
-// server/api/users.get.ts
+// layers/{N}-{feature}/server/api/users.get.ts
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   const page = Number(query.page) || 1
@@ -87,7 +92,7 @@ export default defineEventHandler(async (event) => {
 ## Tratamento de Erros
 
 ```typescript
-// server/api/users/[id].get.ts
+// layers/{N}-{feature}/server/api/users/[id].get.ts
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
 
@@ -107,7 +112,7 @@ export default defineEventHandler(async (event) => {
 ## Validação com Zod
 
 ```typescript
-// server/api/users.post.ts
+// layers/{N}-{feature}/server/api/users.post.ts
 import { z } from 'zod'
 
 const createUserSchema = z.object({
@@ -136,7 +141,7 @@ export default defineEventHandler(async (event) => {
 ## Middleware do Servidor
 
 ```typescript
-// server/middleware/auth.ts
+// layers/{N}-{feature}/server/middleware/auth.ts
 export default defineEventHandler((event) => {
   const token = getHeader(event, 'authorization')
 
@@ -192,7 +197,7 @@ export default defineEventHandler((event) => {
 ### 1. Validação Obrigatória
 
 ```typescript
-// server/api/users.post.ts
+// layers/{N}-{feature}/server/api/users.post.ts
 import { z } from 'zod'
 
 const schema = z.object({
@@ -221,7 +226,7 @@ export default defineEventHandler(async (event) => {
 ### 2. IDOR - Verificar Ownership
 
 ```typescript
-// server/api/orders/[id].get.ts
+// layers/{N}-{feature}/server/api/orders/[id].get.ts
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
   const userId = event.context.user?.id
@@ -248,7 +253,7 @@ export default defineEventHandler(async (event) => {
 ### 3. Rate Limiting
 
 ```typescript
-// server/utils/rateLimit.ts
+// layers/{N}-{feature}/server/utils/rateLimit.ts
 const store = new Map<string, { count: number; resetAt: number }>()
 
 export function rateLimit(ip: string, limit: number, windowMs: number): boolean {
@@ -283,7 +288,7 @@ export default defineEventHandler((event) => {
 ### 4. Cookies Seguros
 
 ```typescript
-// server/api/auth/login.post.ts
+// layers/{N}-{feature}/server/api/auth/login.post.ts
 setCookie(event, 'auth_token', token, {
   httpOnly: true,      // Não acessível via JavaScript
   secure: true,        // Apenas HTTPS
@@ -296,7 +301,7 @@ setCookie(event, 'auth_token', token, {
 ### 5. Path Traversal
 
 ```typescript
-// server/api/files/[...path].get.ts
+// layers/{N}-{feature}/server/api/files/[...path].get.ts
 import { resolve } from 'path'
 
 export default defineEventHandler((event) => {
@@ -322,7 +327,7 @@ export default defineEventHandler((event) => {
 ### 6. Sanitização de Saída
 
 ```typescript
-// server/api/comments.post.ts
+// layers/{N}-{feature}/server/api/comments.post.ts
 import DOMPurify from 'isomorphic-dompurify'
 
 export default defineEventHandler(async (event) => {
@@ -356,7 +361,7 @@ const users = await db.$queryRaw`SELECT * FROM users WHERE name = ${name}`
 ### 8. Deserialização Segura
 
 ```typescript
-// server/utils/safeParse.ts
+// layers/{N}-{feature}/server/utils/safeParse.ts
 import { z } from 'zod'
 
 export function safeParse<T>(input: string, schema: z.ZodType<T>): T | null {
@@ -447,7 +452,7 @@ describe('API /api/users', async () => {
 ```typescript
 // tests/unit/api/health.test.ts
 import { describe, it, expect } from 'vitest'
-import handler from '~/server/api/health.get'
+import handler from '~/layers/0-core/server/api/health.get'
 
 describe('GET /api/health', () => {
   it('should return ok status', async () => {
