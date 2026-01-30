@@ -39,7 +39,7 @@ export default defineNuxtConfig({
   },
 
   // Nuxt Layers - auto-scan de ~/layers (Nuxt 4+)
-  // Ordem de prioridade: 4-landing > 2-example > 1-base
+  // Ordem de prioridade: 1-example > 0-base
 
   modules: [
     '@nuxt/eslint',
@@ -112,7 +112,7 @@ export default defineNuxtConfig({
 
   shadcn: {
     prefix: '',
-    componentDir: './layers/1-base/app/components/ui'
+    componentDir: './layers/0-base/app/components/ui'
   },
 
   runtimeConfig: {
@@ -134,5 +134,5 @@ export default defineNuxtConfig({
     }
   },
 
-  // CSS global está em layers/0-core/
+  // CSS global está em layers/0-base/
 })

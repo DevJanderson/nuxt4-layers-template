@@ -4,18 +4,18 @@
   "typescript": true,
   "tailwind": {
     "config": "",
-    "css": "@/layers/0-core/app/assets/css/main.css",
+    "css": "@/layers/0-base/app/assets/css/main.css",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@/layers/1-base/app/components",
-    "utils": "@/layers/1-base/app/utils/utils",
-    "ui": "@/layers/1-base/app/components/ui",
-    "lib": "@/layers/1-base/app/utils",
-    "composables": "@/layers/1-base/app/composables"
+    "components": "@/layers/0-base/app/components",
+    "utils": "@/layers/0-base/app/utils/utils",
+    "ui": "@/layers/0-base/app/components/ui",
+    "lib": "@/layers/0-base/app/utils",
+    "composables": "@/layers/0-base/app/composables"
   },
   "registries": {}
 }
