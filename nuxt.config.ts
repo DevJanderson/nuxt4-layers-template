@@ -56,17 +56,20 @@ export default defineNuxtConfig({
   security: {
     headers: {
       crossOriginEmbedderPolicy: process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp',
-      contentSecurityPolicy: {
-        'default-src': ["'self'"],
-        'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-        'style-src': ["'self'", "'unsafe-inline'"],
-        'img-src': ["'self'", 'data:', 'https:'],
-        'font-src': ["'self'"],
-        'connect-src': ["'self'"],
-        'frame-ancestors': ["'none'"],
-        'base-uri': ["'self'"],
-        'form-action': ["'self'"]
-      }
+      contentSecurityPolicy:
+        process.env.NODE_ENV === 'development'
+          ? false
+          : {
+              'default-src': ["'self'"],
+              'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+              'style-src': ["'self'", "'unsafe-inline'"],
+              'img-src': ["'self'", 'data:', 'https:'],
+              'font-src': ["'self'"],
+              'connect-src': ["'self'"],
+              'frame-ancestors': ["'none'"],
+              'base-uri': ["'self'"],
+              'form-action': ["'self'"]
+            }
     },
     rateLimiter: {
       tokensPerInterval: 150,
