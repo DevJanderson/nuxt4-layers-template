@@ -26,12 +26,12 @@ function handleError() {
   <div class="min-h-screen flex flex-col items-center justify-center p-6 bg-background">
     <div class="text-center max-w-md">
       <!-- Error Code -->
-      <p class="text-8xl font-bold text-muted-foreground/20">
+      <p class="text-6xl font-bold text-muted-foreground/20 sm:text-8xl">
         {{ error.statusCode }}
       </p>
 
       <!-- Title -->
-      <h1 class="mt-4 text-2xl font-bold tracking-tight">
+      <h1 class="mt-4 text-xl font-bold tracking-tight sm:text-2xl">
         {{ title }}
       </h1>
 
