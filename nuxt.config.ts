@@ -47,6 +47,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@vee-validate/nuxt',
     '@nuxt/image',
+    '@nuxt/icon',
     '@nuxtjs/color-mode',
     'nuxt-security',
     'nuxt-csurf'
