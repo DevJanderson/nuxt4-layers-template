@@ -119,6 +119,27 @@ export default defineNuxtConfig({
     componentDir: './layers/0-base/app/components/ui'
   },
 
+  // Rate limiting por rota (complementa o global em security.rateLimiter)
+  routeRules: {
+    // Auth - anti brute-force
+    '/api/auth/login': {
+      security: { rateLimiter: { tokensPerInterval: 5, interval: 900000 } } // 5 req/15 min
+    },
+    '/api/auth/forgot-password': {
+      security: { rateLimiter: { tokensPerInterval: 3, interval: 900000 } } // 3 req/15 min
+    },
+    // Content - desabilitar rate limit para rotas do @nuxt/content
+    '/__nuxt_content/**': { security: { rateLimiter: false } },
+    '/api/_content/**': { security: { rateLimiter: false } },
+    // OG Image - desabilitar CSP e rate limit para rendering
+    '/__og-image__/**': {
+      security: {
+        headers: { contentSecurityPolicy: false, crossOriginEmbedderPolicy: false },
+        rateLimiter: false
+      }
+    }
+  },
+
   runtimeConfig: {
     // Public (exposed to client)
     public: {
