@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NODE_ENV === 'development' },
 
   // Performance - Experimental features
   experimental: {
@@ -27,7 +27,11 @@ export default defineNuxtConfig({
         { name: 'theme-color', content: '#000000' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        // Google Fonts - Inter (preconnect + stylesheet)
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' }
       ]
     }
   },
@@ -45,6 +49,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     'shadcn-nuxt',
     '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
     '@vee-validate/nuxt',
     '@nuxt/image',
     '@nuxt/icon',
@@ -168,9 +173,14 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    // Public (exposed to client)
+    // Server-only (não exposto ao client)
+    // Override via: NUXT_API_EXTERNAL_BASE_URL=https://api.example.com
+    apiExternalBaseUrl: 'http://localhost:8000',
+
+    // Public (exposto ao client)
+    // Override via: NUXT_PUBLIC_API_BASE_URL=/api
     public: {
-      apiBaseUrl: import.meta.env.API_BASE_URL || '/api',
+      apiBaseUrl: '/api',
     }
   },
 
