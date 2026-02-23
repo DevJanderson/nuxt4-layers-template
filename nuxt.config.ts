@@ -50,8 +50,27 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxtjs/color-mode',
     'nuxt-security',
-    'nuxt-csurf'
+    'nuxt-csurf',
+    '@nuxt/content'
   ],
+
+  // Content - documentação markdown
+  content: {
+    build: {
+      markdown: {
+        highlight: {
+          theme: { default: 'github-dark', dark: 'github-dark' },
+          langs: ['bash', 'css', 'html', 'javascript', 'json', 'typescript', 'vue', 'yaml']
+        }
+      }
+    }
+  },
+
+  // Desabilitar rate limit para rotas de conteúdo
+  routeRules: {
+    '/__nuxt_content/**': { security: { rateLimiter: false } },
+    '/api/_content/**': { security: { rateLimiter: false } }
+  },
 
   // Security - Headers e proteções
   security: {
