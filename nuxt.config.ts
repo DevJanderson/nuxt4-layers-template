@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NODE_ENV === 'development' },
 
   // Performance - Experimental features
   experimental: {
@@ -27,7 +27,11 @@ export default defineNuxtConfig({
         { name: 'theme-color', content: '#000000' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        // Google Fonts - Inter (preconnect + stylesheet)
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' }
       ]
     }
   },
@@ -45,12 +49,14 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     'shadcn-nuxt',
     '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
     '@vee-validate/nuxt',
     '@nuxt/image',
     '@nuxt/icon',
     '@nuxtjs/color-mode',
     'nuxt-security',
     'nuxt-csurf',
+    '@nuxtjs/seo',
     '@nuxt/content'
   ],
 
@@ -66,8 +72,53 @@ export default defineNuxtConfig({
     }
   },
 
-  // Desabilitar rate limit para rotas de conteúdo
+  // SEO - configuração do site
+  // Override via NUXT_SITE_URL, NUXT_SITE_NAME, etc.
+  site: {
+    url: '',
+    name: 'Nuxt 4 Layers Template',
+    description: 'Template profissional para Nuxt 4 com shadcn-vue, Tailwind CSS v4 e arquitetura de Layers.',
+    defaultLocale: 'pt-BR'
+  },
+
+  // Robots - bloqueia rotas internas
+  robots: {
+    disallow: ['/app/', '/api/']
+  },
+
+  // Sitemap - exclui rotas privadas
+  sitemap: {
+    exclude: ['/app/**', '/login']
+  },
+
+  // Schema.org
+  schemaOrg: {
+    identity: {
+      type: 'Organization',
+      name: 'Minha Empresa',
+      url: ''
+    }
+  },
+
+  // OG Image
+  ogImage: {
+    defaults: {
+      component: 'OgImageDefault',
+      width: 1200,
+      height: 630
+    }
+  },
+
+  // Route rules
   routeRules: {
+    // OG Image rendering
+    '/__og-image__/**': {
+      security: {
+        headers: { contentSecurityPolicy: false, crossOriginEmbedderPolicy: false },
+        rateLimiter: false
+      }
+    },
+    // Content - desabilitar rate limit
     '/__nuxt_content/**': { security: { rateLimiter: false } },
     '/api/_content/**': { security: { rateLimiter: false } }
   },
@@ -139,9 +190,14 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    // Public (exposed to client)
+    // Server-only (não exposto ao client)
+    // Override via: NUXT_API_EXTERNAL_BASE_URL=https://api.example.com
+    apiExternalBaseUrl: 'http://localhost:8000',
+
+    // Public (exposto ao client)
+    // Override via: NUXT_PUBLIC_API_BASE_URL=/api
     public: {
-      apiBaseUrl: import.meta.env.API_BASE_URL || '/api',
+      apiBaseUrl: '/api',
     }
   },
 

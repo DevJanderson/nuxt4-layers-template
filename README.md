@@ -154,8 +154,8 @@ npm run test:e2e:install   # Instala browsers do Playwright
 ```
 tests/
 ├── setup.ts           # Setup global (mocks do Nuxt)
-├── unit/              # Testes unitários
-├── integration/       # Testes de integração
+├── unit/              # Testes unitários (Node puro)
+├── nuxt/              # Testes com runtime Nuxt (composables, stores)
 └── e2e/               # Testes E2E (Playwright)
     └── example.spec.ts
 ```
@@ -175,25 +175,24 @@ npm run test:e2e           # Executa testes
 
 ```
 projeto/
-├── layers/                         # TUDO fica aqui
-│   ├── 0-core/                     # Fundação: app.vue, error.vue, CSS
-│   ├── 1-base/                     # UI: shadcn-vue, utils, tipos
+├── layers/                         # TUDO fica aqui (layers-only)
+│   ├── 0-base/                     # Fundação + UI: app.vue, error.vue, CSS, shadcn-vue, utils
 │   │   ├── app/components/ui/      # shadcn-vue
 │   │   ├── app/components/common/  # Componentes compartilhados
 │   │   └── app/utils/              # Funções utilitárias
-│   ├── 2-example/                  # Feature: Módulo de exemplo
-│   └── 4-landing/                  # Feature: Landing page
+│   └── 1-example/                  # Feature: Módulo de exemplo (copiar para novas)
 │
-├── server/                         # API routes (Nitro)
-└── tests/                          # Testes (unit, e2e)
+└── tests/                          # Testes (unit, nuxt, e2e)
 ```
 
-> **Nota:** Use hífen (`-`) no nome das layers (ex: `1-base`), não ponto.
+> **Nota:** Não existe pasta `server/` na raiz — API routes ficam dentro de cada layer em `layers/*/server/`.
+
+> Use hífen (`-`) no nome das layers (ex: `0-base`), não ponto.
 
 ### Ordem de Prioridade (Layers)
 
 ```
-4-landing > 2-example > 1-base > 0-core
+1-example > 0-base
 ```
 
 Número maior = maior prioridade = sobrescreve layers anteriores.
@@ -205,7 +204,7 @@ Número maior = maior prioridade = sobrescreve layers anteriores.
 3. Estruture com `app/` para código Vue e `server/` para API
 
 ```
-layers/5-minha-feature/
+layers/2-minha-feature/
 ├── nuxt.config.ts
 ├── app/
 │   ├── components/
@@ -226,7 +225,7 @@ npx shadcn-vue@latest add card
 npx shadcn-vue@latest add input
 ```
 
-Componentes são instalados em `layers/1-base/app/components/ui/` e auto-importados.
+Componentes são instalados em `layers/0-base/app/components/ui/` e auto-importados.
 
 ## Validação com Zod
 
@@ -262,9 +261,14 @@ const toggleTheme = () => {
 cp .env.example .env
 ```
 
+Nuxt usa prefixo `NUXT_` para override automático do `runtimeConfig`:
+
 ```env
-API_BASE_URL=/api
-JWT_SECRET=sua-chave-secreta
+# Server-only
+NUXT_API_EXTERNAL_BASE_URL=https://api.example.com
+
+# Client + server
+NUXT_PUBLIC_API_BASE_URL=/api
 ```
 
 ## Licença
