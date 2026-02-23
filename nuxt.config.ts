@@ -120,9 +120,14 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    // Public (exposed to client)
+    // Server-only (não exposto ao client)
+    // Override via: NUXT_API_EXTERNAL_BASE_URL=https://api.example.com
+    apiExternalBaseUrl: 'http://localhost:8000',
+
+    // Public (exposto ao client)
+    // Override via: NUXT_PUBLIC_API_BASE_URL=/api
     public: {
-      apiBaseUrl: import.meta.env.API_BASE_URL || '/api',
+      apiBaseUrl: '/api',
     }
   },
 
