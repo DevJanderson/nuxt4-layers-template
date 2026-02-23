@@ -49,6 +49,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     'shadcn-nuxt',
     '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
     '@vee-validate/nuxt',
     '@nuxt/image',
     '@nuxt/icon',
