@@ -45,5 +45,10 @@ coverage
 /blob-report/
 /playwright/.cache/
 
+# Kubb
+**/.kubb/
+generated/*
+!generated/.gitkeep
+
 # Misc
 *.tsbuildinfo
