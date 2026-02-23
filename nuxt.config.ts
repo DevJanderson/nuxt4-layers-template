@@ -56,8 +56,21 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     'nuxt-security',
     'nuxt-csurf',
-    '@nuxtjs/seo'
+    '@nuxtjs/seo',
+    '@nuxt/content'
   ],
+
+  // Content - documentação markdown
+  content: {
+    build: {
+      markdown: {
+        highlight: {
+          theme: { default: 'github-dark', dark: 'github-dark' },
+          langs: ['bash', 'css', 'html', 'javascript', 'json', 'typescript', 'vue', 'yaml']
+        }
+      }
+    }
+  },
 
   // SEO - configuração do site
   // Override via NUXT_SITE_URL, NUXT_SITE_NAME, etc.
@@ -96,14 +109,18 @@ export default defineNuxtConfig({
     }
   },
 
-  // Route rules para OG Image rendering
+  // Route rules
   routeRules: {
+    // OG Image rendering
     '/__og-image__/**': {
       security: {
         headers: { contentSecurityPolicy: false, crossOriginEmbedderPolicy: false },
         rateLimiter: false
       }
-    }
+    },
+    // Content - desabilitar rate limit
+    '/__nuxt_content/**': { security: { rateLimiter: false } },
+    '/api/_content/**': { security: { rateLimiter: false } }
   },
 
   // Security - Headers e proteções
