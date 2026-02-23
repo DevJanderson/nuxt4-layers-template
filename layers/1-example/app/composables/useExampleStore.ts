@@ -6,6 +6,8 @@
 
 import type { Example } from './types'
 
+// Para persistir no localStorage, adicionar { persist: true } como 3º argumento:
+// export const useExampleStore = defineStore('example', () => { ... }, { persist: true })
 export const useExampleStore = defineStore('example', () => {
   // Estado
   const items = ref<Example[]>([])
