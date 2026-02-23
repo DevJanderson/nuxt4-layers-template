@@ -209,6 +209,16 @@ const result = schema.safeParse(body)
 if (!result.success) throw createError({ statusCode: 400 })
 ```
 
+### Padrões BFF (Backend For Frontend)
+
+- **Error sanitization** — nunca repassar `err.data?.detail` (pode conter SQL, stack traces)
+- **Timeout 15s** — `AbortSignal.timeout(15_000)` em chamadas a API externa
+- **SSR Cookie Forwarding** — `useRequestHeaders(['cookie'])` em composables
+- **Trailing slash** — endpoints de listagem com `/` final (evita redirect 307 que perde Authorization)
+- **Query params Zod** — validar com `.strict()` para rejeitar parâmetros desconhecidos
+
+> Detalhes completos em [docs/BFF-SECURITY.md](docs/BFF-SECURITY.md)
+
 ## Documentação por Diretório
 
 Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específicas:
@@ -217,4 +227,6 @@ Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específ
 |-----------|----------|
 | [layers/0-base/CLAUDE.md](layers/0-base/CLAUDE.md) | Fundação, UI, shadcn-vue, utils |
 | [layers/1-example/CLAUDE.md](layers/1-example/CLAUDE.md) | Template para criar features |
+| [layers/2-auth/CLAUDE.md](layers/2-auth/CLAUDE.md) | Autenticação BFF, cookies httpOnly |
 | [tests/CLAUDE.md](tests/CLAUDE.md) | Vitest, Playwright, mocking |
+| [docs/BFF-SECURITY.md](docs/BFF-SECURITY.md) | Padrões de segurança BFF |
