@@ -50,8 +50,56 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxtjs/color-mode',
     'nuxt-security',
-    'nuxt-csurf'
+    'nuxt-csurf',
+    '@nuxtjs/seo'
   ],
+
+  // SEO - configuração do site
+  // Override via NUXT_SITE_URL, NUXT_SITE_NAME, etc.
+  site: {
+    url: '',
+    name: 'Nuxt 4 Layers Template',
+    description: 'Template profissional para Nuxt 4 com shadcn-vue, Tailwind CSS v4 e arquitetura de Layers.',
+    defaultLocale: 'pt-BR'
+  },
+
+  // Robots - bloqueia rotas internas
+  robots: {
+    disallow: ['/app/', '/api/']
+  },
+
+  // Sitemap - exclui rotas privadas
+  sitemap: {
+    exclude: ['/app/**', '/login']
+  },
+
+  // Schema.org
+  schemaOrg: {
+    identity: {
+      type: 'Organization',
+      name: 'Minha Empresa',
+      url: ''
+    }
+  },
+
+  // OG Image
+  ogImage: {
+    defaults: {
+      component: 'OgImageDefault',
+      width: 1200,
+      height: 630
+    }
+  },
+
+  // Route rules para OG Image rendering
+  routeRules: {
+    '/__og-image__/**': {
+      security: {
+        headers: { contentSecurityPolicy: false, crossOriginEmbedderPolicy: false },
+        rateLimiter: false
+      }
+    }
+  },
 
   // Security - Headers e proteções
   security: {
