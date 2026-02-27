@@ -10,7 +10,8 @@ Sempre responda em Português Brasileiro (pt-BR).
 
 - Não incluir `Co-Authored-By` nos commits
 - Mensagens de commit em português ou inglês (consistente com o projeto)
-- Conventional Commits obrigatório (commitlint enforced): `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `chore:`
+- Conventional Commits obrigatório (commitlint enforced): `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `perf:`, `test:`, `chore:`, `ci:`, `build:`, `revert:`
+- Subject: sempre lowercase, máximo 72 caracteres. Body: máximo 100 caracteres por linha
 - Pre-commit hooks (Husky + lint-staged) rodam ESLint + Prettier automaticamente
 
 ## Comandos
@@ -35,8 +36,16 @@ npm run quality:fix  # Corrigir lint + formatar
 # Testes
 npm run test:run           # Vitest (uma execução)
 npm run test -- path/to/file.test.ts  # Executar teste específico
+npm run test:coverage      # Vitest com cobertura (v8)
+npm run test:ui            # Vitest interface visual
 npm run test:e2e           # Playwright E2E
+npm run test:e2e:ui        # Playwright interface visual
+npm run test:e2e:headed    # Playwright com browser visível
 npm run test:e2e:install   # Instala browsers (primeiro uso)
+
+# Code generation (Kubb — a partir de OpenAPI spec)
+npm run api:generate       # Gera tipos + schemas em generated/
+npm run api:watch          # Regenera automaticamente ao alterar spec
 ```
 
 ## Componentes shadcn-vue
@@ -49,7 +58,7 @@ Componentes ficam em `layers/0-base/app/components/ui/` (auto-import).
 
 ## Arquitetura
 
-Nuxt 4 + shadcn-vue + Tailwind CSS v4 + **Nuxt Layers**.
+Nuxt 4 + shadcn-vue + Tailwind CSS v4 + **Nuxt Layers** + Pinia (com `pinia-plugin-persistedstate`) + `@nuxtjs/seo` (sitemap, robots, og:image, schema.org).
 
 **Tudo é layer** - não existe pasta `app/` nem `server/` na raiz. Arquitetura layers-only.
 
@@ -59,6 +68,8 @@ Nuxt 4 + shadcn-vue + Tailwind CSS v4 + **Nuxt Layers**.
 layers/                 # TUDO fica aqui (layers-only)
   0-base/               # Fundação + UI: app.vue, CSS, shadcn-vue, utils, shared/types
   1-example/            # Feature layer de exemplo (copiar para novas)
+  2-auth/               # Autenticação BFF com cookies httpOnly
+  2-docs/               # Documentação markdown (@nuxt/content)
 tests/                  # unit/, nuxt/, e2e/
 ```
 
@@ -79,16 +90,24 @@ import type { ApiResponse } from '#shared/types'
 ### Ordem de Prioridade (Layers)
 
 ```
-1-example > 0-base
+2-auth / 2-docs > 1-example > 0-base
 ```
 
-Número maior = maior prioridade = sobrescreve layers anteriores.
+Número maior = maior prioridade = sobrescreve layers anteriores. Layers com mesmo número têm prioridade equivalente.
 
 ### Fluxo de Dados
 
 ```
 UI → Composable/Store → Service → API
 ```
+
+### Criar Nova Feature Layer
+
+```bash
+cp -r layers/1-example layers/{N}-{sua-feature}
+```
+
+Renomear `example`/`Example` pelo nome da feature em todos os arquivos.
 
 ### Estrutura de uma Feature Layer
 
@@ -175,6 +194,36 @@ const schema = toTypedSchema(z.object({
 <Icon name="lucide:home" />
 ```
 
+### ESLint — Regras Importantes
+
+- `vue/html-self-closing: error` — todos os elementos devem ter self-closing (`<Component />`)
+- `no-console: warn` — exceto `console.warn` e `console.error`
+- `@typescript-eslint/no-unused-vars` — variáveis/args prefixados com `_` são permitidos
+- `generated/**` é ignorado pelo ESLint
+
+## Kubb (Code Generation)
+
+Gera tipos TypeScript e schemas Zod a partir de specs OpenAPI. Configuração em `kubb.config.ts`.
+
+```bash
+npm run api:generate       # Gera em generated/api/
+```
+
+- Spec de entrada: `openapi/spec.json`
+- Saída: `generated/api/types/` (interfaces) e `generated/api/zod/` (schemas)
+- **Nunca editar `generated/` manualmente** — será sobrescrito
+- Gotchas: `extension: { '.ts': '' }` necessário para `verbatimModuleSyntax`; `dateType: 'string'` em ambos plugins
+
+Para usar tipos gerados numa layer:
+
+```typescript
+// layers/{N}-{feature}/app/composables/types.ts
+export type { User, Cliente } from '~/generated/api/types'
+export { userSchema } from '~/generated/api/zod'
+```
+
+> Detalhes completos em [docs/KUBB.md](docs/KUBB.md)
+
 ## Variáveis de Ambiente
 
 Nunca usar `import.meta.env` no `nuxt.config.ts`. Usar defaults no `runtimeConfig` e override via env vars com prefixo `NUXT_`:
@@ -226,7 +275,12 @@ Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específ
 | Documento | Conteúdo |
 |-----------|----------|
 | [layers/0-base/CLAUDE.md](layers/0-base/CLAUDE.md) | Fundação, UI, shadcn-vue, utils |
+| [layers/0-base/app/components/CLAUDE.md](layers/0-base/app/components/CLAUDE.md) | Componentes shadcn-vue, common, testes |
 | [layers/1-example/CLAUDE.md](layers/1-example/CLAUDE.md) | Template para criar features |
 | [layers/2-auth/CLAUDE.md](layers/2-auth/CLAUDE.md) | Autenticação BFF, cookies httpOnly |
 | [tests/CLAUDE.md](tests/CLAUDE.md) | Vitest, Playwright, mocking |
 | [docs/BFF-SECURITY.md](docs/BFF-SECURITY.md) | Padrões de segurança BFF |
+| [docs/KUBB.md](docs/KUBB.md) | Kubb + BFF: integração com APIs externas |
+| [docs/NUXT_LAYERS.md](docs/NUXT_LAYERS.md) | Arquitetura de Nuxt Layers |
+
+> **Atenção:** Alguns sub-CLAUDE.md contêm nomes de layers desatualizados (`0-core`, `1-base`, `2-example`). Os nomes corretos são `0-base`, `1-example`, `2-auth`, `2-docs`. Sempre seguir o CLAUDE.md raiz como fonte de verdade.
