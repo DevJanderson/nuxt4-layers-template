@@ -5,6 +5,7 @@
 .nitro
 .cache
 dist
+public/_robots.txt
 
 # Node dependencies
 node_modules
