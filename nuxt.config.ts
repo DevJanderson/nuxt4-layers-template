@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: process.env.NODE_ENV === 'development' },
+  devtools: { enabled: process.env.NUXT_DEVTOOLS === 'true' },
 
   // Performance - Experimental features
   experimental: {
@@ -109,20 +109,6 @@ export default defineNuxtConfig({
     }
   },
 
-  // Route rules
-  routeRules: {
-    // OG Image rendering
-    '/__og-image__/**': {
-      security: {
-        headers: { contentSecurityPolicy: false, crossOriginEmbedderPolicy: false },
-        rateLimiter: false
-      }
-    },
-    // Content - desabilitar rate limit
-    '/__nuxt_content/**': { security: { rateLimiter: false } },
-    '/api/_content/**': { security: { rateLimiter: false } }
-  },
-
   // Security - Headers e proteções
   security: {
     headers: {
@@ -189,7 +175,7 @@ export default defineNuxtConfig({
     componentDir: './layers/0-base/app/components/ui'
   },
 
-  // Rate limiting por rota (complementa o global em security.rateLimiter)
+  // Route rules - rate limiting por rota e exceções de segurança
   routeRules: {
     // Auth - anti brute-force
     '/api/auth/login': {
@@ -225,11 +211,28 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
 
+    // Performance - Ignorar generated/ no file watcher
+    server: {
+      watch: { ignored: ['**/generated/**'] }
+    },
+
+    // Performance - Pre-bundle de dependências pesadas
+    optimizeDeps: {
+      include: [
+        'reka-ui',
+        'class-variance-authority',
+        'clsx',
+        'tailwind-merge',
+        'lucide-vue-next',
+        '@vueuse/core',
+        '@internationalized/date',
+        'zod'
+      ]
+    },
+
     // Performance - Build optimizations
     build: {
-      // Minificação rápida
       minify: 'esbuild',
-      // Limite para inline de assets (4kb)
       assetsInlineLimit: 4096
     }
   },

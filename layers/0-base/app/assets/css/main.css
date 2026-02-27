@@ -1,9 +1,9 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
 @import "tw-animate-css";
 @plugin '@tailwindcss/typography';
 
-/* Incluir layers no scan do Tailwind v4 */
-@source "../../../../";
+@source "../../../../../layers";
+@source "../../../../../content";
 
 @custom-variant dark (&:is(.dark *));
 
