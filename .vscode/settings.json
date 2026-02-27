@@ -36,16 +36,15 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
-    "package.json": "package-lock.json, .npmrc, .nvmrc, .node-version",
-    "nuxt.config.ts": "nuxt.config.*, .nuxtignore, .nuxtrc",
+    "package.json": "package-lock.json, .npmrc, .nvmrc, .node-version, .env.example",
+    "nuxt.config.ts": "nuxt.config.*, .nuxtignore, .nuxtrc, components.json",
     "tsconfig.json": "tsconfig.*.json, env.d.ts",
     "eslint.config.mjs": ".eslintignore, .prettierrc*, .prettierignore, .editorconfig",
     "vitest.config.ts": "vitest.config.*",
     "playwright.config.ts": "playwright.config.*",
     "commitlint.config.js": ".husky, .lintstagedrc*",
     "kubb.config.ts": "kubb.config.*",
-    "components.json": "tailwind.config.*, postcss.config.*",
-    ".gitignore": ".gitattributes, .gitmodules, .mailmap",
-    "README.md": "LICENSE, CLAUDE.md, CHANGELOG.md, CONTRIBUTING.md"
+    ".gitignore": ".gitattributes, .gitmodules, .mailmap, .github",
+    "README.md": "LICENSE, CLAUDE.md, CHANGELOG.md, CONTRIBUTING.md, docs"
   }
 }
