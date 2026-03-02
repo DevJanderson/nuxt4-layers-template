@@ -3,7 +3,7 @@
  *
  * Remove um item de exemplo.
  */
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const id = getRouterParam(event, 'id')
 
   if (!id) {

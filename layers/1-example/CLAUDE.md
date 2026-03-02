@@ -66,39 +66,39 @@ layers/{N}-{nome-feature}/
 
 ## Arquivos desta Layer de Exemplo
 
-| Arquivo | Descrição |
-|---------|-----------|
-| `nuxt.config.ts` | Configuração da layer |
-| **app/components/** | |
-| `ExampleCard.vue` | Componente de card com props tipadas |
-| **app/composables/** | |
-| `types.ts` | Interfaces e tipos TypeScript |
-| `useExampleApi.ts` | Service para chamadas à API |
-| `useExampleStore.ts` | Store Pinia com estado reativo |
-| `useExampleForm.ts` | Lógica de formulário com validação |
-| `useExampleValidators.ts` | Funções de validação |
-| **app/layouts/** | |
-| `example.vue` | Layout específico da feature |
-| **app/middleware/** | |
-| `example-guard.ts` | Middleware de proteção de rotas |
-| **app/pages/example/** | |
-| `index.vue` | Página principal (/example) |
-| **app/plugins/** | |
-| `example.ts` | Plugin de inicialização |
-| **app/utils/** | |
-| `example.ts` | Funções utilitárias puras |
-| **server/api/example/** | |
-| `index.get.ts` | GET /api/example |
-| `index.post.ts` | POST /api/example |
-| `[id].get.ts` | GET /api/example/:id |
-| `[id].put.ts` | PUT /api/example/:id |
-| `[id].delete.ts` | DELETE /api/example/:id |
-| **server/middleware/** | |
-| `example-logger.ts` | Logging de requisições |
-| **server/plugins/** | |
-| `example.ts` | Inicialização do servidor |
-| **server/utils/** | |
-| `example.ts` | Utilitários server-side |
+| Arquivo                   | Descrição                            |
+| ------------------------- | ------------------------------------ |
+| `nuxt.config.ts`          | Configuração da layer                |
+| **app/components/**       |                                      |
+| `ExampleCard.vue`         | Componente de card com props tipadas |
+| **app/composables/**      |                                      |
+| `types.ts`                | Interfaces e tipos TypeScript        |
+| `useExampleApi.ts`        | Service para chamadas à API          |
+| `useExampleStore.ts`      | Store Pinia com estado reativo       |
+| `useExampleForm.ts`       | Lógica de formulário com validação   |
+| `useExampleValidators.ts` | Funções de validação                 |
+| **app/layouts/**          |                                      |
+| `example.vue`             | Layout específico da feature         |
+| **app/middleware/**       |                                      |
+| `example-guard.ts`        | Middleware de proteção de rotas      |
+| **app/pages/example/**    |                                      |
+| `index.vue`               | Página principal (/example)          |
+| **app/plugins/**          |                                      |
+| `example.ts`              | Plugin de inicialização              |
+| **app/utils/**            |                                      |
+| `example.ts`              | Funções utilitárias puras            |
+| **server/api/example/**   |                                      |
+| `index.get.ts`            | GET /api/example                     |
+| `index.post.ts`           | POST /api/example                    |
+| `[id].get.ts`             | GET /api/example/:id                 |
+| `[id].put.ts`             | PUT /api/example/:id                 |
+| `[id].delete.ts`          | DELETE /api/example/:id              |
+| **server/middleware/**    |                                      |
+| `example-logger.ts`       | Logging de requisições               |
+| **server/plugins/**       |                                      |
+| `example.ts`              | Inicialização do servidor            |
+| **server/utils/**         |                                      |
+| `example.ts`              | Utilitários server-side              |
 
 ---
 
@@ -124,6 +124,7 @@ mv app/composables/useExampleApi.ts app/composables/useProductApi.ts
 ### 3. Atualizar conteúdo
 
 Em cada arquivo, substitua:
+
 - `Example` → `{SuaFeature}` (PascalCase)
 - `example` → `{sua-feature}` (kebab-case)
 - `EXAMPLE` → `{SUA_FEATURE}` (UPPER_CASE)
@@ -150,24 +151,24 @@ export default defineNuxtConfig({
 
 ### app/ (Cliente)
 
-| Diretório | Quando usar | Auto-import |
-|-----------|-------------|-------------|
-| `components/` | UI reutilizável da feature | ✅ Sim |
-| `composables/` | Lógica reativa (stores, services) | ✅ Sim |
-| `layouts/` | Layout específico da feature | ✅ Sim |
-| `middleware/` | Proteção de rotas (auth, roles) | ✅ Sim |
-| `pages/` | Rotas/páginas da feature | ✅ Sim |
-| `plugins/` | Inicialização, bibliotecas | ✅ Sim |
-| `utils/` | Funções puras (formatters, helpers) | ✅ Sim |
+| Diretório      | Quando usar                         | Auto-import |
+| -------------- | ----------------------------------- | ----------- |
+| `components/`  | UI reutilizável da feature          | ✅ Sim      |
+| `composables/` | Lógica reativa (stores, services)   | ✅ Sim      |
+| `layouts/`     | Layout específico da feature        | ✅ Sim      |
+| `middleware/`  | Proteção de rotas (auth, roles)     | ✅ Sim      |
+| `pages/`       | Rotas/páginas da feature            | ✅ Sim      |
+| `plugins/`     | Inicialização, bibliotecas          | ✅ Sim      |
+| `utils/`       | Funções puras (formatters, helpers) | ✅ Sim      |
 
 ### server/ (Servidor)
 
-| Diretório | Quando usar | Auto-import |
-|-----------|-------------|-------------|
-| `api/` | Endpoints REST | ✅ Sim |
-| `middleware/` | Logging, auth, rate limit | ✅ Sim |
-| `plugins/` | Conexões DB, inicialização | ✅ Sim |
-| `utils/` | Helpers server-side | ✅ Sim |
+| Diretório     | Quando usar                | Auto-import |
+| ------------- | -------------------------- | ----------- |
+| `api/`        | Endpoints REST             | ✅ Sim      |
+| `middleware/` | Logging, auth, rate limit  | ✅ Sim      |
+| `plugins/`    | Conexões DB, inicialização | ✅ Sim      |
+| `utils/`      | Helpers server-side        | ✅ Sim      |
 
 ---
 
@@ -175,25 +176,25 @@ export default defineNuxtConfig({
 
 ### Arquivos
 
-| Tipo | Padrão | Exemplo |
-|------|--------|---------|
-| Componente | `{Feature}{Nome}.vue` | `ProductCard.vue` |
-| Composable | `use{Feature}{Tipo}.ts` | `useProductApi.ts` |
-| Layout | `{feature}.vue` | `product.vue` |
-| Middleware | `{feature}-{ação}.ts` | `product-guard.ts` |
-| Página | `{feature}/index.vue` | `product/index.vue` |
-| API route | `{rota}.{método}.ts` | `index.get.ts` |
-| Utils | `{feature}.ts` | `product.ts` |
+| Tipo       | Padrão                  | Exemplo             |
+| ---------- | ----------------------- | ------------------- |
+| Componente | `{Feature}{Nome}.vue`   | `ProductCard.vue`   |
+| Composable | `use{Feature}{Tipo}.ts` | `useProductApi.ts`  |
+| Layout     | `{feature}.vue`         | `product.vue`       |
+| Middleware | `{feature}-{ação}.ts`   | `product-guard.ts`  |
+| Página     | `{feature}/index.vue`   | `product/index.vue` |
+| API route  | `{rota}.{método}.ts`    | `index.get.ts`      |
+| Utils      | `{feature}.ts`          | `product.ts`        |
 
 ### Métodos HTTP em API Routes
 
-| Arquivo | Método | Rota |
-|---------|--------|------|
-| `index.get.ts` | GET | /api/{feature} |
-| `index.post.ts` | POST | /api/{feature} |
-| `[id].get.ts` | GET | /api/{feature}/:id |
-| `[id].put.ts` | PUT | /api/{feature}/:id |
-| `[id].patch.ts` | PATCH | /api/{feature}/:id |
+| Arquivo          | Método | Rota               |
+| ---------------- | ------ | ------------------ |
+| `index.get.ts`   | GET    | /api/{feature}     |
+| `index.post.ts`  | POST   | /api/{feature}     |
+| `[id].get.ts`    | GET    | /api/{feature}/:id |
+| `[id].put.ts`    | PUT    | /api/{feature}/:id |
+| `[id].patch.ts`  | PATCH  | /api/{feature}/:id |
 | `[id].delete.ts` | DELETE | /api/{feature}/:id |
 
 ---
@@ -216,12 +217,14 @@ export default defineNuxtConfig({
 ## Checklist: Nova Feature Layer
 
 ### Estrutura Mínima
+
 - [ ] `nuxt.config.ts` criado
 - [ ] `app/composables/types.ts` com interfaces
 - [ ] `app/composables/use{Feature}Api.ts` com service
 - [ ] `app/pages/{feature}/index.vue` com página principal
 
 ### Estrutura Completa
+
 - [ ] `app/components/` com componentes prefixados
 - [ ] `app/composables/use{Feature}Store.ts` com Pinia
 - [ ] `app/layouts/{feature}.vue` se precisar de layout próprio

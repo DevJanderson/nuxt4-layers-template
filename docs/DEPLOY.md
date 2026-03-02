@@ -91,6 +91,7 @@ export default defineNuxtConfig({
 ### Variáveis de Ambiente
 
 No painel do Vercel:
+
 1. Settings → Environment Variables
 2. Adicionar variáveis para Production/Preview/Development
 
@@ -185,6 +186,7 @@ export default defineNuxtConfig({
 ### Variáveis de Ambiente
 
 No painel do Netlify:
+
 1. Site settings → Environment variables
 2. Adicionar variáveis
 
@@ -279,14 +281,14 @@ services:
   app:
     build: .
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - NODE_ENV=production
       - NUXT_PUBLIC_API_BASE_URL=https://api.exemplo.com
       - NUXT_JWT_SECRET=${JWT_SECRET}
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/health']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -408,20 +410,22 @@ pm2 startup
 ```javascript
 // ecosystem.config.cjs
 module.exports = {
-  apps: [{
-    name: 'nuxt-app',
-    script: '.output/server/index.mjs',
-    instances: 'max', // Cluster mode
-    exec_mode: 'cluster',
-    env: {
-      NODE_ENV: 'production',
-      PORT: 3000
-    },
-    env_production: {
-      NODE_ENV: 'production',
-      PORT: 3000
+  apps: [
+    {
+      name: 'nuxt-app',
+      script: '.output/server/index.mjs',
+      instances: 'max', // Cluster mode
+      exec_mode: 'cluster',
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3000
+      },
+      env_production: {
+        NODE_ENV: 'production',
+        PORT: 3000
+      }
     }
-  }]
+  ]
 }
 ```
 
@@ -574,14 +578,14 @@ pm2 startup
 export default {
   config() {
     return {
-      name: "nuxt-app",
-      region: "us-east-1"
+      name: 'nuxt-app',
+      region: 'us-east-1'
     }
   },
   stacks(app) {
     app.stack(function Site({ stack }) {
-      const site = new SSTNuxt(stack, "site", {
-        path: ".",
+      const site = new SSTNuxt(stack, 'site', {
+        path: '.'
       })
 
       stack.addOutputs({
@@ -702,27 +706,28 @@ O **Content Security Policy (CSP)** é **desabilitado em desenvolvimento** e **a
 
 ```typescript
 // nuxt.config.ts
-contentSecurityPolicy:
-  process.env.NODE_ENV === 'development'
-    ? false // HMR do Vite requer WebSocket sem restrições
-    : { /* diretivas de produção */ }
+contentSecurityPolicy: process.env.NODE_ENV === 'development'
+  ? false // HMR do Vite requer WebSocket sem restrições
+  : {
+      /* diretivas de produção */
+    }
 ```
 
 **Por quê?** Em dev, o Vite carrega CSS via HMR/WebSocket. Quando acessado por IP de rede (ex: celular na mesma Wi-Fi), o CSP bloqueia o WebSocket e a página carrega sem estilos.
 
 ### Diretivas CSP em Produção
 
-| Diretiva | Valor | Quando ajustar |
-|----------|-------|----------------|
-| `default-src` | `'self'` | Raramente — fallback para outras diretivas |
-| `script-src` | `'self' 'unsafe-inline' 'unsafe-eval'` | Remover `unsafe-eval` se possível |
-| `style-src` | `'self' 'unsafe-inline'` | `unsafe-inline` é necessário para Nuxt/Vue |
-| `img-src` | `'self' data: https:` | Restringir se imagens vêm de domínios conhecidos |
-| `font-src` | `'self'` | Adicionar CDNs de fontes se usadas (ex: Google Fonts) |
-| `connect-src` | `'self'` | Adicionar domínios de APIs externas |
-| `frame-ancestors` | `'none'` | Previne embedding via iframe (clickjacking) |
-| `base-uri` | `'self'` | Previne ataques de base tag injection |
-| `form-action` | `'self'` | Restringir destino de formulários |
+| Diretiva          | Valor                                  | Quando ajustar                                        |
+| ----------------- | -------------------------------------- | ----------------------------------------------------- |
+| `default-src`     | `'self'`                               | Raramente — fallback para outras diretivas            |
+| `script-src`      | `'self' 'unsafe-inline' 'unsafe-eval'` | Remover `unsafe-eval` se possível                     |
+| `style-src`       | `'self' 'unsafe-inline'`               | `unsafe-inline` é necessário para Nuxt/Vue            |
+| `img-src`         | `'self' data: https:`                  | Restringir se imagens vêm de domínios conhecidos      |
+| `font-src`        | `'self'`                               | Adicionar CDNs de fontes se usadas (ex: Google Fonts) |
+| `connect-src`     | `'self'`                               | Adicionar domínios de APIs externas                   |
+| `frame-ancestors` | `'none'`                               | Previne embedding via iframe (clickjacking)           |
+| `base-uri`        | `'self'`                               | Previne ataques de base tag injection                 |
+| `form-action`     | `'self'`                               | Restringir destino de formulários                     |
 
 ### Exemplo: Adicionar Domínio Externo
 
@@ -734,14 +739,14 @@ contentSecurityPolicy:
 
 ### Resumo das Features de Segurança
 
-| Feature | Configuração | Descrição |
-|---------|-------------|-----------|
-| **CSP** | Ativo em produção | Controla origens permitidas para scripts, estilos, imagens, etc. |
-| **Rate Limiter** | 150 requests / 5 min | Previne abuso de endpoints |
-| **CSRF** | `nuxt-csurf` | Protege POST/PUT/PATCH/DELETE com token |
-| **XSS Validator** | Ativo | Sanitiza input contra XSS |
-| **Request Size** | 2 MB (body) / 8 MB (upload) | Limita tamanho de requisições |
-| **COEP** | `require-corp` em produção | Cross-Origin Embedder Policy |
+| Feature           | Configuração                | Descrição                                                        |
+| ----------------- | --------------------------- | ---------------------------------------------------------------- |
+| **CSP**           | Ativo em produção           | Controla origens permitidas para scripts, estilos, imagens, etc. |
+| **Rate Limiter**  | 150 requests / 5 min        | Previne abuso de endpoints                                       |
+| **CSRF**          | `nuxt-csurf`                | Protege POST/PUT/PATCH/DELETE com token                          |
+| **XSS Validator** | Ativo                       | Sanitiza input contra XSS                                        |
+| **Request Size**  | 2 MB (body) / 8 MB (upload) | Limita tamanho de requisições                                    |
+| **COEP**          | `require-corp` em produção  | Cross-Origin Embedder Policy                                     |
 
 ### Referências
 

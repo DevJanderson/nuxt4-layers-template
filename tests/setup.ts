@@ -7,7 +7,7 @@ import { vi } from 'vitest'
 
 // Mock global do Nuxt
 vi.mock('#app', () => ({
-  defineNuxtPlugin: vi.fn((plugin) => plugin),
+  defineNuxtPlugin: vi.fn(plugin => plugin),
   useNuxtApp: () => ({
     $pinia: {},
     callHook: vi.fn()
@@ -31,7 +31,7 @@ vi.mock('#app', () => ({
     replace: vi.fn(),
     back: vi.fn()
   })),
-  defineNuxtRouteMiddleware: vi.fn((middleware) => middleware),
+  defineNuxtRouteMiddleware: vi.fn(middleware => middleware),
   abortNavigation: vi.fn(),
   setPageLayout: vi.fn(),
   useState: vi.fn((_key, init) => ({ value: init ? init() : undefined })),

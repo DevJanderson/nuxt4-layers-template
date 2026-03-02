@@ -6,26 +6,26 @@ export function useAuthApi() {
   async function login(data: LoginRequest): Promise<AuthResponse> {
     return $fetch('/api/auth/login', {
       method: 'POST',
-      body: data,
+      body: data
     })
   }
 
   async function logout(): Promise<void> {
     await $fetch('/api/auth/logout', {
-      method: 'POST',
+      method: 'POST'
     })
   }
 
   async function getMe(): Promise<User> {
     return $fetch('/api/auth/me', {
-      headers,
+      headers
     })
   }
 
   async function refresh(): Promise<AuthResponse> {
     return $fetch('/api/auth/refresh', {
       method: 'POST',
-      headers,
+      headers
     })
   }
 

@@ -8,17 +8,17 @@ export default {
       2,
       'always',
       [
-        'feat',     // Nova funcionalidade
-        'fix',      // Correção de bug
-        'docs',     // Documentação
-        'style',    // Formatação (sem mudança de código)
+        'feat', // Nova funcionalidade
+        'fix', // Correção de bug
+        'docs', // Documentação
+        'style', // Formatação (sem mudança de código)
         'refactor', // Refatoração
-        'perf',     // Melhoria de performance
-        'test',     // Adição/correção de testes
-        'chore',    // Tarefas de manutenção
-        'ci',       // Mudanças em CI/CD
-        'build',    // Mudanças em build
-        'revert'    // Reverter commit
+        'perf', // Melhoria de performance
+        'test', // Adição/correção de testes
+        'chore', // Tarefas de manutenção
+        'ci', // Mudanças em CI/CD
+        'build', // Mudanças em build
+        'revert' // Reverter commit
       ]
     ],
     'subject-case': [2, 'always', 'lower-case'],

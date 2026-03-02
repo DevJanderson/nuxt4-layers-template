@@ -30,16 +30,16 @@ layers/0-base/
 
 ## Responsabilidades
 
-| Item | Descrição |
-|------|-----------|
-| `app.vue` | Root component com `<NuxtLayout>` e `<NuxtPage>` |
-| `error.vue` | Página de erro global |
-| `main.css` | Tailwind v4, variáveis CSS (dark/light mode) |
-| `components/ui/` | Componentes shadcn-vue (primitivos de UI) |
-| `components/common/` | Componentes globais reutilizáveis |
-| `layouts/default.vue` | Layout padrão da aplicação |
-| `utils/` | Funções utilitárias (cn, formatters) |
-| `shared/types/` | Tipos TypeScript compartilhados |
+| Item                  | Descrição                                        |
+| --------------------- | ------------------------------------------------ |
+| `app.vue`             | Root component com `<NuxtLayout>` e `<NuxtPage>` |
+| `error.vue`           | Página de erro global                            |
+| `main.css`            | Tailwind v4, variáveis CSS (dark/light mode)     |
+| `components/ui/`      | Componentes shadcn-vue (primitivos de UI)        |
+| `components/common/`  | Componentes globais reutilizáveis                |
+| `layouts/default.vue` | Layout padrão da aplicação                       |
+| `utils/`              | Funções utilitárias (cn, formatters)             |
+| `shared/types/`       | Tipos TypeScript compartilhados                  |
 
 ## Adicionar Componentes shadcn-vue
 

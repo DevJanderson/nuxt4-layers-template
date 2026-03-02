@@ -10,7 +10,7 @@ async function handleSubmit() {
 
   try {
     // TODO: implementar endpoint /api/auth/forgot-password
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise(resolve => setTimeout(resolve, 1000))
     sent.value = true
   } finally {
     isLoading.value = false

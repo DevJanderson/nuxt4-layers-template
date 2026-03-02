@@ -22,10 +22,7 @@ export function useExampleForm() {
   })
 
   function validate(): boolean {
-    const result = validateCreateExample(
-      form.value.name,
-      form.value.description
-    )
+    const result = validateCreateExample(form.value.name, form.value.description)
     errors.value = result.errors
     return result.isValid
   }

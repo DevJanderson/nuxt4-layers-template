@@ -14,21 +14,21 @@ tests/
 
 ### Quando usar cada pasta
 
-| Pasta | Ambiente | Velocidade | O que testar |
-|-------|----------|------------|--------------|
-| `unit/` | Node puro | ⚡ Rápido | Funções puras, utils, validadores |
-| `nuxt/` | Runtime Nuxt | 🐢 Médio | Composables, stores, componentes |
-| `e2e/` | Browser real | 🐌 Lento | Fluxos completos, navegação |
+| Pasta   | Ambiente     | Velocidade | O que testar                      |
+| ------- | ------------ | ---------- | --------------------------------- |
+| `unit/` | Node puro    | ⚡ Rápido  | Funções puras, utils, validadores |
+| `nuxt/` | Runtime Nuxt | 🐢 Médio   | Composables, stores, componentes  |
+| `e2e/`  | Browser real | 🐌 Lento   | Fluxos completos, navegação       |
 
 ## Ferramentas
 
-| Ferramenta | Uso |
-|------------|-----|
-| Vitest | Testes unitários e nuxt |
-| Playwright | Testes E2E (end-to-end) |
-| @vue/test-utils | Montar componentes Vue |
+| Ferramenta           | Uso                       |
+| -------------------- | ------------------------- |
+| Vitest               | Testes unitários e nuxt   |
+| Playwright           | Testes E2E (end-to-end)   |
+| @vue/test-utils      | Montar componentes Vue    |
 | @testing-library/vue | Testes focados no usuário |
-| happy-dom | DOM environment |
+| happy-dom            | DOM environment           |
 
 ## Comandos
 

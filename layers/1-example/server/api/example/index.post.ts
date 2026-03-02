@@ -12,7 +12,7 @@ const createExampleSchema = z.object({
   description: z.string().optional()
 })
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   // Ler body da requisição
   const body = await readBody(event)
 

@@ -25,16 +25,16 @@ Template profissional para Nuxt 4 com shadcn-vue, Tailwind CSS v4 e arquitetura 
 
 ## Stack
 
-| Categoria | Tecnologia |
-|-----------|------------|
-| Framework | Nuxt 4, Vue 3.5, TypeScript |
-| UI | Tailwind CSS 4, shadcn-vue |
-| State | Pinia |
-| Validação | Zod, VeeValidate |
-| Imagens | @nuxt/image |
-| Tema | @nuxtjs/color-mode |
+| Categoria | Tecnologia                          |
+| --------- | ----------------------------------- |
+| Framework | Nuxt 4, Vue 3.5, TypeScript         |
+| UI        | Tailwind CSS 4, shadcn-vue          |
+| State     | Pinia                               |
+| Validação | Zod, VeeValidate                    |
+| Imagens   | @nuxt/image                         |
+| Tema      | @nuxtjs/color-mode                  |
 | Qualidade | ESLint, Prettier, Husky, Commitlint |
-| Testes | Vitest, Playwright, Testing Library |
+| Testes    | Vitest, Playwright, Testing Library |
 
 ## Início Rápido
 
@@ -60,6 +60,7 @@ npm install
 npm run setup
 npm run dev
 ```
+
 </details>
 
 <details>
@@ -76,6 +77,7 @@ git add .
 git commit -m "Initial commit"
 npm run dev
 ```
+
 </details>
 
 ## Comandos
@@ -103,6 +105,7 @@ npm run test:e2e     # Testes E2E (Playwright)
 ## Qualidade de Código
 
 O template inclui ferramentas de qualidade pré-configuradas:
+
 - **ESLint** - Linting (módulo oficial @nuxt/eslint)
 - **Prettier** - Formatação
 - **Husky** - Git hooks
@@ -125,10 +128,10 @@ refactor: refatoração
 chore: tarefas de manutenção
 ```
 
-
 ## Testes
 
 O template inclui configuração completa para testes:
+
 - **Vitest** - Testes unitários e de integração
 - **Playwright** - Testes E2E (end-to-end)
 - **Testing Library** - Testes de componentes

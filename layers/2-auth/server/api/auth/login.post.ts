@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 const loginSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(1),
+  password: z.string().min(1)
 })
 
 /**
@@ -11,7 +11,7 @@ const loginSchema = z.object({
  *
  * TODO: substituir mock pela chamada real à API externa via authFetch
  */
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const body = await readBody(event)
   const result = loginSchema.safeParse(body)
 
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
   // Mock — substituir por resposta real
   const mockTokens = {
     accessToken: 'mock-access-token',
-    refreshToken: 'mock-refresh-token',
+    refreshToken: 'mock-refresh-token'
   }
 
   setTokenCookies(event, mockTokens)
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
     user: {
       id: '1',
       email: result.data.email,
-      name: 'Usuário Exemplo',
-    },
+      name: 'Usuário Exemplo'
+    }
   }
 })

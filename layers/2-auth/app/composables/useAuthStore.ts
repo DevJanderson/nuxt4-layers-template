@@ -42,6 +42,6 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     logout,
     fetchUser,
-    refreshSession,
+    refreshSession
   }
 })

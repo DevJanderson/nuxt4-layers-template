@@ -16,11 +16,11 @@ layers/1-base/app/components/
 
 ## Tipos de Componentes
 
-| Pasta | Uso | Auto-import |
-|-------|-----|-------------|
-| `layers/1-base/app/components/ui/` | shadcn-vue (primitivos) | ✅ Sim |
-| `layers/1-base/app/components/common/` | Componentes globais | ✅ Sim |
-| `layers/*/app/components/` | Específicos da feature layer | ✅ Sim |
+| Pasta                                  | Uso                          | Auto-import |
+| -------------------------------------- | ---------------------------- | ----------- |
+| `layers/1-base/app/components/ui/`     | shadcn-vue (primitivos)      | ✅ Sim      |
+| `layers/1-base/app/components/common/` | Componentes globais          | ✅ Sim      |
+| `layers/*/app/components/`             | Específicos da feature layer | ✅ Sim      |
 
 ## Adicionar Componente shadcn-vue
 
@@ -44,17 +44,13 @@ Componentes são instalados em `layers/1-base/app/components/ui/` (configurado v
 ```vue
 <template>
   <!-- Não precisa importar -->
-  <Button variant="outline" size="sm">
-    Clique aqui
-  </Button>
+  <Button variant="outline" size="sm"> Clique aqui </Button>
 
   <Card>
     <CardHeader>
       <CardTitle>Título</CardTitle>
     </CardHeader>
-    <CardContent>
-      Conteúdo do card
-    </CardContent>
+    <CardContent> Conteúdo do card </CardContent>
   </Card>
 </template>
 ```
@@ -167,7 +163,7 @@ const emit = defineEmits<{
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
+  set: value => emit('update:modelValue', value)
 })
 </script>
 
@@ -182,13 +178,13 @@ const inputValue = computed({
 
 ## Convenções
 
-| Item | Convenção |
-|------|-----------|
-| Nome do arquivo | `PascalCase.vue` |
-| Nome do componente | `PascalCase` |
-| Props | Interface `Props` com TypeScript |
-| Emits | Tipados com `defineEmits<{}>()` |
-| CSS | Tailwind CSS (utility classes) |
+| Item               | Convenção                        |
+| ------------------ | -------------------------------- |
+| Nome do arquivo    | `PascalCase.vue`                 |
+| Nome do componente | `PascalCase`                     |
+| Props              | Interface `Props` com TypeScript |
+| Emits              | Tipados com `defineEmits<{}>()`  |
+| CSS                | Tailwind CSS (utility classes)   |
 
 ## Ícones (Lucide)
 
@@ -336,14 +332,14 @@ describe('Button', () => {
 
 ### Padrões de Teste
 
-| Componente | O que testar |
-|------------|--------------|
-| Props | Valores padrão, diferentes valores |
-| Slots | Default slot, named slots |
-| Events | Emits corretos, payloads |
-| v-model | Two-way binding |
-| Conditional rendering | v-if, v-show |
-| Classes dinâmicas | Baseadas em props |
+| Componente            | O que testar                       |
+| --------------------- | ---------------------------------- |
+| Props                 | Valores padrão, diferentes valores |
+| Slots                 | Default slot, named slots          |
+| Events                | Emits corretos, payloads           |
+| v-model               | Two-way binding                    |
+| Conditional rendering | v-if, v-show                       |
+| Classes dinâmicas     | Baseadas em props                  |
 
 ## Referências
 

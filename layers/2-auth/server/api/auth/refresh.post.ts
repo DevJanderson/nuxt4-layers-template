@@ -4,7 +4,7 @@
  *
  * TODO: substituir mock pela chamada real à API externa
  */
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const refreshToken = getRefreshToken(event)
 
   if (!refreshToken) {
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
   // Mock — substituir por resposta real
   const mockTokens = {
     accessToken: 'mock-new-access-token',
-    refreshToken: 'mock-new-refresh-token',
+    refreshToken: 'mock-new-refresh-token'
   }
 
   setTokenCookies(event, mockTokens)
@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
     user: {
       id: '1',
       email: 'usuario@example.com',
-      name: 'Usuário Exemplo',
-    },
+      name: 'Usuário Exemplo'
+    }
   }
 })

@@ -18,12 +18,12 @@ export default defineConfig({
   name: 'api',
   root: '.',
   input: {
-    path: './openapi/spec.json',
+    path: './openapi/spec.json'
   },
   output: {
     path: './generated/api',
     clean: true,
-    extension: { '.ts': '' },
+    extension: { '.ts': '' }
   },
   plugins: [
     pluginOas(),
@@ -31,12 +31,12 @@ export default defineConfig({
       output: { path: './types', barrelType: 'named' },
       group: { type: 'tag', name: ({ group }) => `${group}Types` },
       enumType: 'enum',
-      dateType: 'string',
+      dateType: 'string'
     }),
     pluginZod({
       output: { path: './zod', barrelType: 'named' },
       group: { type: 'tag', name: ({ group }) => `${group}Schemas` },
-      dateType: 'string',
-    }),
-  ],
+      dateType: 'string'
+    })
+  ]
 })

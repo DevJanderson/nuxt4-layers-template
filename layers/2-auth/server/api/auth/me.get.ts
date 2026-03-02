@@ -4,7 +4,7 @@
  *
  * TODO: substituir mock pela chamada real via authFetch
  */
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const token = getAccessToken(event)
 
   if (!token) {
@@ -18,6 +18,6 @@ export default defineEventHandler(async (event) => {
   return {
     id: '1',
     email: 'usuario@example.com',
-    name: 'Usuário Exemplo',
+    name: 'Usuário Exemplo'
   }
 })

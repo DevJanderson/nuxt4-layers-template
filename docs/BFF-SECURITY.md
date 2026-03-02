@@ -10,7 +10,7 @@ Nunca repassar detalhes da API externa ao client — pode conter SQL, stack trac
 // ❌ NUNCA repassar err.data?.detail
 throw createError({
   statusCode: err.statusCode || 500,
-  message: err.data?.detail  // PERIGO: pode vazar SQL, stack traces
+  message: err.data?.detail // PERIGO: pode vazar SQL, stack traces
 })
 
 // ✅ Usar mensagens genéricas estáticas
@@ -27,7 +27,7 @@ Sempre usar timeout para evitar que uma API externa trave o BFF inteiro.
 ```typescript
 const data = await $fetch(url, {
   headers: { Authorization: `Bearer ${token}` },
-  signal: AbortSignal.timeout(15_000)  // 15 segundos
+  signal: AbortSignal.timeout(15_000) // 15 segundos
 })
 ```
 
@@ -67,12 +67,14 @@ Validar query params com Zod `.strict()` para rejeitar parâmetros desconhecidos
 ```typescript
 import { z } from 'zod'
 
-const querySchema = z.object({
-  cursor: z.string().optional(),
-  limit: z.coerce.number().int().min(1).max(100).optional()
-}).strict()
+const querySchema = z
+  .object({
+    cursor: z.string().optional(),
+    limit: z.coerce.number().int().min(1).max(100).optional()
+  })
+  .strict()
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(event => {
   const result = querySchema.safeParse(getQuery(event))
   if (!result.success) {
     throw createError({ statusCode: 400, statusMessage: 'Parâmetros inválidos' })

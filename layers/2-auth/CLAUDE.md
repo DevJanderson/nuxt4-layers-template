@@ -55,12 +55,13 @@ definePageMeta({ middleware: 'guest' })
 const auth = useAuthStore()
 await auth.login({ email, password })
 auth.isAuthenticated // computed boolean
-auth.user            // User | null
+auth.user // User | null
 await auth.logout()
 ```
 
 ## TODO
 
 Os endpoints estão com mock. Para integrar com API real:
+
 1. Configurar `NUXT_API_EXTERNAL_BASE_URL` no `.env`
 2. Substituir mocks em `server/api/auth/*.ts` por chamadas via `authFetch()`

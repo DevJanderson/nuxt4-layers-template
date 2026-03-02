@@ -20,6 +20,7 @@ Guia completo para implementar arquitetura modular com Nuxt Layers seguindo os p
 ## O que são Layers?
 
 Layers são módulos independentes que permitem:
+
 - Separação de responsabilidades (core, auth, dashboard, landing, etc.)
 - Reutilização de código entre projetos
 - Ordem de prioridade configurável via prefixos numéricos
@@ -80,11 +81,11 @@ projeto/
 
 ### Responsabilidade de cada Layer
 
-| Layer | Responsabilidade |
-|-------|------------------|
-| `0-core` | Fundação: `app.vue`, `error.vue`, CSS global, variáveis de tema |
-| `1-base` | UI compartilhada: shadcn-vue, layouts, utils, tipos globais |
-| `2-*` a `N-*` | Features específicas: páginas, componentes, API |
+| Layer         | Responsabilidade                                                |
+| ------------- | --------------------------------------------------------------- |
+| `0-core`      | Fundação: `app.vue`, `error.vue`, CSS global, variáveis de tema |
+| `1-base`      | UI compartilhada: shadcn-vue, layouts, utils, tipos globais     |
+| `2-*` a `N-*` | Features específicas: páginas, componentes, API                 |
 
 ---
 
@@ -171,8 +172,8 @@ A diretiva `@source` no CSS principal inclui todas as layers no scan:
 
 ```css
 /* layers/0-core/app/assets/css/main.css */
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 /* Incluir todo o projeto no scan do Tailwind v4 */
 @source "../../../../";
@@ -222,13 +223,16 @@ Componentes são instalados em `layers/1-base/app/components/ui/` e auto-importa
 ## Referências
 
 ### Documentação Nuxt
+
 - [Nuxt 4 - Layers](https://nuxt.com/docs/4.x/getting-started/layers)
 - [Authoring Nuxt Layers](https://nuxt.com/docs/4.x/guide/going-further/layers)
 
 ### Artigos da Comunidade
+
 - [Building a Modular Monolith with Nuxt Layers](https://alexop.dev/posts/nuxt-layers-modular-monolith/)
 - [Modular site architecture with Nuxt layers](https://davestewart.co.uk/blog/nuxt-layers/)
 
 ### Repositórios de Exemplo
+
 - [alexanderop/nuxt-layer-example](https://github.com/alexanderop/nuxt-layer-example)
 - [davestewart/nuxt-layers-demo](https://github.com/davestewart/nuxt-layers-demo)

@@ -23,7 +23,11 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Template profissional para Nuxt 4 com shadcn-vue, Tailwind CSS v4 e arquitetura de Layers.' },
+        {
+          name: 'description',
+          content:
+            'Template profissional para Nuxt 4 com shadcn-vue, Tailwind CSS v4 e arquitetura de Layers.'
+        },
         { name: 'theme-color', content: '#000000' }
       ],
       link: [
@@ -31,7 +35,10 @@ export default defineNuxtConfig({
         // Google Fonts - Inter (preconnect + stylesheet)
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' }
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
+        }
       ]
     }
   },
@@ -77,7 +84,8 @@ export default defineNuxtConfig({
   site: {
     url: '',
     name: 'Nuxt 4 Layers Template',
-    description: 'Template profissional para Nuxt 4 com shadcn-vue, Tailwind CSS v4 e arquitetura de Layers.',
+    description:
+      'Template profissional para Nuxt 4 com shadcn-vue, Tailwind CSS v4 e arquitetura de Layers.',
     defaultLocale: 'pt-BR'
   },
 
@@ -112,7 +120,8 @@ export default defineNuxtConfig({
   // Security - Headers e proteções
   security: {
     headers: {
-      crossOriginEmbedderPolicy: process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp',
+      crossOriginEmbedderPolicy:
+        process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp',
       contentSecurityPolicy:
         process.env.NODE_ENV === 'development'
           ? false
@@ -204,7 +213,7 @@ export default defineNuxtConfig({
     // Public (exposto ao client)
     // Override via: NUXT_PUBLIC_API_BASE_URL=/api
     public: {
-      apiBaseUrl: '/api',
+      apiBaseUrl: '/api'
     }
   },
 
@@ -235,7 +244,7 @@ export default defineNuxtConfig({
       minify: 'esbuild',
       assetsInlineLimit: 4096
     }
-  },
+  }
 
   // CSS global está em layers/0-base/
 })

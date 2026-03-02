@@ -12,17 +12,15 @@
  * - .server.ts → executa apenas no servidor
  * - .ts → executa em ambos
  */
-export default defineNuxtPlugin((_nuxtApp) => {
+export default defineNuxtPlugin(_nuxtApp => {
   // Exemplo: injetar helper global
   // nuxtApp.provide('exampleHelper', {
   //   format: (value: string) => value.toUpperCase()
   // })
-
   // Exemplo: hook no ciclo de vida
   // nuxtApp.hook('app:mounted', () => {
   //   console.log('App mounted - Example plugin')
   // })
-
   // Exemplo: registrar diretiva
   // nuxtApp.vueApp.directive('example', {
   //   mounted(el) {

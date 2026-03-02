@@ -4,7 +4,7 @@
  * Lista todos os itens de exemplo.
  * Convenção de nomenclatura: {rota}.{método}.ts
  */
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   // Obter query params
   const query = getQuery(event)
   const page = Number(query.page) || 1

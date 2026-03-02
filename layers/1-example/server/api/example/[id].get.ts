@@ -4,7 +4,7 @@
  * Obtém um item de exemplo pelo ID.
  * [id] no nome do arquivo = parâmetro dinâmico
  */
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   // Obter parâmetro da rota
   const id = getRouterParam(event, 'id')
 

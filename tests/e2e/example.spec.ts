@@ -38,9 +38,7 @@ test.describe('Navigation', () => {
 })
 
 test.describe('Accessibility', () => {
-  test('should have no accessibility violations on homepage', async ({
-    page
-  }) => {
+  test('should have no accessibility violations on homepage', async ({ page }) => {
     await page.goto('/')
 
     // Verifica elementos básicos de acessibilidade

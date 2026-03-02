@@ -42,9 +42,7 @@ function handleError() {
 
       <!-- Action -->
       <div class="mt-8">
-        <Button @click="handleError">
-          Voltar para Home
-        </Button>
+        <Button @click="handleError"> Voltar para Home </Button>
       </div>
     </div>
   </div>

@@ -15,9 +15,7 @@
     <header class="border-b bg-card">
       <div class="container mx-auto px-4 py-4">
         <nav class="flex items-center gap-4">
-          <NuxtLink to="/" class="text-muted-foreground hover:text-foreground">
-            Voltar
-          </NuxtLink>
+          <NuxtLink to="/" class="text-muted-foreground hover:text-foreground"> Voltar </NuxtLink>
           <span class="text-muted-foreground">/</span>
           <span class="font-semibold">Example</span>
         </nav>

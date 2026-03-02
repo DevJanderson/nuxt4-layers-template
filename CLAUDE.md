@@ -128,11 +128,11 @@ layers/{N}-{feature}/
 
 Dois ambientes Vitest configurados com comportamentos diferentes:
 
-| Pasta | Ambiente | Auto-imports Nuxt | Quando usar |
-|-------|----------|-------------------|-------------|
-| `tests/unit/` | Node puro (rápido) | Não | Funções puras, utils, validadores |
-| `tests/nuxt/` | Runtime Nuxt (lento) | Sim | Composables, stores, componentes |
-| `tests/e2e/` | Playwright (browser) | N/A | Fluxos completos, navegação |
+| Pasta         | Ambiente             | Auto-imports Nuxt | Quando usar                       |
+| ------------- | -------------------- | ----------------- | --------------------------------- |
+| `tests/unit/` | Node puro (rápido)   | Não               | Funções puras, utils, validadores |
+| `tests/nuxt/` | Runtime Nuxt (lento) | Sim               | Composables, stores, componentes  |
+| `tests/e2e/`  | Playwright (browser) | N/A               | Fluxos completos, navegação       |
 
 > Playwright: WebKit/Safari roda apenas no CI. Localmente testa Chromium, Firefox e Mobile Chrome.
 
@@ -166,10 +166,10 @@ export const useExampleStore = defineStore('example', () => {
 
 ### Data Fetching
 
-| Método | Quando usar | SSR |
-|--------|-------------|-----|
+| Método     | Quando usar                    | SSR |
+| ---------- | ------------------------------ | --- |
 | `useFetch` | Carregamento inicial (páginas) | Sim |
-| `$fetch` | Eventos do usuário (cliques) | Não |
+| `$fetch`   | Eventos do usuário (cliques)   | Não |
 
 ### Utils vs Composables
 
@@ -183,9 +183,11 @@ Componentes renomeados no projeto: `VeeForm`, `VeeField`, `VeeFieldArray`, `VeeE
 ```typescript
 import { toTypedSchema } from '@vee-validate/zod'
 
-const schema = toTypedSchema(z.object({
-  email: z.string().email(),
-}))
+const schema = toTypedSchema(
+  z.object({
+    email: z.string().email()
+  })
+)
 ```
 
 ### Ícones (@nuxt/icon)
@@ -241,8 +243,8 @@ runtimeConfig: {
 ```typescript
 // No código — acessar via useRuntimeConfig()
 const config = useRuntimeConfig()
-config.apiExternalBaseUrl        // server-only
-config.public.apiBaseUrl         // client + server
+config.apiExternalBaseUrl // server-only
+config.public.apiBaseUrl // client + server
 ```
 
 ## Segurança
@@ -272,15 +274,15 @@ if (!result.success) throw createError({ statusCode: 400 })
 
 Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específicas:
 
-| Documento | Conteúdo |
-|-----------|----------|
-| [layers/0-base/CLAUDE.md](layers/0-base/CLAUDE.md) | Fundação, UI, shadcn-vue, utils |
-| [layers/0-base/app/components/CLAUDE.md](layers/0-base/app/components/CLAUDE.md) | Componentes shadcn-vue, common, testes |
-| [layers/1-example/CLAUDE.md](layers/1-example/CLAUDE.md) | Template para criar features |
-| [layers/2-auth/CLAUDE.md](layers/2-auth/CLAUDE.md) | Autenticação BFF, cookies httpOnly |
-| [tests/CLAUDE.md](tests/CLAUDE.md) | Vitest, Playwright, mocking |
-| [docs/BFF-SECURITY.md](docs/BFF-SECURITY.md) | Padrões de segurança BFF |
-| [docs/KUBB.md](docs/KUBB.md) | Kubb + BFF: integração com APIs externas |
-| [docs/NUXT_LAYERS.md](docs/NUXT_LAYERS.md) | Arquitetura de Nuxt Layers |
+| Documento                                                                        | Conteúdo                                 |
+| -------------------------------------------------------------------------------- | ---------------------------------------- |
+| [layers/0-base/CLAUDE.md](layers/0-base/CLAUDE.md)                               | Fundação, UI, shadcn-vue, utils          |
+| [layers/0-base/app/components/CLAUDE.md](layers/0-base/app/components/CLAUDE.md) | Componentes shadcn-vue, common, testes   |
+| [layers/1-example/CLAUDE.md](layers/1-example/CLAUDE.md)                         | Template para criar features             |
+| [layers/2-auth/CLAUDE.md](layers/2-auth/CLAUDE.md)                               | Autenticação BFF, cookies httpOnly       |
+| [tests/CLAUDE.md](tests/CLAUDE.md)                                               | Vitest, Playwright, mocking              |
+| [docs/BFF-SECURITY.md](docs/BFF-SECURITY.md)                                     | Padrões de segurança BFF                 |
+| [docs/KUBB.md](docs/KUBB.md)                                                     | Kubb + BFF: integração com APIs externas |
+| [docs/NUXT_LAYERS.md](docs/NUXT_LAYERS.md)                                       | Arquitetura de Nuxt Layers               |
 
 > **Atenção:** Alguns sub-CLAUDE.md contêm nomes de layers desatualizados (`0-core`, `1-base`, `2-example`). Os nomes corretos são `0-base`, `1-example`, `2-auth`, `2-docs`. Sempre seguir o CLAUDE.md raiz como fonte de verdade.
