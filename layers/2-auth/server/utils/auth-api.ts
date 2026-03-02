@@ -4,7 +4,7 @@ const TOKEN_COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
   sameSite: 'strict' as const,
-  path: '/',
+  path: '/'
 }
 
 /**
@@ -26,16 +26,16 @@ export function getRefreshToken(event: H3Event): string | undefined {
  */
 export function setTokenCookies(
   event: H3Event,
-  tokens: { accessToken: string; refreshToken: string },
+  tokens: { accessToken: string; refreshToken: string }
 ) {
   setCookie(event, 'access_token', tokens.accessToken, {
     ...TOKEN_COOKIE_OPTIONS,
-    maxAge: 60 * 15, // 15 minutos
+    maxAge: 60 * 15 // 15 minutos
   })
 
   setCookie(event, 'refresh_token', tokens.refreshToken, {
     ...TOKEN_COOKIE_OPTIONS,
-    maxAge: 60 * 60 * 24 * 7, // 7 dias
+    maxAge: 60 * 60 * 24 * 7 // 7 dias
   })
 }
 
@@ -57,7 +57,11 @@ export function clearTokenCookies(event: H3Event) {
 export async function authFetch<T>(
   event: H3Event,
   url: string,
-  options?: RequestInit,
+  options?: {
+    method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+    headers?: Record<string, string>
+    body?: Record<string, unknown>
+  }
 ): Promise<T> {
   const token = getAccessToken(event)
   if (!token) {
@@ -68,20 +72,21 @@ export async function authFetch<T>(
   const baseUrl = config.apiExternalBaseUrl || 'http://localhost:8000'
 
   try {
-    return await $fetch<T>(`${baseUrl}${url}`, {
-      ...options,
+    return (await $fetch(`${baseUrl}${url}`, {
+      method: options?.method,
+      body: options?.body,
       headers: {
         Authorization: `Bearer ${token}`,
-        ...options?.headers,
+        ...options?.headers
       },
-      signal: AbortSignal.timeout(15_000),
-    })
+      signal: AbortSignal.timeout(15_000)
+    })) as T
   } catch (err: unknown) {
     // Error sanitization — nunca repassar detalhes da API externa
     const status = (err as { statusCode?: number }).statusCode || 500
     throw createError({
       statusCode: status,
-      statusMessage: status === 401 ? 'Não autenticado' : 'Erro interno',
+      statusMessage: status === 401 ? 'Não autenticado' : 'Erro interno'
     })
   }
 }

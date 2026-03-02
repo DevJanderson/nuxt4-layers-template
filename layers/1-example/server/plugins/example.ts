@@ -6,9 +6,9 @@
  * - Configurar clientes de serviços externos
  * - Registrar hooks do servidor
  */
-export default defineNitroPlugin((nitroApp) => {
+export default defineNitroPlugin(nitroApp => {
   // Hook: quando o servidor inicia
-  nitroApp.hooks.hook('request', (_event) => {
+  nitroApp.hooks.hook('request', _event => {
     // Executado em cada requisição
     // Útil para métricas globais
   })
@@ -31,5 +31,6 @@ export default defineNitroPlugin((nitroApp) => {
   //   await db.$disconnect()
   // })
 
+  // eslint-disable-next-line no-console
   console.log('[Example Plugin] Server initialized')
 })

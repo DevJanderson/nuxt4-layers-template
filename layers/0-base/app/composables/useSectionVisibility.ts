@@ -6,9 +6,9 @@ export function useSectionVisibility(options?: { threshold?: number }) {
     if (!sectionRef.value) return
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) isVisible.value = true
+        if (entry?.isIntersecting) isVisible.value = true
       },
-      { threshold: options?.threshold ?? 0.1 },
+      { threshold: options?.threshold ?? 0.1 }
     )
     observer.observe(sectionRef.value)
     onUnmounted(() => observer.disconnect())

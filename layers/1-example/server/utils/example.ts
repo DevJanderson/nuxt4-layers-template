@@ -4,14 +4,12 @@
  * Utils em server/utils/ são auto-importados nos handlers.
  * Use para lógica reutilizável no servidor.
  */
+import type { H3Event } from 'h3'
 
 /**
  * Valida ownership de um recurso (proteção IDOR)
  */
-export function validateOwnership(
-  resourceUserId: string,
-  currentUserId: string | undefined
-): void {
+export function validateOwnership(resourceUserId: string, currentUserId: string | undefined): void {
   if (!currentUserId) {
     throw createError({
       statusCode: 401,
@@ -54,7 +52,7 @@ export function paginate<T>(
 /**
  * Obtém o IP do cliente de forma segura
  */
-export function getClientIp(event: any): string {
+export function getClientIp(event: H3Event): string {
   return (
     getHeader(event, 'x-forwarded-for')?.split(',')[0]?.trim() ||
     getHeader(event, 'x-real-ip') ||

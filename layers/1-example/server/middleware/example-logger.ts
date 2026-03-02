@@ -10,7 +10,7 @@
  * - Rate limiting
  * - CORS customizado
  */
-export default defineEventHandler((event) => {
+export default defineEventHandler(event => {
   // Executar apenas para rotas de example
   if (!event.path.startsWith('/api/example')) {
     return
@@ -21,6 +21,7 @@ export default defineEventHandler((event) => {
   const path = event.path
   const timestamp = new Date().toISOString()
 
+  // eslint-disable-next-line no-console
   console.log(`[${timestamp}] ${method} ${path}`)
 
   // Adicionar informação ao contexto (acessível em outros handlers)
