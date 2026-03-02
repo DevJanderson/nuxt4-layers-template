@@ -9,7 +9,6 @@ import {
   XIcon
 } from 'lucide-vue-next'
 import { Toaster as Sonner } from 'vue-sonner'
-import { cn } from '~/layers/0-base/app/utils/utils'
 
 const props = defineProps<ToasterProps>()
 </script>
