@@ -110,7 +110,7 @@ describe('useExampleStore', () => {
 // tests/nuxt/components/Button.test.ts
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import Button from '~/layers/1-base/app/components/ui/button/Button.vue'
+import Button from '~/layers/base/app/components/ui/button/Button.vue'
 
 describe('Button', () => {
   it('should render slot content', () => {

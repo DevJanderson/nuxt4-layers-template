@@ -11,7 +11,7 @@ Guia completo para criar e estruturar uma Feature Layer no Nuxt 4.
 Baseada na [documentação oficial do Nuxt 4](https://nuxt.com/docs/4.x/guide/going-further/layers).
 
 ```
-layers/{N}-{nome-feature}/
+layers/{nome-feature}/
 ├── nuxt.config.ts                    # Configuração (OBRIGATÓRIO)
 ├── CLAUDE.md                         # Documentação da feature
 │
@@ -107,7 +107,7 @@ layers/{N}-{nome-feature}/
 ### 1. Copiar esta layer
 
 ```bash
-cp -r layers/2-example layers/{N}-{sua-feature}
+cp -r layers/example layers/{sua-feature}
 ```
 
 ### 2. Renomear arquivos
@@ -136,7 +136,7 @@ Se precisar referenciar arquivos (CSS, assets) no `nuxt.config.ts` da layer, use
 ```ts
 // ✅ Correto
 export default defineNuxtConfig({
-  css: ['~/layers/3-minha-feature/app/assets/custom.css']
+  css: ['~/layers/minha-feature/app/assets/custom.css']
 })
 
 // ❌ Incorreto - caminhos relativos não funcionam em layers
@@ -201,14 +201,15 @@ export default defineNuxtConfig({
 
 ## Ordem de Prioridade das Layers
 
+A prioridade é definida pela ordem no array `extends` do `nuxt.config.ts` raiz (último = maior prioridade):
+
 ```
-0-core      → Menor prioridade (fundação)
-1-base      → UI base
-2-example   → Prioridade 2
-3-feature-a → Prioridade 3 (exemplo)
+base      → Menor prioridade (fundação + UI)
+example   → Prioridade média
+auth/docs → Maior prioridade
 ```
 
-**Regra:** Número maior = maior prioridade = sobrescreve anteriores.
+**Regra:** Última layer no `extends` = maior prioridade = sobrescreve anteriores.
 
 > **Arquitetura layers-only:** Não existe pasta `app/` na raiz neste template.
 
@@ -266,9 +267,9 @@ tests/
 // tests/unit/example/composables/useExampleStore.test.ts
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
-import { useExampleStore } from '~/layers/2-example/app/composables/useExampleStore'
+import { useExampleStore } from '~/layers/example/app/composables/useExampleStore'
 
-vi.mock('~/layers/2-example/app/composables/useExampleApi', () => ({
+vi.mock('~/layers/example/app/composables/useExampleApi', () => ({
   useExampleApi: () => ({
     getAll: vi.fn().mockResolvedValue([{ id: '1', name: 'Test' }])
   })
@@ -293,7 +294,7 @@ describe('useExampleStore', () => {
 // tests/unit/example/components/ExampleCard.test.ts
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import ExampleCard from '~/layers/2-example/app/components/ExampleCard.vue'
+import ExampleCard from '~/layers/example/app/components/ExampleCard.vue'
 
 describe('ExampleCard', () => {
   it('should render title', () => {

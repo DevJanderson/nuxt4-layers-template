@@ -5,7 +5,7 @@ Instruções específicas para componentes Vue.
 ## Estrutura
 
 ```
-layers/1-base/app/components/
+layers/base/app/components/
 ├── ui/                     # shadcn-vue (auto-import)
 │   └── button/
 │       ├── Button.vue
@@ -18,8 +18,8 @@ layers/1-base/app/components/
 
 | Pasta                                  | Uso                          | Auto-import |
 | -------------------------------------- | ---------------------------- | ----------- |
-| `layers/1-base/app/components/ui/`     | shadcn-vue (primitivos)      | ✅ Sim      |
-| `layers/1-base/app/components/common/` | Componentes globais          | ✅ Sim      |
+| `layers/base/app/components/ui/`     | shadcn-vue (primitivos)      | ✅ Sim      |
+| `layers/base/app/components/common/` | Componentes globais          | ✅ Sim      |
 | `layers/*/app/components/`             | Específicos da feature layer | ✅ Sim      |
 
 ## Adicionar Componente shadcn-vue
@@ -35,7 +35,7 @@ npx shadcn-vue@latest add dialog
 npx shadcn-vue@latest add --help
 ```
 
-Componentes são instalados em `layers/1-base/app/components/ui/` (configurado via `components.json`).
+Componentes são instalados em `layers/base/app/components/ui/` (configurado via `components.json`).
 
 ## Usar Componentes
 
@@ -76,7 +76,7 @@ Componentes são instalados em `layers/1-base/app/components/ui/` (configurado v
 ### Componente simples
 
 ```vue
-<!-- layers/1-base/app/components/common/AppLogo.vue -->
+<!-- layers/base/app/components/common/AppLogo.vue -->
 <script setup lang="ts">
 interface Props {
   size?: 'sm' | 'md' | 'lg'
@@ -111,7 +111,7 @@ const sizeClasses = {
 ## Componente com Slots
 
 ```vue
-<!-- layers/1-base/app/components/common/AppCard.vue -->
+<!-- layers/base/app/components/common/AppCard.vue -->
 <script setup lang="ts">
 interface Props {
   title?: string
@@ -148,7 +148,7 @@ defineProps<Props>()
 ## Componente com v-model
 
 ```vue
-<!-- layers/1-base/app/components/common/AppInput.vue -->
+<!-- layers/base/app/components/common/AppInput.vue -->
 <script setup lang="ts">
 interface Props {
   modelValue: string
@@ -211,7 +211,7 @@ import { Search, User, Settings } from 'lucide-vue-next'
 // tests/unit/components/AppLogo.test.ts
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import AppLogo from '~/layers/1-base/app/components/common/AppLogo.vue'
+import AppLogo from '~/layers/base/app/components/common/AppLogo.vue'
 
 describe('AppLogo', () => {
   it('should render with default size', () => {
@@ -234,7 +234,7 @@ describe('AppLogo', () => {
 // tests/unit/components/AppCard.test.ts
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import AppCard from '~/layers/1-base/app/components/common/AppCard.vue'
+import AppCard from '~/layers/base/app/components/common/AppCard.vue'
 
 describe('AppCard', () => {
   it('should render default slot', () => {
@@ -269,7 +269,7 @@ describe('AppCard', () => {
 // tests/unit/components/AppInput.test.ts
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import AppInput from '~/layers/1-base/app/components/common/AppInput.vue'
+import AppInput from '~/layers/base/app/components/common/AppInput.vue'
 
 describe('AppInput', () => {
   it('should emit update:modelValue on input', async () => {
@@ -299,7 +299,7 @@ describe('AppInput', () => {
 // tests/unit/components/Button.test.ts
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/vue'
-import Button from '~/layers/1-base/app/components/ui/button/Button.vue'
+import Button from '~/layers/base/app/components/ui/button/Button.vue'
 
 describe('Button', () => {
   it('should render slot content', () => {

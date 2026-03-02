@@ -1,11 +1,11 @@
-# Layer 2-auth - CLAUDE.md
+# Layer auth - CLAUDE.md
 
 Layer de autenticação BFF (Backend For Frontend) com cookies httpOnly.
 
 ## Estrutura
 
 ```
-layers/2-auth/
+layers/auth/
 ├── nuxt.config.ts
 ├── app/
 │   ├── composables/

@@ -179,35 +179,35 @@ npm run test:e2e           # Executa testes
 ```
 projeto/
 ├── layers/                         # TUDO fica aqui (layers-only)
-│   ├── 0-base/                     # Fundação + UI: app.vue, error.vue, CSS, shadcn-vue, utils
+│   ├── base/                     # Fundação + UI: app.vue, error.vue, CSS, shadcn-vue, utils
 │   │   ├── app/components/ui/      # shadcn-vue
 │   │   ├── app/components/common/  # Componentes compartilhados
 │   │   └── app/utils/              # Funções utilitárias
-│   └── 1-example/                  # Feature: Módulo de exemplo (copiar para novas)
+│   └── example/                  # Feature: Módulo de exemplo (copiar para novas)
 │
 └── tests/                          # Testes (unit, nuxt, e2e)
 ```
 
 > **Nota:** Não existe pasta `server/` na raiz — API routes ficam dentro de cada layer em `layers/*/server/`.
 
-> Use hífen (`-`) no nome das layers (ex: `0-base`), não ponto.
+> Use hífen (`-`) no nome das layers, não ponto.
 
 ### Ordem de Prioridade (Layers)
 
 ```
-1-example > 0-base
+docs / auth > example > base
 ```
 
-Número maior = maior prioridade = sobrescreve layers anteriores.
+Definida pela ordem no array `extends` do `nuxt.config.ts` raiz (último = maior prioridade).
 
 ### Criando uma Nova Feature Layer
 
-1. Crie a pasta `layers/N-nome-feature/`
-2. Adicione `nuxt.config.ts` (pode estar vazio)
+1. Copie a layer de exemplo: `cp -r layers/example layers/minha-feature`
+2. Adicione ao `extends` no `nuxt.config.ts` raiz
 3. Estruture com `app/` para código Vue e `server/` para API
 
 ```
-layers/2-minha-feature/
+layers/minha-feature/
 ├── nuxt.config.ts
 ├── app/
 │   ├── components/
@@ -215,8 +215,6 @@ layers/2-minha-feature/
 │   └── pages/minha-feature/
 └── server/api/
 ```
-
-> Layers em `~/layers` são auto-registradas (Nuxt v3.12+). Não precisa declarar em `extends`.
 
 > **Caminhos em layers:** Use `~/layers/...` para referenciar arquivos no `nuxt.config.ts` de layers. Caminhos relativos não funcionam.
 
@@ -228,7 +226,7 @@ npx shadcn-vue@latest add card
 npx shadcn-vue@latest add input
 ```
 
-Componentes são instalados em `layers/0-base/app/components/ui/` e auto-importados.
+Componentes são instalados em `layers/base/app/components/ui/` e auto-importados.
 
 ## Validação com Zod
 

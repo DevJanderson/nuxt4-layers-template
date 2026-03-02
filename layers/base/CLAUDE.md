@@ -1,11 +1,11 @@
-# Layer 0-base - CLAUDE.md
+# Layer base - CLAUDE.md
 
 Fundação + UI da aplicação. Contém arquivos globais do Nuxt, componentes shadcn-vue, utils e tipos compartilhados.
 
 ## Estrutura
 
 ```
-layers/0-base/
+layers/base/
 ├── nuxt.config.ts              # CSS global + alias #shared
 ├── app/
 │   ├── app.vue                 # Root component
@@ -57,8 +57,8 @@ Os componentes são instalados automaticamente em `app/components/ui/`.
 
 ## Prioridade
 
-Esta é a layer com **menor prioridade** (0). Todas as outras layers podem sobrescrever seus arquivos.
+Esta é a layer com **menor prioridade**. Todas as outras layers podem sobrescrever seus arquivos.
 
 ```
-0-base < 1-example
+base < example < auth / docs
 ```

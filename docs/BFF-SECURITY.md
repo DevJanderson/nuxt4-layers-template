@@ -31,7 +31,7 @@ const data = await $fetch(url, {
 })
 ```
 
-O helper `authFetch` em `layers/2-auth/server/utils/auth-api.ts` já implementa esse padrão.
+O helper `authFetch` em `layers/auth/server/utils/auth-api.ts` já implementa esse padrão.
 
 ## 3. SSR Cookie Forwarding
 
@@ -114,5 +114,5 @@ async function fetchPage(cursor?: string) {
 
 ## Referências
 
-- `layers/2-auth/server/utils/auth-api.ts` — implementação do authFetch
-- `layers/2-auth/CLAUDE.md` — documentação da layer de auth
+- `layers/auth/server/utils/auth-api.ts` — implementação do authFetch
+- `layers/auth/CLAUDE.md` — documentação da layer de auth

@@ -1,5 +1,5 @@
 /**
- * Layer 2-auth - Configuração
+ * Layer auth - Configuração
  * Autenticação BFF com cookies httpOnly
  */
 export default defineNuxtConfig({

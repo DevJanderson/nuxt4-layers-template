@@ -49,8 +49,8 @@ export default defineNuxtConfig({
     server: false
   },
 
-  // Nuxt Layers - auto-scan de ~/layers (Nuxt 4+)
-  // Ordem de prioridade: 1-example > 0-base
+  // Nuxt Layers - extends explícito (ordem = prioridade crescente)
+  extends: ['./layers/base', './layers/example', './layers/auth', './layers/docs'],
 
   modules: [
     '@nuxt/eslint',
@@ -181,7 +181,7 @@ export default defineNuxtConfig({
 
   shadcn: {
     prefix: '',
-    componentDir: './layers/0-base/app/components/ui'
+    componentDir: './layers/base/app/components/ui'
   },
 
   // Route rules - rate limiting por rota e exceções de segurança
@@ -246,5 +246,5 @@ export default defineNuxtConfig({
     }
   }
 
-  // CSS global está em layers/0-base/
+  // CSS global está em layers/base/
 })

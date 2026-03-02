@@ -54,7 +54,7 @@ npm run api:watch          # Regenera automaticamente ao alterar spec
 npx shadcn-vue@latest add <componente>
 ```
 
-Componentes ficam em `layers/0-base/app/components/ui/` (auto-import).
+Componentes ficam em `layers/base/app/components/ui/` (auto-import).
 
 ## Arquitetura
 
@@ -66,22 +66,22 @@ Nuxt 4 + shadcn-vue + Tailwind CSS v4 + **Nuxt Layers** + Pinia (com `pinia-plug
 
 ```
 layers/                 # TUDO fica aqui (layers-only)
-  0-base/               # Fundação + UI: app.vue, CSS, shadcn-vue, utils, shared/types
-  1-example/            # Feature layer de exemplo (copiar para novas)
-  2-auth/               # Autenticação BFF com cookies httpOnly
-  2-docs/               # Documentação markdown (@nuxt/content)
+  base/                 # Fundação + UI: app.vue, CSS, shadcn-vue, utils, shared/types
+  example/              # Feature layer de exemplo (copiar para novas)
+  auth/                 # Autenticação BFF com cookies httpOnly
+  docs/                 # Documentação markdown (@nuxt/content)
 tests/                  # unit/, nuxt/, e2e/
 ```
 
 > **Arquitetura layers-only:** API routes ficam dentro de cada layer em `layers/*/server/`.
 
-> Use hífen (`-`) no nome das layers, não ponto. Layers em `~/layers` são auto-registradas.
+> Use hífen (`-`) no nome das layers, não ponto. Layers são registradas via `extends` explícito no `nuxt.config.ts` raiz.
 
 **Caminhos em layers:** Use `~/layers/...` (alias da raiz) para referenciar arquivos em `nuxt.config.ts` de layers. Caminhos relativos como `./app/...` não funcionam.
 
 ### Alias `#shared`
 
-Tipos compartilhados entre client e server ficam em `layers/0-base/shared/types/`. Importar via:
+Tipos compartilhados entre client e server ficam em `layers/base/shared/types/`. Importar via:
 
 ```typescript
 import type { ApiResponse } from '#shared/types'
@@ -89,11 +89,11 @@ import type { ApiResponse } from '#shared/types'
 
 ### Ordem de Prioridade (Layers)
 
-```
-2-auth / 2-docs > 1-example > 0-base
-```
+Definida pela ordem no array `extends` do `nuxt.config.ts` raiz (último = maior prioridade):
 
-Número maior = maior prioridade = sobrescreve layers anteriores. Layers com mesmo número têm prioridade equivalente.
+```
+docs / auth > example > base
+```
 
 ### Fluxo de Dados
 
@@ -104,15 +104,15 @@ UI → Composable/Store → Service → API
 ### Criar Nova Feature Layer
 
 ```bash
-cp -r layers/1-example layers/{N}-{sua-feature}
+cp -r layers/example layers/{sua-feature}
 ```
 
-Renomear `example`/`Example` pelo nome da feature em todos os arquivos.
+Renomear `example`/`Example` pelo nome da feature em todos os arquivos. Adicionar a nova layer ao `extends` no `nuxt.config.ts` raiz.
 
 ### Estrutura de uma Feature Layer
 
 ```
-layers/{N}-{feature}/
+layers/{feature}/
 ├── nuxt.config.ts              # Obrigatório (pode ser vazio)
 ├── app/
 │   ├── components/             # Prefixar: {Feature}Card.vue
@@ -173,8 +173,8 @@ export const useExampleStore = defineStore('example', () => {
 
 ### Utils vs Composables
 
-- **Utils** (`layers/0-base/app/utils/`): Funções puras, sem estado Vue
-- **Composables** (`layers/{N}-{feature}/app/composables/`): Lógica com `ref`, `computed`
+- **Utils** (`layers/base/app/utils/`): Funções puras, sem estado Vue
+- **Composables** (`layers/{feature}/app/composables/`): Lógica com `ref`, `computed`
 
 ### Formulários (VeeValidate)
 
@@ -219,7 +219,7 @@ npm run api:generate       # Gera em generated/api/
 Para usar tipos gerados numa layer:
 
 ```typescript
-// layers/{N}-{feature}/app/composables/types.ts
+// layers/{feature}/app/composables/types.ts
 export type { User, Cliente } from '~/generated/api/types'
 export { userSchema } from '~/generated/api/zod'
 ```
@@ -274,15 +274,13 @@ if (!result.success) throw createError({ statusCode: 400 })
 
 Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específicas:
 
-| Documento                                                                        | Conteúdo                                 |
-| -------------------------------------------------------------------------------- | ---------------------------------------- |
-| [layers/0-base/CLAUDE.md](layers/0-base/CLAUDE.md)                               | Fundação, UI, shadcn-vue, utils          |
-| [layers/0-base/app/components/CLAUDE.md](layers/0-base/app/components/CLAUDE.md) | Componentes shadcn-vue, common, testes   |
-| [layers/1-example/CLAUDE.md](layers/1-example/CLAUDE.md)                         | Template para criar features             |
-| [layers/2-auth/CLAUDE.md](layers/2-auth/CLAUDE.md)                               | Autenticação BFF, cookies httpOnly       |
-| [tests/CLAUDE.md](tests/CLAUDE.md)                                               | Vitest, Playwright, mocking              |
-| [docs/BFF-SECURITY.md](docs/BFF-SECURITY.md)                                     | Padrões de segurança BFF                 |
-| [docs/KUBB.md](docs/KUBB.md)                                                     | Kubb + BFF: integração com APIs externas |
-| [docs/NUXT_LAYERS.md](docs/NUXT_LAYERS.md)                                       | Arquitetura de Nuxt Layers               |
-
-> **Atenção:** Alguns sub-CLAUDE.md contêm nomes de layers desatualizados (`0-core`, `1-base`, `2-example`). Os nomes corretos são `0-base`, `1-example`, `2-auth`, `2-docs`. Sempre seguir o CLAUDE.md raiz como fonte de verdade.
+| Documento                                                                    | Conteúdo                                 |
+| ---------------------------------------------------------------------------- | ---------------------------------------- |
+| [layers/base/CLAUDE.md](layers/base/CLAUDE.md)                               | Fundação, UI, shadcn-vue, utils          |
+| [layers/base/app/components/CLAUDE.md](layers/base/app/components/CLAUDE.md) | Componentes shadcn-vue, common, testes   |
+| [layers/example/CLAUDE.md](layers/example/CLAUDE.md)                         | Template para criar features             |
+| [layers/auth/CLAUDE.md](layers/auth/CLAUDE.md)                               | Autenticação BFF, cookies httpOnly       |
+| [tests/CLAUDE.md](tests/CLAUDE.md)                                           | Vitest, Playwright, mocking              |
+| [docs/BFF-SECURITY.md](docs/BFF-SECURITY.md)                                 | Padrões de segurança BFF                 |
+| [docs/KUBB.md](docs/KUBB.md)                                                 | Kubb + BFF: integração com APIs externas |
+| [docs/NUXT_LAYERS.md](docs/NUXT_LAYERS.md)                                   | Arquitetura de Nuxt Layers               |

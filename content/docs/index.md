@@ -18,10 +18,10 @@ npm run dev
 
 Este projeto usa **Nuxt 4** com arquitetura de **Layers**:
 
-- `0-base/` — Fundação + UI (shadcn-vue, Tailwind CSS)
-- `1-example/` — Feature layer de exemplo
-- `2-auth/` — Autenticação BFF com cookies httpOnly
-- `2-docs/` — Documentação (esta layer)
+- `base/` — Fundação + UI (shadcn-vue, Tailwind CSS)
+- `example/` — Feature layer de exemplo
+- `auth/` — Autenticação BFF com cookies httpOnly
+- `docs/` — Documentação (esta layer)
 
 ## Criando Conteúdo
 

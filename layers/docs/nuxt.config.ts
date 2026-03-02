@@ -1,5 +1,5 @@
 /**
- * Layer 2-docs - Configuração
+ * Layer docs - Configuração
  * Layer opcional de documentação com @nuxt/content
  */
 export default defineNuxtConfig({

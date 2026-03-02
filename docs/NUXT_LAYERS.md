@@ -23,9 +23,9 @@ Layers são módulos independentes que permitem:
 
 - Separação de responsabilidades (core, auth, dashboard, landing, etc.)
 - Reutilização de código entre projetos
-- Ordem de prioridade configurável via prefixos numéricos
+- Ordem de prioridade configurável via `extends` explícito
 
-> **IMPORTANTE:** Use hífen (`-`) e não ponto (`.`) no nome das pastas de layers. O ponto causa problemas na resolução de módulos do Nuxt. Exemplo: use `1-base` em vez de `1.base`.
+> **IMPORTANTE:** Use hífen (`-`) e não ponto (`.`) no nome das pastas de layers. O ponto causa problemas na resolução de módulos do Nuxt.
 
 ---
 
@@ -47,14 +47,11 @@ Este template usa **arquitetura layers-only** - não existe pasta `app/` na raiz
 ```
 projeto/
 ├── layers/                         # TUDO fica aqui
-│   ├── 0-core/                     # Fundação: app.vue, error.vue, CSS
-│   │   └── app/
-│   │       ├── app.vue
-│   │       ├── error.vue
-│   │       └── assets/css/main.css
-│   │
-│   ├── 1-base/                     # UI: shadcn-vue, utils, tipos
+│   ├── base/                       # Fundação + UI: app.vue, CSS, shadcn-vue, utils
 │   │   ├── app/
+│   │   │   ├── app.vue
+│   │   │   ├── error.vue
+│   │   │   ├── assets/css/main.css
 │   │   │   ├── components/
 │   │   │   │   ├── ui/             # shadcn-vue
 │   │   │   │   └── common/         # Componentes compartilhados
@@ -63,41 +60,51 @@ projeto/
 │   │   │   └── utils/              # Funções utilitárias
 │   │   └── shared/types/           # Tipos globais (via alias #shared)
 │   │
-│   ├── 2-example/                  # Feature: Módulo de exemplo
+│   ├── example/                    # Feature: Módulo de exemplo
 │   │   ├── app/
 │   │   │   ├── components/
 │   │   │   ├── composables/
 │   │   │   └── pages/example/
 │   │   └── server/api/example/
 │   │
-│   └── 4-landing/                  # Feature: Landing page
-│       └── app/pages/
+│   ├── auth/                       # Autenticação BFF
+│   │   ├── app/
+│   │   └── server/api/auth/
+│   │
+│   └── docs/                       # Documentação markdown
+│       └── app/
 │
-├── server/                         # API routes globais (opcional)
-├── tests/                          # Testes (unit, e2e)
+├── tests/                          # Testes (unit, nuxt, e2e)
 ├── nuxt.config.ts
 └── package.json
 ```
 
 ### Responsabilidade de cada Layer
 
-| Layer         | Responsabilidade                                                |
-| ------------- | --------------------------------------------------------------- |
-| `0-core`      | Fundação: `app.vue`, `error.vue`, CSS global, variáveis de tema |
-| `1-base`      | UI compartilhada: shadcn-vue, layouts, utils, tipos globais     |
-| `2-*` a `N-*` | Features específicas: páginas, componentes, API                 |
+| Layer     | Responsabilidade                                                      |
+| --------- | --------------------------------------------------------------------- |
+| `base`    | Fundação + UI: `app.vue`, CSS global, shadcn-vue, layouts, utils      |
+| `example` | Feature de exemplo (template para criar novas)                        |
+| `auth`    | Autenticação BFF com cookies httpOnly                                 |
+| `docs`    | Documentação markdown com @nuxt/content                               |
 
 ---
 
 ## Ordem de Prioridade
 
-```
-4-landing > 2-example > 1-base > 0-core
+A prioridade é definida pela ordem no array `extends` do `nuxt.config.ts` raiz:
+
+```typescript
+extends: ['./layers/base', './layers/example', './layers/auth', './layers/docs'],
 ```
 
-**Regra:** Número MAIOR = MAIOR prioridade = sobrescreve layers anteriores.
+```
+docs > auth > example > base
+```
 
-Exemplo: Se `1-base` e `2-example` definem um componente com mesmo nome, o de `2-example` será usado.
+**Regra:** Último no `extends` = MAIOR prioridade = sobrescreve layers anteriores.
+
+Exemplo: Se `base` e `example` definem um componente com mesmo nome, o de `example` será usado.
 
 ---
 
@@ -106,7 +113,7 @@ Exemplo: Se `1-base` e `2-example` definem um componente com mesmo nome, o de `2
 ### 1. Copiar layer de exemplo
 
 ```bash
-cp -r layers/2-example layers/3-minha-feature
+cp -r layers/example layers/minha-feature
 ```
 
 ### 2. Renomear arquivos
@@ -115,7 +122,7 @@ Substitua `example/Example` pelo nome da sua feature:
 
 ```bash
 # Estrutura final
-layers/3-minha-feature/
+layers/minha-feature/
 ├── nuxt.config.ts
 ├── app/
 │   ├── components/
@@ -132,13 +139,19 @@ layers/3-minha-feature/
 ### 3. Configurar nuxt.config.ts
 
 ```ts
-// layers/3-minha-feature/nuxt.config.ts
+// layers/minha-feature/nuxt.config.ts
 export default defineNuxtConfig({
   // Configurações específicas (pode estar vazio)
 })
 ```
 
-> **Nota:** Layers em `~/layers` são auto-registradas (Nuxt v3.12+). Não precisa declarar em `extends`.
+### 4. Registrar no `extends`
+
+Adicione a nova layer ao array `extends` no `nuxt.config.ts` raiz:
+
+```ts
+extends: ['./layers/base', './layers/example', './layers/auth', './layers/docs', './layers/minha-feature'],
+```
 
 ### Caminhos em Layers
 
@@ -147,7 +160,7 @@ Ao referenciar arquivos dentro de uma layer (como CSS), use o alias `~` (raiz do
 ```ts
 // ✅ Correto - usa alias da raiz
 export default defineNuxtConfig({
-  css: ['~/layers/0-core/app/assets/css/main.css']
+  css: ['~/layers/base/app/assets/css/main.css']
 })
 
 // ❌ Incorreto - caminho relativo não funciona em layers
@@ -171,7 +184,7 @@ O Tailwind CSS v4 usa detecção automática de classes, mas por padrão só esc
 A diretiva `@source` no CSS principal inclui todas as layers no scan:
 
 ```css
-/* layers/0-core/app/assets/css/main.css */
+/* layers/base/app/assets/css/main.css */
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -188,7 +201,7 @@ A diretiva `@source` no CSS principal inclui todas as layers no scan:
 
 ### Configuração do components.json
 
-Para que o CLI do shadcn-vue instale componentes em `layers/1-base/`:
+Para que o CLI do shadcn-vue instale componentes em `layers/base/`:
 
 ```json
 {
@@ -197,14 +210,16 @@ Para que o CLI do shadcn-vue instale componentes em `layers/1-base/`:
   "typescript": true,
   "tailwind": {
     "config": "",
-    "css": "layers/0-core/app/assets/css/main.css",
+    "css": "@/layers/base/app/assets/css/main.css",
     "baseColor": "neutral",
     "cssVariables": true
   },
   "aliases": {
-    "components": "layers/1-base/app/components",
-    "utils": "layers/1-base/app/utils/utils",
-    "ui": "layers/1-base/app/components/ui"
+    "components": "@/layers/base/app/components",
+    "utils": "@/layers/base/app/utils/utils",
+    "ui": "@/layers/base/app/components/ui",
+    "lib": "@/layers/base/app/utils",
+    "composables": "@/layers/base/app/composables"
   }
 }
 ```
@@ -216,7 +231,7 @@ npx shadcn-vue@latest add button
 npx shadcn-vue@latest add card
 ```
 
-Componentes são instalados em `layers/1-base/app/components/ui/` e auto-importados.
+Componentes são instalados em `layers/base/app/components/ui/` e auto-importados.
 
 ---
 
