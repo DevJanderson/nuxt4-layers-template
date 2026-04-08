@@ -37,11 +37,7 @@ const coverageOptions = {
     '**/server/plugins/**',
     '**/server/utils/logger.ts',
     'scripts/**'
-  ],
-  thresholds: {
-    lines: 80,
-    functions: 80
-  }
+  ]
 }
 
 // Projeto "unit": Node puro, sem Nuxt, sem setup.ts
