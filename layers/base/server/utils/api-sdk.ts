@@ -11,10 +11,10 @@
 
 import type { H3Event } from 'h3'
 import type { ApiClientConfig } from './api-client'
-import { AuthErrors } from '#shared/domain/errors'
 
 /**
  * Executa uma chamada à API externa com auth e error handling.
+ * Espera que um middleware anterior injete `event.context.auth.accessToken`.
  */
 export async function callApi<T>(
   apiFn: (config: ApiClientConfig) => Promise<T>,
@@ -23,7 +23,7 @@ export async function callApi<T>(
 ): Promise<T> {
   const auth = event.context.auth as { accessToken?: string | null } | undefined
   if (!auth?.accessToken) {
-    throw createError({ statusCode: 401, message: AuthErrors.NOT_AUTHENTICATED })
+    throw createError({ statusCode: 401, message: 'não autenticado' })
   }
   const config = createApiClient(auth.accessToken)
 
@@ -37,7 +37,7 @@ export async function callApi<T>(
 }
 
 /**
- * Variante sem autenticação para chamadas públicas (ex: login, signup).
+ * Variante sem autenticação para chamadas públicas.
  */
 export async function callPublicApi<T>(
   apiFn: (config: ApiClientConfig) => Promise<T>,

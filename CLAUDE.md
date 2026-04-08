@@ -12,7 +12,7 @@
 
 ## 1. IDENTIDADE
 
-**Template Nuxt 4** — boilerplate world-class para iniciar qualquer projeto com Nuxt 4, autenticacao BFF e arquitetura em layers.
+**Template Nuxt 4** — boilerplate world-class para iniciar qualquer projeto com Nuxt 4 e arquitetura em layers.
 
 ### Stack
 
@@ -90,7 +90,6 @@ Nuxt 4 + shadcn-vue + Tailwind CSS v4 + **Nuxt Layers**. Tudo e layer — nao ex
 ```
 layers/
   base/                 # Fundacao: Tailwind, paleta, shadcn-vue, utils, tipos, shared/
-  auth/                 # Autenticacao BFF
   home/                 # Landing page generica
 tests/
   unit/                 # Node puro — utils, funcoes puras
@@ -101,7 +100,7 @@ tests/
 ### Ordem de prioridade (ultimo = maior)
 
 ```
-home > auth > base
+home > base
 ```
 
 ### Fluxo de dados
@@ -130,7 +129,7 @@ layers/{feature}/
 └── server/api/{feature}/       # Endpoints BFF
 ```
 
-> **Layer canonica:** `auth` e a referencia. Na duvida sobre padrao, consultar sua estrutura.
+> **Layer canonica:** usar a estrutura de feature layer acima como referencia ao criar novas layers.
 
 ---
 
@@ -154,9 +153,8 @@ Preciso criar...
 - **Service:** `$fetch` direto (nunca `useFetch` em services). Funcoes nomeadas, retornar objeto
 - **Store:** Composition API + `defineStore`. API instanciada no setup. Acoes async com `withStoreAction`. Erros via `{Feature}Errors` de `#shared/domain/errors`. `shallowRef` para dados da API
 - **BFF:** `callApi` wraps API client + error handling. Validar query com `validateQuery(event, zodSchema)`. Body com `validateBody`. Route params com `validateRouteParam`/`validateUniqueId`
-- **SSR:** Paginas autenticadas (`auth-guard`) devem usar `onMounted` para fetch — nunca `useAsyncData` (SSR nao tem sessao, gera 401)
 - **Componentes:** prefixo obrigatorio `{Feature}NomeComponente.vue`. Client-only: `.client.vue`
-- **Pages:** `definePageMeta({ middleware: 'auth-guard' })` + `useSeoPage({ title, description })`
+- **Pages:** `useSeoPage({ title, description })`
 - **Imports:** auto-imports ou alias `#shared`. Nunca `~/layers/base/...`
 - **Persistencia:** `persist: { pick: [...] }` apenas para filtros/preferencias (nunca dados de API). Deserializar com Zod
 
@@ -193,7 +191,7 @@ feature/* ──→ develop ──→ staging ──→ main
 - **Commitlint:** `subject-case: lower-case` (error). Subject <= 72 chars, body <= 100 chars/linha
 - **NUNCA** incluir `Co-Authored-By` (bloqueado por husky hook)
 - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `build`, `revert`
-- Scopes: `auth`, `home`, `base`, `deps`
+- Scopes: `home`, `base`, `deps`
 
 ### Quality gates
 

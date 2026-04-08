@@ -30,7 +30,7 @@ export default defineNuxtConfig({
   },
 
   // Nuxt Layers - extends explícito (ordem = prioridade crescente)
-  extends: ['./layers/base', './layers/auth', './layers/home'],
+  extends: ['./layers/base', './layers/home'],
 
   site: {
     url: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
@@ -66,7 +66,7 @@ export default defineNuxtConfig({
   ],
 
   robots: {
-    disallow: ['/api/', '/auth/']
+    disallow: ['/api/']
   },
 
   schemaOrg: {
@@ -166,28 +166,7 @@ export default defineNuxtConfig({
   // Configurações por rota
   // Docs: https://nuxt-security.vercel.app/getting-started/usage
   routeRules: {
-    // Rotas de auth: CSRF desabilitado (usam cookies httpOnly)
-    '/api/auth/login': {
-      security: { rateLimiter: { tokensPerInterval: 10, interval: 300000 } },
-      csurf: false
-    },
-    '/api/auth/logout': { csurf: false },
-    '/api/auth/refresh': {
-      csurf: false,
-      security: { rateLimiter: { tokensPerInterval: 10, interval: 300000 } }
-    },
-    '/api/auth/reset-password': {
-      security: { rateLimiter: { tokensPerInterval: 5, interval: 300000 } },
-      csurf: false
-    },
-    '/api/auth/signup': {
-      security: { rateLimiter: { tokensPerInterval: 5, interval: 300000 } },
-      csurf: false
-    },
-
     // SEO: robots noindex para rotas internas (header X-Robots-Tag)
-    '/auth/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow' } },
-    '/perfil/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow' } },
     '/admin/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow' } }
   },
 

@@ -14,10 +14,10 @@ const siteDescription = (config.public.siteDescription as string) || ''
     </p>
     <div class="mt-10">
       <NuxtLink
-        to="/auth/login"
+        to="/"
         class="rounded-lg bg-primary-600 px-8 py-3 text-sm font-semibold text-base-0 shadow-sm transition hover:bg-primary-500"
       >
-        Entrar
+        Explorar
       </NuxtLink>
     </div>
   </section>

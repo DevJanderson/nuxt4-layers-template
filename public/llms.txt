@@ -1,11 +1,10 @@
 # Nuxt 4 Template
 
-> Template world-class para iniciar qualquer projeto com Nuxt 4, autenticacao BFF e arquitetura em layers.
+> Template world-class para iniciar qualquer projeto com Nuxt 4 e arquitetura em layers.
 
 Stack: Nuxt 4, Vue 3, Tailwind CSS v4, shadcn-vue, Pinia, Vitest, Playwright.
 
 ## Layers
 
 - **base** — Fundacao: Tailwind, shadcn-vue, utils, tipos, domain, logger
-- **auth** — Autenticacao BFF com JWT httpOnly, refresh deduplicado, middleware, guards
 - **home** — Landing page generica

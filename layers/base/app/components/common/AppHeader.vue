@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const appConfig = useAppConfig()
-const authStore = useAuthStore()
 const route = useRoute()
 
 const mobileMenuOpen = ref(false)
@@ -66,24 +65,7 @@ function isActive(to: string) {
 
       <!-- Ações (direita) -->
       <div class="ml-auto flex items-center gap-2 sm:gap-3">
-        <!-- Auth: Aguarda inicialização para evitar hydration mismatch -->
-        <template v-if="authStore.isInitialized">
-          <!-- Logado: Menu do Usuário -->
-          <AuthUserMenu v-if="authStore.isAuthenticated" />
-
-          <!-- Não Logado: Botão Login -->
-          <NuxtLink v-else to="/auth/login" aria-label="Fazer Login">
-            <Button variant="brand-outline" size="brand-md">
-              <Icon name="lucide:user" class="size-4" />
-              <span class="hidden sm:inline">Fazer Login</span>
-            </Button>
-          </NuxtLink>
-        </template>
-
-        <!-- Placeholder enquanto carrega -->
-        <div v-else class="h-9 w-28 animate-pulse rounded-full bg-base-100" />
-
-        <!-- Mobile: Hamburger menu (direita) -->
+        <!-- Mobile: Hamburger menu -->
         <Sheet v-model:open="mobileMenuOpen">
           <SheetTrigger as-child>
             <Button
@@ -139,50 +121,6 @@ function isActive(to: string) {
                 {{ link.label }}
               </NuxtLink>
             </nav>
-
-            <!-- Footer: Auth -->
-            <div class="mt-auto px-3 py-4">
-              <template v-if="authStore.isInitialized">
-                <!-- Logado: card com avatar -->
-                <div
-                  v-if="authStore.isAuthenticated"
-                  class="flex items-center gap-3 rounded-lg border border-base-200 px-3 py-3"
-                >
-                  <span
-                    class="flex size-9 shrink-0 items-center justify-center rounded-full bg-secondary-100 text-sm font-semibold text-secondary-900"
-                  >
-                    {{ authStore.userInitials }}
-                  </span>
-                  <div class="min-w-0 flex-1">
-                    <p class="truncate text-sm font-medium text-base-900">
-                      {{ authStore.userName }}
-                    </p>
-                    <p class="text-xs text-base-500">Conectado</p>
-                  </div>
-                  <NuxtLink
-                    to="/configuracoes"
-                    class="flex items-center"
-                    aria-label="Configurações"
-                  >
-                    <Icon
-                      name="lucide:settings"
-                      class="size-4.5 shrink-0 text-base-400 transition-colors hover:text-base-700"
-                    />
-                  </NuxtLink>
-                </div>
-
-                <!-- Não logado: card convite -->
-                <div v-else class="rounded-lg bg-secondary-50 px-4 py-4">
-                  <p class="mb-3 text-sm text-secondary-800">Acesse sua conta para continuar.</p>
-                  <NuxtLink to="/auth/login">
-                    <Button variant="brand-outline" size="brand-md" class="w-full">
-                      <Icon name="lucide:log-in" class="size-4" />
-                      Fazer Login
-                    </Button>
-                  </NuxtLink>
-                </div>
-              </template>
-            </div>
           </SheetContent>
         </Sheet>
       </div>
