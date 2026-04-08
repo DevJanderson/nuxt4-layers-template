@@ -22,7 +22,8 @@ pnpm-debug.log*
 .DS_Store
 .fleet
 .idea
-.vscode
+.vscode/*
+!.vscode/settings.json
 *.suo
 *.ntvs*
 *.njsproj

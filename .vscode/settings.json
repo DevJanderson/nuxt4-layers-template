@@ -1,0 +1,12 @@
+{
+  "github-actions.workflows.validate.context": false,
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "package.json": "pnpm-lock.yaml, .npmrc, .nvmrc, .editorconfig, .prettierrc, .prettierignore, commitlint.config.js, components.json, tsconfig.json, vitest.config.ts, playwright.config.ts, eslint.config.mjs",
+    "nuxt.config.ts": "app.config.ts, .nuxtrc, .nuxtignore",
+    "Dockerfile": ".dockerignore",
+    ".gitignore": ".env, .env.example",
+    "README.md": "LICENSE, CLAUDE.md"
+  }
+}
