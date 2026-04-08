@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" fill="none" preserveAspectRatio="xMidYMid slice">
+  <!-- Losango 5 (maior, quase invisível) -->
+  <g transform="translate(960 540) rotate(-45)">
+    <rect x="-1059" y="-1059" width="2118" height="2118" rx="120" fill="#eb5e57" opacity="0.02"/>
+  </g>
+  <!-- Losango 4 -->
+  <g transform="translate(960 540) rotate(-45)">
+    <rect x="-777" y="-777" width="1554" height="1554" rx="120" fill="#eb5e57" opacity="0.03"/>
+  </g>
+  <!-- Losango 3 -->
+  <g transform="translate(960 540) rotate(-45)">
+    <rect x="-559" y="-559" width="1118" height="1118" rx="80" fill="#eb5e57" opacity="0.04"/>
+  </g>
+  <!-- Losango 2 -->
+  <g transform="translate(960 540) rotate(-45)">
+    <rect x="-340" y="-340" width="680" height="680" rx="80" fill="#eb5e57" opacity="0.05"/>
+  </g>
+  <!-- Losango 1 (menor, mais visível) -->
+  <g transform="translate(960 540) rotate(-45)">
+    <rect x="-136" y="-136" width="272" height="272" rx="40" fill="#eb5e57" opacity="0.06"/>
+  </g>
+</svg>

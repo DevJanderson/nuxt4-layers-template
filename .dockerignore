@@ -1,0 +1,15 @@
+node_modules
+.output
+.nuxt
+.git
+.github
+.husky
+.vscode
+.claude
+.playwright-cli
+tests
+README.md
+CLAUDE.md
+.env
+.env.*
+!.env.example

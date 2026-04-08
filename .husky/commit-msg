@@ -1,0 +1,7 @@
+npx --no -- commitlint --edit "$1"
+
+# Bloqueia trailer Co-Authored-By (formato: "Co-Authored-By: Nome <email>")
+if grep -qE '^Co-Authored-By:' "$1"; then
+  echo "✗ Commit bloqueado: trailer Co-Authored-By não é permitido. Remova a linha."
+  exit 1
+fi

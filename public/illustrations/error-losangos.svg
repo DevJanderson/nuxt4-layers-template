@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" fill="none" preserveAspectRatio="xMidYMid slice">
+  <!-- Losango externo (rosa sutil) -->
+  <g transform="translate(960 540) rotate(-45)">
+    <rect x="-777" y="-777" width="1554" height="1554" rx="120" fill="#eb5e57" opacity="0.04"/>
+  </g>
+  <!-- Losango interno (rosa mais visível) -->
+  <g transform="translate(960 540) rotate(-45)">
+    <rect x="-559" y="-559" width="1118" height="1118" rx="80" fill="#eb5e57" opacity="0.06"/>
+  </g>
+</svg>
