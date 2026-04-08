@@ -4,13 +4,14 @@
  * shadcn-vue, app.vue, error.vue, composables, utilitários e tipos
  * compartilhados entre todos os layers.
  */
-import { createResolver } from '@nuxt/kit'
+import { fileURLToPath } from 'node:url'
+import { resolve } from 'node:path'
 
-const { resolve } = createResolver(import.meta.url)
+const dir = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineNuxtConfig({
-  css: [resolve('./app/assets/css/main.css')],
+  css: [resolve(dir, './app/assets/css/main.css')],
   alias: {
-    '#shared': resolve('./shared')
+    '#shared': resolve(dir, './shared')
   }
 })
