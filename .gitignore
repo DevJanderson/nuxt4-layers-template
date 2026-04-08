@@ -50,9 +50,6 @@ auth.json
 /*.png
 /*.jpeg
 
-# Generated (OpenAPI SDK)
-generated/
-
 # Superpowers docs (specs, plans)
 docs/
 

@@ -4,7 +4,7 @@
 >
 > 1. **IDIOMA:** Sempre responder em **Portugues Brasileiro (pt-BR)**, sem excecao.
 > 2. **COMMITS:** **NUNCA** incluir `Co-Authored-By` ou qualquer assinatura do Claude Code. Subject sempre em `lower-case`. Seguir o commitlint do projeto, nao o formato default do sistema.
-> 3. **DEV SERVER:** **NUNCA** rodar `npm run dev`. Usar `npm run typecheck` ou `npm run build` para verificar erros.
+> 3. **DEV SERVER:** **NUNCA** rodar `pnpm dev`. Usar `pnpm typecheck` ou `pnpm build` para verificar erros.
 > 4. **CLAUDE.md <= 300 LINHAS:** Este arquivo deve permanecer enxuto. Informacao inferivel do codigo nunca deve estar neste arquivo.
 > 5. **PERSONA:** Agir como **Vue Craftsman Pragmatico** — (a) pragmatico: minimo necessario, sem over-engineering; (b) layer thinker: pensar em fronteiras e contratos entre layers, zero acoplamento; (c) boundary guardian: Zod em toda fronteira, nunca confiar em dados externos; (d) seguranca como reflexo, nunca expor API ao client.
 
@@ -22,43 +22,38 @@
 | Estilo      | Tailwind CSS v4, tw-animate-css                    |
 | UI          | shadcn-vue (reka-ui + cva + clsx + tailwind-merge) |
 | Icones      | lucide-vue-next + @nuxt/icon                       |
-| Validacao   | Zod (schemas), maska (mascaras)                    |
+| Validacao   | Zod (schemas)                                      |
 | Estado      | Pinia + pinia-plugin-persistedstate                |
-| Tabelas     | @tanstack/vue-table                                |
-| Graficos    | ECharts + vue-echarts                              |
-| Mapas       | Leaflet + leaflet.markercluster                    |
 | Utilitarios | @vueuse/core                                       |
 | Toasts      | vue-sonner                                         |
 | Imagens     | @nuxt/image                                        |
 | SEO         | @nuxtjs/seo                                        |
 | Tema        | @nuxtjs/color-mode                                 |
-| Docs        | @nuxt/content + mermaid                            |
 | Seguranca   | nuxt-security (CSP, CSRF, rate limiter)            |
 | Testes      | Vitest, @vue/test-utils, happy-dom, Playwright     |
 | Qualidade   | ESLint, Prettier, Husky, Commitlint, lint-staged   |
-| API Gen     | @hey-api/openapi-ts                                |
 
 ---
 
 ## 2. COMANDOS
 
 ```bash
-npm run build            # Build producao
-npm run typecheck        # Verificar tipos (USAR para detectar erros)
-npm run quality          # typecheck + lint + format:check
-npm run quality:fix      # Lint + format auto-fix
-npm run test             # Vitest (unit + integration)
-npm run test:unit        # Vitest projeto "unit" (Node puro)
-npm run test:nuxt        # Vitest projeto "nuxt" (happy-dom + @nuxt/test-utils)
-npm run test:coverage    # Vitest com coverage
-npm run test:e2e         # Playwright E2E
+pnpm build               # Build producao
+pnpm typecheck           # Verificar tipos (USAR para detectar erros)
+pnpm quality             # typecheck + lint + format:check
+pnpm quality:fix         # Lint + format auto-fix
+pnpm test                # Vitest (unit + integration)
+pnpm test:unit           # Vitest projeto "unit" (Node puro)
+pnpm test:nuxt           # Vitest projeto "nuxt" (happy-dom + @nuxt/test-utils)
+pnpm test:coverage       # Vitest com coverage
+pnpm test:e2e            # Playwright E2E
 ```
 
 ### Teste especifico
 
 ```bash
-npm run test:unit -- tests/unit/utils/store-helpers.test.ts
-npm run test:nuxt -- tests/integration/auth/useAuthStore.test.ts
+pnpm test:unit -- tests/unit/utils/store-helpers.test.ts
+pnpm test:nuxt -- tests/integration/composables/useSeoPage.test.ts
 ```
 
 ---
@@ -118,7 +113,6 @@ UI → Store (Pinia) → Service (use*Api / $fetch) → BFF (server/api/) → AP
 ### Aliases
 
 - `#shared` → `layers/base/shared/` (tipos, domain, utils cross-layer)
-- `#generated` → `generated/` (OpenAPI SDK types)
 
 ### Estrutura de feature layer
 
@@ -163,20 +157,20 @@ Preciso criar...
 - **SSR:** Paginas autenticadas (`auth-guard`) devem usar `onMounted` para fetch — nunca `useAsyncData` (SSR nao tem sessao, gera 401)
 - **Componentes:** prefixo obrigatorio `{Feature}NomeComponente.vue`. Client-only: `.client.vue`
 - **Pages:** `definePageMeta({ middleware: 'auth-guard' })` + `useSeoPage({ title, description })`
-- **Imports:** auto-imports ou alias `#shared`/`#generated`. Nunca `~/layers/base/...`
+- **Imports:** auto-imports ou alias `#shared`. Nunca `~/layers/base/...`
 - **Persistencia:** `persist: { pick: [...] }` apenas para filtros/preferencias (nunca dados de API). Deserializar com Zod
 
 ---
 
 ## 8. COMO VALIDAR
 
-| Projeto | Comando             | Ambiente                     | Quando usar                      |
-| ------- | ------------------- | ---------------------------- | -------------------------------- |
-| `unit`  | `npm run test:unit` | Node puro                    | Utils, funcoes puras             |
-| `nuxt`  | `npm run test:nuxt` | happy-dom + @nuxt/test-utils | Composables, stores, componentes |
+| Projeto | Comando          | Ambiente                     | Quando usar                      |
+| ------- | ---------------- | ---------------------------- | -------------------------------- |
+| `unit`  | `pnpm test:unit` | Node puro                    | Utils, funcoes puras             |
+| `nuxt`  | `pnpm test:nuxt` | happy-dom + @nuxt/test-utils | Composables, stores, componentes |
 
 ```bash
-npm run typecheck && npm run quality:fix && npm run test  # Verificacao completa
+pnpm typecheck && pnpm quality:fix && pnpm test  # Verificacao completa
 ```
 
 ---

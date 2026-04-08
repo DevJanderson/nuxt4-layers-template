@@ -15,46 +15,46 @@ Boilerplate opinado com fundacao completa: autenticacao BFF com JWT + cookies ht
 
 | Layer    | Descricao                                                        |
 | -------- | ---------------------------------------------------------------- |
-| **base** | Tailwind CSS 4, shadcn-vue, utils, tipos, domain, logger        |
-| **auth** | Autenticacao BFF (cookies httpOnly, refresh, middleware, guards)  |
+| **base** | Tailwind CSS 4, shadcn-vue, utils, tipos, domain, logger         |
+| **auth** | Autenticacao BFF (cookies httpOnly, refresh, middleware, guards) |
 | **home** | Landing page generica                                            |
 
 ## Stack
 
-| Categoria  | Tecnologia                          |
-| ---------- | ----------------------------------- |
-| Framework  | Nuxt 4, Vue 3.5, TypeScript         |
-| UI         | Tailwind CSS 4, shadcn-vue          |
-| State      | Pinia                               |
-| Validacao  | Zod                                 |
-| Qualidade  | ESLint, Prettier, Husky, Commitlint |
-| Testes     | Vitest, Playwright                  |
+| Categoria | Tecnologia                          |
+| --------- | ----------------------------------- |
+| Framework | Nuxt 4, Vue 3.5, TypeScript         |
+| UI        | Tailwind CSS 4, shadcn-vue          |
+| State     | Pinia                               |
+| Validacao | Zod                                 |
+| Qualidade | ESLint, Prettier, Husky, Commitlint |
+| Testes    | Vitest, Playwright                  |
 
 ## Inicio Rapido
 
 ```bash
-npm install
-npm run setup    # Configura git hooks
+pnpm install
+pnpm setup       # Configura git hooks
 cp .env.example .env  # Configurar variaveis
-npm run dev      # http://localhost:3000
+pnpm dev         # http://localhost:3000
 ```
 
 ## Comandos
 
 ```bash
 # Desenvolvimento
-npm run dev              # Servidor dev
-npm run build            # Build producao
-npm run typecheck        # Verificar tipos
+pnpm dev                 # Servidor dev
+pnpm build               # Build producao
+pnpm typecheck           # Verificar tipos
 
 # Qualidade de codigo
-npm run quality:fix      # Lint + format
+pnpm quality:fix         # Lint + format
 
 # Testes
-npm run test             # Todos os testes
-npm run test:unit        # Testes unitarios (Node puro)
-npm run test:nuxt        # Testes com ambiente Nuxt
-npm run test:e2e         # Testes E2E (Playwright)
+pnpm test                # Todos os testes
+pnpm test:unit           # Testes unitarios (Node puro)
+pnpm test:nuxt           # Testes com ambiente Nuxt
+pnpm test:e2e            # Testes E2E (Playwright)
 ```
 
 ## Estrutura

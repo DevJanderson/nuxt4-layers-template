@@ -1,13 +1,15 @@
 # Stage 1: Build
 FROM node:22-alpine3.21 AS builder
 
+RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
+
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
 COPY . .
-RUN npm run build
+RUN pnpm build
 
 # Stage 2: Production
 FROM node:22-alpine3.21

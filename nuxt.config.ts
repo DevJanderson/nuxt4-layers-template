@@ -106,8 +106,8 @@ export default defineNuxtConfig({
           : {
               'base-uri': ["'self'"],
               'default-src': ["'self'"],
-              // nonce substitui 'unsafe-inline'; 'unsafe-eval' mantido por echarts (new Function)
-              'script-src': ["'self'", "'nonce-{{nonce}}'", "'strict-dynamic'", "'unsafe-eval'"],
+              // nonce substitui 'unsafe-inline'
+              'script-src': ["'self'", "'nonce-{{nonce}}'", "'strict-dynamic'"],
               'style-src': ["'self'", "'unsafe-inline'"],
               'img-src': ["'self'", 'data:', 'https:'],
               'font-src': ["'self'", 'data:'],
@@ -218,13 +218,6 @@ export default defineNuxtConfig({
   vite: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- @tailwindcss/vite type mismatch with Nuxt's bundled vite types
     plugins: [tailwindcss() as any],
-
-    // Performance - Excluir generated/ do file watcher
-    server: {
-      watch: {
-        ignored: ['**/generated/**']
-      }
-    },
 
     // Pré-bundlar dependências pesadas (transforma uma vez, reutiliza)
     optimizeDeps: {
