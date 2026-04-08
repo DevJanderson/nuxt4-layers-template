@@ -17,21 +17,21 @@ mockNuxtImport(
   'useHead',
   () =>
     (...args: unknown[]) =>
-      mockUseHead(...args),
+      mockUseHead(...args)
 )
 mockNuxtImport(
   'useSeoMeta',
   () =>
     (...args: unknown[]) =>
-      mockUseSeoMeta(...args),
+      mockUseSeoMeta(...args)
 )
 mockNuxtImport('useRoute', () => () => ({ path: '/' }))
 mockNuxtImport('useRuntimeConfig', () => () => ({
   public: {
     siteUrl: TEST_SITE_URL,
     siteName: TEST_SITE_NAME,
-    siteDescription: TEST_SITE_DESCRIPTION,
-  },
+    siteDescription: TEST_SITE_DESCRIPTION
+  }
 }))
 
 const { useSeoPage } = await import('~/layers/base/app/composables/useSeoPage')
@@ -48,23 +48,23 @@ describe('useSeoPage', () => {
       expect(mockUseSeoMeta).toHaveBeenCalledWith(
         expect.objectContaining({
           title: 'Minha Página',
-          description: TEST_SITE_DESCRIPTION,
-        }),
+          description: TEST_SITE_DESCRIPTION
+        })
       )
     })
 
     it('deve usar description customizada quando fornecida', () => {
       useSeoPage({
         title: 'Teste',
-        description: 'Descrição customizada',
+        description: 'Descrição customizada'
       })
 
       expect(mockUseSeoMeta).toHaveBeenCalledWith(
         expect.objectContaining({
           description: 'Descrição customizada',
           ogDescription: 'Descrição customizada',
-          twitterDescription: 'Descrição customizada',
-        }),
+          twitterDescription: 'Descrição customizada'
+        })
       )
     })
   })
@@ -74,7 +74,7 @@ describe('useSeoPage', () => {
       useSeoPage({ title: 'Teste' })
 
       expect(mockUseHead).toHaveBeenCalledWith({
-        link: [{ rel: 'canonical', href: `${TEST_SITE_URL}/` }],
+        link: [{ rel: 'canonical', href: `${TEST_SITE_URL}/` }]
       })
     })
 
@@ -82,7 +82,7 @@ describe('useSeoPage', () => {
       useSeoPage({ title: 'Teste', path: '/custom-path' })
 
       expect(mockUseHead).toHaveBeenCalledWith({
-        link: [{ rel: 'canonical', href: `${TEST_SITE_URL}/custom-path` }],
+        link: [{ rel: 'canonical', href: `${TEST_SITE_URL}/custom-path` }]
       })
     })
   })
@@ -98,21 +98,21 @@ describe('useSeoPage', () => {
           ogUrl: `${TEST_SITE_URL}/`,
           ogImage: `${TEST_SITE_URL}/og-image.png`,
           ogSiteName: TEST_SITE_NAME,
-          ogLocale: 'pt_BR',
-        }),
+          ogLocale: 'pt_BR'
+        })
       )
     })
 
     it('deve aceitar ogImage customizada', () => {
       useSeoPage({
         title: 'Teste',
-        ogImage: 'https://cdn.example.com/custom-image.png',
+        ogImage: 'https://cdn.example.com/custom-image.png'
       })
 
       expect(mockUseSeoMeta).toHaveBeenCalledWith(
         expect.objectContaining({
-          ogImage: 'https://cdn.example.com/custom-image.png',
-        }),
+          ogImage: 'https://cdn.example.com/custom-image.png'
+        })
       )
     })
   })
@@ -121,7 +121,7 @@ describe('useSeoPage', () => {
     it('deve definir meta tags Twitter completas', () => {
       useSeoPage({
         title: 'Teste Twitter',
-        description: 'Desc twitter',
+        description: 'Desc twitter'
       })
 
       expect(mockUseSeoMeta).toHaveBeenCalledWith(
@@ -129,8 +129,8 @@ describe('useSeoPage', () => {
           twitterCard: 'summary_large_image',
           twitterTitle: 'Teste Twitter',
           twitterDescription: 'Desc twitter',
-          twitterImage: `${TEST_SITE_URL}/og-image.png`,
-        }),
+          twitterImage: `${TEST_SITE_URL}/og-image.png`
+        })
       )
     })
   })
