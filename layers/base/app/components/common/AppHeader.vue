@@ -68,12 +68,7 @@ function isActive(to: string) {
         <!-- Mobile: Hamburger menu -->
         <Sheet v-model:open="mobileMenuOpen">
           <SheetTrigger as-child>
-            <Button
-              variant="brand-outline"
-              size="icon"
-              class="rounded-full lg:hidden"
-              aria-label="Menu"
-            >
+            <Button variant="outline" size="icon" class="rounded-full lg:hidden" aria-label="Menu">
               <Icon name="lucide:menu" class="size-4" />
             </Button>
           </SheetTrigger>

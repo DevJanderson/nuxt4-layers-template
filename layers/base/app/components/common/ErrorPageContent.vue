@@ -45,7 +45,7 @@ const emit = defineEmits<{
     </div>
 
     <!-- Botão CTA -->
-    <Button variant="brand-outline" size="brand-xl" @click="emit('action')">
+    <Button variant="outline" size="lg" @click="emit('action')">
       {{ buttonLabel || 'ir para início' }}
       <Icon name="lucide:arrow-right" class="size-6" />
     </Button>
