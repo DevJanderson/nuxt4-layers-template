@@ -18,8 +18,5 @@ yarn.lock
 *.min.js
 *.min.css
 
-# Código gerado (hey-api)
+# Código gerado
 generated/
-
-# Dados geográficos (minificados de propósito)
-*.topojson
