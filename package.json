@@ -30,8 +30,7 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:install": "playwright install --with-deps",
     "prepare": "husky",
-    "setup": "pnpm exec husky init && echo 'pnpm exec lint-staged' > .husky/pre-commit && echo 'pnpm exec commitlint --edit \"$1\"' > .husky/commit-msg && echo 'Git hooks configurados!'",
-    "docs:llms": "echo 'TODO: configurar geracao de docs'"
+    "setup": "pnpm exec husky init && echo 'pnpm exec lint-staged' > .husky/pre-commit && echo 'pnpm exec commitlint --edit \"$1\"' > .husky/commit-msg && echo 'Git hooks configurados!'"
   },
   "lint-staged": {
     "*.{js,ts,vue}": [
