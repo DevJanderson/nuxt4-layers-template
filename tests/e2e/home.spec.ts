@@ -1,20 +1,24 @@
 import { test, expect } from '@playwright/test'
+import { waitForHydration } from './helpers'
 
 test.describe('Home', () => {
-  test('carrega a página inicial', async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     await page.goto('/')
-    await expect(page).toHaveTitle(/.+/)
+    await waitForHydration(page)
+  })
+
+  test('carrega a página inicial', async ({ page }) => {
+    const title = await page.title()
+    expect(title).toBeTruthy()
+    expect(title).not.toMatch(/undefined/i)
   })
 
   test('renderiza o hero', async ({ page }) => {
-    await page.goto('/')
     await expect(page.getByTestId('home-hero')).toBeVisible()
   })
 
   test('tem color-mode aplicado no html', async ({ page }) => {
-    await page.goto('/')
-    const html = page.locator('html')
-    const classes = await html.getAttribute('class')
+    const classes = await page.locator('html').getAttribute('class')
     expect(classes).toMatch(/\b(light|dark)\b/)
   })
 })
