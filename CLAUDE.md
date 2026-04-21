@@ -197,7 +197,6 @@ feature/* ──→ develop ──→ staging ──→ main
 
 - **Pre-commit:** lint-staged (ESLint + Prettier + `scripts/check-patterns.sh`)
 - **Commit-msg:** commitlint + bloqueio de Co-Authored-By
-- **PostToolUse hook:** `.claude/hooks/check-layer-patterns.sh` valida padroes apos cada Edit/Write
 
 ---
 

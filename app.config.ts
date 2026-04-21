@@ -1,6 +1,15 @@
-import type { NavItem, SocialLink, FooterLink } from './layers/base/app/types/app-config'
+import type {
+  NavItem,
+  SocialLink,
+  FooterLink,
+  SiteConfig
+} from './layers/base/app/types/app-config'
 
 export default defineAppConfig({
+  site: {
+    defaultLocale: 'pt-BR',
+    supportedLocales: ['pt-BR']
+  } satisfies SiteConfig,
   brand: {
     logo: {
       default: '/brand/logo-default.svg',

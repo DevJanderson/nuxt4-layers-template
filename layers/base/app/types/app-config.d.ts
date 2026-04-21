@@ -30,14 +30,21 @@ export interface FooterConfig {
   links: FooterLink[]
 }
 
+export interface SiteConfig {
+  defaultLocale: string
+  supportedLocales: string[]
+}
+
 declare module 'nuxt/schema' {
   interface AppConfigInput {
+    site?: Partial<SiteConfig>
     brand?: BrandConfig
     nav?: NavItem[]
     footer?: FooterConfig
   }
 
   interface AppConfig {
+    site: SiteConfig
     brand: BrandConfig
     nav: NavItem[]
     footer: FooterConfig
