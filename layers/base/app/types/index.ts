@@ -21,4 +21,5 @@ export interface SeoPageOptions {
   description?: string
   path?: string
   ogImage?: string
+  locale?: string
 }
