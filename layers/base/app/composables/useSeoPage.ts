@@ -5,7 +5,7 @@ import type { SeoPageOptions } from '../types'
  * OG exige underscore; html lang mantém hífen.
  */
 function toOgLocale(locale: string): string {
-  return locale.replace('-', '_')
+  return locale.replaceAll('-', '_')
 }
 
 /**

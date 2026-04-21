@@ -171,5 +171,16 @@ describe('useSeoPage', () => {
         expect.objectContaining({ htmlAttrs: { lang: 'es' } })
       )
     })
+
+    it('deve converter locale de 3 partes para formato OG', () => {
+      useSeoPage({ title: 'ZH', locale: 'zh-Hans-CN' })
+
+      expect(mockUseSeoMeta).toHaveBeenCalledWith(
+        expect.objectContaining({ ogLocale: 'zh_Hans_CN' })
+      )
+      expect(mockUseHead).toHaveBeenCalledWith(
+        expect.objectContaining({ htmlAttrs: { lang: 'zh-Hans-CN' } })
+      )
+    })
   })
 })
