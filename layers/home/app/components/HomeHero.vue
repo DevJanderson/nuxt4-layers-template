@@ -5,7 +5,10 @@ const siteDescription = (config.public.siteDescription as string) || ''
 </script>
 
 <template>
-  <section class="flex min-h-[60vh] flex-col items-center justify-center px-6 text-center">
+  <section
+    data-testid="home-hero"
+    class="flex min-h-[60vh] flex-col items-center justify-center px-6 text-center"
+  >
     <h1 class="text-4xl font-bold tracking-tight text-base-950 sm:text-5xl lg:text-6xl">
       {{ siteName }}
     </h1>
