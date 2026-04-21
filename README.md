@@ -55,6 +55,70 @@ Depois de criar a layer, registre em `nuxt.config.ts`:
 extends: ['./layers/base', './layers/home', './layers/{feature}']
 ```
 
+## Quando precisar de i18n
+
+Adicionar suporte a múltiplos idiomas em 5 minutos:
+
+```bash
+pnpm add @nuxtjs/i18n
+```
+
+1. Registrar o module em `layers/base/nuxt.config.ts`:
+
+```ts
+export default defineNuxtConfig({
+  modules: ['@nuxtjs/i18n'],
+  i18n: {
+    defaultLocale: 'pt-BR',
+    locales: [
+      { code: 'pt-BR', file: 'pt-BR.json' },
+      { code: 'en', file: 'en.json' }
+    ]
+  }
+})
+```
+
+2. Criar `i18n/locales/pt-BR.json` e `i18n/locales/en.json` com as chaves.
+3. Atualizar `layers/base/app.config.ts`:
+
+```ts
+site: {
+  defaultLocale: 'pt-BR',
+  supportedLocales: ['pt-BR', 'en']
+}
+```
+
+4. Passar locale dinâmico ao `useSeoPage`:
+
+```ts
+const { locale } = useI18n()
+useSeoPage({ title: 'Minha Página', locale: locale.value })
+```
+
+`useSeoPage` já aceita o parâmetro `locale` e faz a conversão BCP-47 → OG (`pt-BR` → `pt_BR`).
+
+## Quando precisar de auth
+
+O template não inclui middleware de auth pronto — provedores variam muito (Supabase, Clerk, Auth.js, JWT custom, session). Use este shape como referência:
+
+```ts
+// layers/base/app/middleware/auth.ts
+export default defineNuxtRouteMiddleware(async to => {
+  const { data } = await useFetch('/api/auth/me')
+  if (!data.value) {
+    return navigateTo(`/login?redirect=${to.fullPath}`)
+  }
+})
+```
+
+Usar em qualquer page:
+
+```ts
+definePageMeta({ middleware: 'auth' })
+```
+
+Para providers específicos, consultar a documentação oficial. Endpoint `/api/auth/me` vai em `layers/{auth}/server/api/auth/me.get.ts` conforme o fluxo de dados do projeto (BFF → API externa ou provider SDK).
+
 ## O que vem pronto
 
 | Layer    | O que inclui                                                                             |
